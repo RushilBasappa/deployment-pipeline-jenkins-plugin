@@ -1,9 +1,10 @@
 package com.pearson.deployment
 
 class KubeWrapper {
-  def klass
-  def namespace
-  KubeWrapper(klass, namespace) {
+  String klass
+  String namespace
+  
+  KubeWrapper(String klass, String namespace) {
     this.klass = klass
     this.namespace = namespace
   }

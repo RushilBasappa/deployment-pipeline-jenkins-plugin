@@ -17,7 +17,7 @@ class Dockerfile implements Serializable {
   }
 
   def contents() {
-    def entrypoint = app.command ?: 'bash'
+    def entrypoint = app.command?.split(' ').collect{ "\"${it}\"" }.join(",") ?: 'bash'
     def dependencies = ""
     app.dependencies.each {
       if (it.origin) {
@@ -30,7 +30,7 @@ class Dockerfile implements Serializable {
        MAINTAINER Simas Cepaitis <simas.cepaitis@pearson.com>
        ADD ./deb /packages
        RUN dpkg -i ${dependencies}
-       ENTRYPOINT ${entrypoint}
+       ENTRYPOINT [${entrypoint}]
     """.trim().stripIndent()
   }
 }

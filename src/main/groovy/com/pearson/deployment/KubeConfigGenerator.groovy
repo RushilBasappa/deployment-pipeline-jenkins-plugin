@@ -9,7 +9,6 @@ class KubeConfigGenerator {
   String docker_registry
 
   KubeConfigGenerator(String project, LinkedHashMap cfg) {
-    this.filename = "/tmp/${cfg.name}-config.yaml"
     this.config   = cfg
     this.project = project
     this.docker_registry = System.getenv().DOCKER_REGISTRY ?: "bitesize-registry.default.svc.cluster.local:5000"
@@ -18,16 +17,21 @@ class KubeConfigGenerator {
 
   def setup() {
     config.services.each { service ->
-      rc = new KubeController(service)
+      service.project = project
+      service.docker_registry = docker_registry
+
+      def rc = new KubeController(service)
       rc.createOrUpdate()
 
-      svc = new KubeService(service)
-      svc.createOrUpdate()
+      // def svc = new KubeService(service)
+      // svc.createOrUpdate()
 
-      ingress = new KubeIngress(service)
-      ingress.createOrUpdate()
-      // createOrUpdateRC(service)
+      createOrUpdateRC(service)
       // createOrUpdateSVC(service)
+
+      def ingress = new KubeIngress(config.namespace, service)
+      ingress.createOrUpdate()
+
       // createOrUpdateIngress(service)
     }
 
@@ -152,63 +156,4 @@ class KubeConfigGenerator {
     return false
   }
 
-  def createOrUpdateIngress(s) {
-    def w = new KubeWrapper('ing', config.namespace)
-    try {
-      def z = w.get(s.name)
-      def yaml = new Yaml()
-      def existingIngress =  yaml.load(z)
-
-      if (mustUpdateIngress(existingIngress, s)) {
-        println "${AnsiColors.green}Updating ingress ${s.name}${AnsiColors.reset}"
-        def ingressFile = generateIngressFile(s)
-        w.apply ingressFile
-      }
-    } catch(all) {
-      println all
-      println "Ingress ${s.name} must be created"
-
-      def ingressFile = generateIngressFile(s)
-      w.create ingressFile
-    }
-  }
-
-  private def generateIngressFile(s) {
-    def contents
-    contents = """\
-                  apiVersion: extensions/v1beta1
-                  kind: Ingress
-                  metadata:
-                    name: ${s.name}
-                    labels:
-                      creator: pipeline
-                      name: ${s.name}
-                      environment: ${config.name}
-                  spec:
-                    rules:
-                      - host: ${s.external_url}
-                        http:
-                          paths:
-                          - path: /
-                            backend:
-                              serviceName: ${s.name}
-                              servicePort: ${s.port}
-    """.stripIndent()
-    def wr = new File("/tmp/${config.name}-${s.name}-ingress.yaml")
-    wr << contents
-    return "/tmp/${config.name}-${s.name}-ingress.yaml"
-  }
-
-  private def mustUpdateIngress(def oldIngress, def newIngress) {
-    def flag = false
-
-    oldIngress.spec.rules.each { oldRule ->
-      if ( oldRule.host == newIngress.external_url) {
-        if (oldRule.http.paths[0]?.backend?.servicePort == newIngress.port) {
-          flag = true
-        }
-      }
-    }
-    return !flag
-  }
 }

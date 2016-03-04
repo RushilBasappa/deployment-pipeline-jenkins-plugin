@@ -5,21 +5,26 @@ class KubeResource {
   LinkedHashMap config
   private KubeWrapper kube
   LinkedHashMap attr
+  String klass
+  String namespace
+  private def yaml
 
-  KubeResource(String klass, LinkedHashMap config) {
+  KubeResource(String klass, String namespace, LinkedHashMap config) {
     this.config = config
+    this.namespace = namespace
     this.klass = klass
-    this.kube = new KubeWrapper(klass, config.namespace)
+    this.kube = new KubeWrapper(klass, namespace)
+    this.yaml = new Yaml()
   }
 
   def get(def name) {
     try {
-      def data = kube.get(s.name)
-      def yaml = new Yaml()
+      def data = kube.get(name)
       def existingResource =  yaml.load(data)
-      return new KubeResource(klass, specToConfig(existingResource))
-      // return existingResource
+      def existingConfig = specToConfig(existingResource)
+      return new KubeResource(klass, namespace, existingConfig)
     } catch(all) {
+      println all
       return null
     }
   }
@@ -28,7 +33,9 @@ class KubeResource {
     def existing = get(config.name)
 
     if (existing) {
-      if (existing == config) {
+      println " NO EXISTING RESOURCE"
+      if (existing != this) {
+        println "MUST UPDATE"
         update()
       }
     } else {
@@ -37,10 +44,24 @@ class KubeResource {
   }
 
   def create() {
+    println "Must create new ${namespace}/${klass} resource"
+    def contents = yaml.dumpAsMap(configToSpec())
 
+    def writer = new File(resourceFilename())
+    writer << contents
+    kube.create(resourceFilename())
   }
 
   def update() {
+    println "Must update new ${namespace}/${klass} resource"
+    def contents = yaml.dumpAsMap(configToSpec())
 
+    def writer = new File(resourceFilename())
+    writer << contents
+    kube.apply(resourceFilename())
+  }
+
+  private def resourceFilename() {
+    "/tmp/${namespace}-${klass}-${config.name}.yaml"
   }
 }
