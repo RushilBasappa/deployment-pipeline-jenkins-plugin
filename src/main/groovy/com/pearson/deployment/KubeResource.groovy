@@ -48,7 +48,7 @@ class KubeResource {
     def contents = yaml.dumpAsMap(configToSpec())
 
     def writer = new File(resourceFilename())
-    writer << contents
+    writer.write contents
     kube.create(resourceFilename())
   }
 

@@ -20,13 +20,13 @@ class KubeConfigGenerator {
       service.project = project
       service.docker_registry = docker_registry
 
-      def rc = new KubeController(service)
+      def rc = new KubeController(config.namespace, service)
       rc.createOrUpdate()
 
-      // def svc = new KubeService(service)
-      // svc.createOrUpdate()
+      def svc = new KubeService(config.namespace, service)
+      svc.createOrUpdate()
 
-      createOrUpdateRC(service)
+      // createOrUpdateRC(service)
       // createOrUpdateSVC(service)
 
       def ingress = new KubeIngress(config.namespace, service)
