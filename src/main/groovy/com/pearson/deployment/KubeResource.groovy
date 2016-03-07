@@ -1,5 +1,6 @@
 package com.pearson.deployment
 import org.yaml.snakeyaml.Yaml
+import org.codehaus.groovy.runtime.StackTraceUtils
 
 class KubeResource {
   LinkedHashMap config
@@ -21,10 +22,24 @@ class KubeResource {
     try {
       def data = kube.get(name)
       def existingResource =  yaml.load(data)
+      println existingResource
+      println "----"
       def existingConfig = specToConfig(existingResource)
-      return new KubeResource(klass, namespace, existingConfig)
+      println existingConfig
+      println "====="
+      // XXX: fix this. This is ugly
+      switch(klass) {
+        case 'ing':
+          return new KubeIngress(namespace, existingConfig)
+          break
+        case 'rc':
+          return new KubeController(namespace, existingConfig)
+          break
+        case 'service':
+          return new KubeService(namespace, existingConfig)
+      }
     } catch(all) {
-      println all
+      println StackTraceUtils.deepSanitize(all)
       return null
     }
   }
@@ -33,8 +48,7 @@ class KubeResource {
     def existing = get(config.name)
 
     if (existing) {
-      println " NO EXISTING RESOURCE"
-      if (existing != this) {
+      if (!this.compareTo(existing)) {
         println "MUST UPDATE"
         update()
       }
@@ -57,7 +71,7 @@ class KubeResource {
     def contents = yaml.dumpAsMap(configToSpec())
 
     def writer = new File(resourceFilename())
-    writer << contents
+    writer.write contents
     kube.apply(resourceFilename())
   }
 

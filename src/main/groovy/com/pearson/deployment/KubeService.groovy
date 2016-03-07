@@ -5,7 +5,7 @@ class KubeService extends KubeResource {
     super('service', namespace, config)
   }
 
-  def compareTo(KubeIngress other) {
+  def compareTo(def other) {
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
     (this.config.port == other.config.port)
@@ -45,7 +45,7 @@ class KubeService extends KubeResource {
   def specToConfig(def spec) {
     [
       "name": spec.metadata.name,
-      "port": spec.spec.rules[0]?.port ?: 80
+      "port": spec?.spec?.rules?.getAt(0)?.port ?: 80
     ]
   }
 }

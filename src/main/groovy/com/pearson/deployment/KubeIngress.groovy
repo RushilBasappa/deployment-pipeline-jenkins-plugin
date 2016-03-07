@@ -5,7 +5,7 @@ class KubeIngress extends KubeResource {
     super('ing', namespace, c)
   }
 
-  def compareTo(KubeIngress other) {
+  def compareTo(def other) {
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
     (this.config.external_url == other.config.external_url) &&

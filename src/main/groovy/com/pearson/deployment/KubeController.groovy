@@ -1,14 +1,17 @@
 package com.pearson.deployment
 
+
 class KubeController extends KubeResource {
-  KubeController(def namespace, def config, def image) {
+  KubeController(def namespace, def config) {
     super('rc', namespace, config)
   }
 
-  def compareTo(KubeController other) {
+  def compareTo(def other) {
+    this_app = this.config.application ?: this.config.name
+    other_app = other.config.application ?: other.config.name
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
-    (this.config.application == other.config.application) &&
+    (this_app == other_app) &&
     (this.config.port == other.config.port) &&
     (this.config.env == other.config.env)
   }
@@ -25,6 +28,7 @@ class KubeController extends KubeResource {
     String project = svc.project
     String image_name = svc.application ?: svc.name
     String image = "${docker_registry}/${project}/${image_name}"
+    def env = svc.env ?: []
 
     [
       "apiVersion": "v1",
@@ -52,7 +56,7 @@ class KubeController extends KubeResource {
               [
                 "name": svc.name,
                 "image": image,
-                "env": svc.env,
+                "env": env,
                 "ports": [
                   [ "containerPort": svc.port ]
                 ]
@@ -69,11 +73,14 @@ class KubeController extends KubeResource {
   }
 
   def specToConfig(def spec) {
+    def env = spec.spec?.template?.spec?.containers?.getAt(0)?.env ?: []
+    def port  = spec.spec?.template?.spec?.containers?.getAt(0)?.ports?.getAt(0)?.containerPort ?: 80
+
     [
       "name": spec.metadata.name,
       "application": spec.metadata.labels.application,
-      "port": spec.spec.containers[0].ports[0].containerPort,
-      "env": spec.spec.containers[0].env
+      "port": port,
+      "env": env
     ]
   }
 }
