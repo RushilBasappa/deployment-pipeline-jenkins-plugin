@@ -22,22 +22,8 @@ class KubeResource {
     try {
       def data = kube.get(name)
       def existingResource =  yaml.load(data)
-      println existingResource
-      println "----"
       def existingConfig = specToConfig(existingResource)
-      println existingConfig
-      println "====="
-      // XXX: fix this. This is ugly
-      switch(klass) {
-        case 'ing':
-          return new KubeIngress(namespace, existingConfig)
-          break
-        case 'rc':
-          return new KubeController(namespace, existingConfig)
-          break
-        case 'service':
-          return new KubeService(namespace, existingConfig)
-      }
+      return this.class.newInstance(namespace, existingConfig)
     } catch(all) {
       println StackTraceUtils.deepSanitize(all)
       return null

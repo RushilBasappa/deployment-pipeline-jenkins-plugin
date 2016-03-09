@@ -7,8 +7,8 @@ class KubeController extends KubeResource {
   }
 
   def compareTo(def other) {
-    this_app = this.config.application ?: this.config.name
-    other_app = other.config.application ?: other.config.name
+    def this_app = this.config.application ?: this.config.name
+    def other_app = other.config.application ?: other.config.name
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
     (this_app == other_app) &&

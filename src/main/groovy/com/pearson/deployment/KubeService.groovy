@@ -45,7 +45,7 @@ class KubeService extends KubeResource {
   def specToConfig(def spec) {
     [
       "name": spec.metadata.name,
-      "port": spec?.spec?.rules?.getAt(0)?.port ?: 80
+      "port": spec?.spec?.ports?.getAt(0)?.port ?: 80
     ]
   }
 }
