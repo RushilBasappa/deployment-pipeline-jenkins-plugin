@@ -35,7 +35,6 @@ class KubeResource {
 
     if (existing) {
       if (!this.compareTo(existing)) {
-        println "MUST UPDATE"
         update()
       }
     } else {
