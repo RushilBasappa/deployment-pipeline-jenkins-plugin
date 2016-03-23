@@ -19,8 +19,7 @@ class BuildConfig extends ConfigReader implements Serializable {
       required = [
         "name",
         "repository.git",
-        "build",
-        "artifacts.location"
+        "build"
       ]
       attributes = component
     }

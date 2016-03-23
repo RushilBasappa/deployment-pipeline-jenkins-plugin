@@ -26,8 +26,9 @@ class KubeConfigGenerator {
 
       def svc = new KubeService(config.namespace, service)
       svc.createOrUpdate()
-
-      def ingress = new KubeIngress(config.namespace, service)
+      if (service.attributes.external_url != null) {
+        def ingress = new KubeIngress(config.namespace, service)
+      }
       ingress.createOrUpdate()
     }
 

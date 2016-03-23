@@ -60,6 +60,10 @@ class KubeResource {
     kube.apply(resourceFilename())
   }
 
+  // def configToSpec() {
+  //   throw new RuntimeException("Method not implemented")
+  // }
+
   private def resourceFilename() {
     "/tmp/${namespace}-${klass}-${config.name}.yaml"
   }
