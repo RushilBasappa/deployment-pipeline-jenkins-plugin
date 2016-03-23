@@ -2,10 +2,16 @@ package com.pearson.deployment
 
 import spock.lang.*
 import groovy.mock.interceptor.MockFor
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 
 class ApplicationBuilderSpec extends Specification {
 
   def dummyFile = new MockFor(File)
+  @Rule final TemporaryFolder configDir = new TemporaryFolder()
+
+  File config
+  ApplicationBuilder builder
 
   def setup() {
     def applicationConfig = """
@@ -16,40 +22,44 @@ class ApplicationBuilderSpec extends Specification {
         version: 0.0.1
     """
 
-    dummyFile.demand.getText { applicationConfig }
+    config = configDir.newFile('application.bitesize')
+    config.write applicationConfig
 
+    builder = new ApplicationBuilder(config.path)
   }
 
-  def "test initialization" () {
+  def "initialization" () {
+    expect:
+    builder.project == "sample"
+    builder.applications.size() == 1
+  }
+
+  def "getApplication() success" () {
     when:
-    dummyFile.use {
-      def n =  new ApplicationBuilder("/tmp/something")
-      assert n.project == "sample"
-      assert n.appDefinition.attributes.applications.size() == 1
-    }
+    def app = builder.getApplication('sample-application')
     then:
-    dummyFile.expect.verify()
+    app.version == '0.0.1'
   }
 
-  def "test getApplication()" () {
+  def "getApplication() fail" () {
     when:
-    dummyFile.use {
-      def n = new ApplicationBuilder("/tmp/something")
-      def app = n.getApplication('sample-application')
-      assert app.version == '0.0.1'
-    }
+    def app = builder.getApplication('nonexistent')
     then:
-    dummyFile.expect.verify()
+    app == null
   }
 
-  def "test dockerRegistry()" () {
-    when:
-    dummyFile.use {
-      def n = new ApplicationBuilder("/tmp/something")
-      assert n.dockerRegistry() == "bitesize-registry.default.svc.cluster.local:5000"
-    }
-    then:
-    dummyFile.expect.verify()
-
+  def "default dockerRegistry()" () {
+    expect:
+    builder.dockerRegistry() == "bitesize-registry.default.svc.cluster.local:5000"
   }
+
+  def "custom env dockerRegistry()" () {
+    setup:
+    GroovyMock(Env, global: true)
+    Env.get("DOCKER_REGISTRY") >> "something"
+
+    expect:
+    builder.dockerRegistry() == "something"
+  }
+
 }
