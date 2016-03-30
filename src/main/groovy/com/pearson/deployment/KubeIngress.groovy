@@ -9,7 +9,8 @@ class KubeIngress extends KubeResource {
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
     (this.config.external_url == other.config.external_url) &&
-    (this.config.port == other.config.port)
+    (this.config.port == other.config.port) &&
+    (this.config.ssl == other.config.ssl)
   }
 
 
@@ -18,6 +19,8 @@ class KubeIngress extends KubeResource {
     if (s == null ) {
       svc = config
     }
+
+    def enableSSL = svc.ssl ? "true" : "false"
     [
       "apiVersion": "extensions/v1beta1",
       "kind": "Ingress",
@@ -25,7 +28,8 @@ class KubeIngress extends KubeResource {
         "name": svc.name,
         "labels": [
           "creator": "pipeline",
-          "name": svc.name
+          "name": svc.name,
+          "ssl": enableSSL
         ]
       ],
       "spec": [
