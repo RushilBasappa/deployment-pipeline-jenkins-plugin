@@ -1,9 +1,9 @@
-package com.pearson.deployment
+package com.pearson.deployment.kubernetes
 
 class KubeWrapper {
   String klass
   String namespace
-  
+
   KubeWrapper(String klass, String namespace) {
     this.klass = klass
     this.namespace = namespace

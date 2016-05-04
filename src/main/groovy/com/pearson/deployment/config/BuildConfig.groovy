@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.config
 
 class BuildConfig extends ConfigReader implements Serializable {
   BuildConfig(String filename) {
@@ -8,6 +8,14 @@ class BuildConfig extends ConfigReader implements Serializable {
       validate_component(it)
     }
 
+  }
+
+  BuildConfig(AbstractBuild<?, ?> build, String filename) {
+    readConfig(build, filename)
+
+    attributes.components?.each {
+      validate_component(it)
+    }
   }
 
   def components() {

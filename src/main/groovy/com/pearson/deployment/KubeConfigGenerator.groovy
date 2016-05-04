@@ -3,6 +3,8 @@ package com.pearson.deployment
 import org.yaml.snakeyaml.Yaml
 import org.codehaus.groovy.runtime.StackTraceUtils
 
+import com.pearson.deployment.kubernetes.*
+
 class KubeConfigGenerator {
   String filename
   LinkedHashMap config

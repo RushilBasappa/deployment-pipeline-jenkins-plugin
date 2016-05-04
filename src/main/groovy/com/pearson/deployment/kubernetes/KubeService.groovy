@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.kubernetes
 
 class KubeService extends KubeResource {
   KubeService( def namespace, def config) {

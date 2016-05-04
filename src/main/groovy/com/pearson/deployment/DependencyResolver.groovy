@@ -26,15 +26,17 @@ class DependencyResolver {
   }
 
   private def installDebianPackage(def pkg) {
-    def debfile = (pkg =~ /.*\/(.*\.deb)/)[0][1]
-    def debpath = new File("/tmp/${debfile}")
+    String tmpdir  = System.getProperty("java.io.tmpdir")
+    String debfile = (pkg =~ /.*\/(.*\.deb)/)[0][1]
+    File   debpath = new File("${tmpdir}/${debfile}")
+
     if ( ! debpath.exists() ) {
       exe(
         [
-        'curl', '-k', '-o', "/tmp/${debfile}", '-s', '-L', pkg
+        'curl', '-k', '-o', "${tmpdir}/${debfile}", '-s', '-L', pkg
         ]
         )
-      exe(['sudo', 'dpkg', '-i', "/tmp/${debfile}"])
+      exe(['sudo', 'dpkg', '-i', "${tmpdir}/${debfile}"])
     }
 
   }
@@ -54,8 +56,7 @@ class DependencyResolver {
       retval = exe(['sudo','add-apt-repository', "deb ${repo} ${version} main"])
     }
     def r = exe(['sudo','apt-get','update'])
-    println retval
-    println r
+    
     return "${retval}${r}"
   }
 

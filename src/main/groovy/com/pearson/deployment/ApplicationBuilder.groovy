@@ -1,6 +1,7 @@
 package com.pearson.deployment
 
 import hudson.model.BuildListener
+import com.pearson.deployment.config.ApplicationConfig
 
 
 class ApplicationBuilder implements Serializable {

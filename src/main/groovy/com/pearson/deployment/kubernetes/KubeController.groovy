@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.kubernetes
 
 
 class KubeController extends KubeResource {

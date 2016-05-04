@@ -1,4 +1,5 @@
-package com.pearson.deployment
+package com.pearson.deployment.kubernetes
+
 import org.yaml.snakeyaml.Yaml
 import org.codehaus.groovy.runtime.StackTraceUtils
 

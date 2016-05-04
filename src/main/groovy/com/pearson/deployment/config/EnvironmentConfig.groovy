@@ -1,8 +1,16 @@
-package com.pearson.deployment
+package com.pearson.deployment.config
 
 class EnvironmentConfig extends ConfigReader implements Serializable {
   EnvironmentConfig(String filename) {
     readConfig(filename)
+
+    attributes.environments?.each {
+      validate_environment(it)
+    }
+  }
+
+  EnvironmentConfig(AbstractBuild<?, ?> build, String filename) {
+    readConfig(build, filename)
 
     attributes.environments?.each {
       validate_environment(it)

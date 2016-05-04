@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.config
 
 class ConfigValidator implements Serializable {
   def required = []

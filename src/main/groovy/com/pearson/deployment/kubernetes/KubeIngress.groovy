@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.kubernetes
 
 class KubeIngress extends KubeResource {
   KubeIngress(def namespace, def c) {
