@@ -56,6 +56,7 @@ class KubeController extends KubeResource {
               [
                 "name": svc.name,
                 "image": image,
+                "imagePullPolicy" : "Always",
                 "env": env,
                 "ports": [
                   [ "containerPort": svc.port ]
