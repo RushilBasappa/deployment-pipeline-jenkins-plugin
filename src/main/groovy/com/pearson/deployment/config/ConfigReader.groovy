@@ -2,6 +2,7 @@ package com.pearson.deployment.config
 
 import org.yaml.snakeyaml.Yaml
 import hudson.FilePath
+// import hudson.model.AbstractBuild
 
 class ConfigReader {
   String filename
@@ -20,18 +21,18 @@ class ConfigReader {
 
   def readConfig(String filename) {
     this.filename = filename
-    String f = new File(filename).getText("UTF-8")
+    String contents = new File(filename).getText("UTF-8")
     this.attributes = loadYaml(contents)
   }
 
-  def readConfig(AbstractBuild<?, ?> build, String filename) {
-    this.filename = filename
-    FilePath fp = new FilePath(build.getWorkspace(), filename)
-    String contents = fp.read()
-    this.attributes = loadYaml(contents)
-  }
+  // def readConfig(AbstractBuild build, String filename) {
+  //   this.filename = filename
+  //   FilePath fp = new FilePath(build.getWorkspace(), filename)
+  //   String contents = fp.read()
+  //   this.attributes = loadYaml(contents)
+  // }
 
-  private def loadYaml(String contents) {
+  def loadYaml(String contents) {
     Yaml yaml = new Yaml()
     yaml.load(contents)
   }

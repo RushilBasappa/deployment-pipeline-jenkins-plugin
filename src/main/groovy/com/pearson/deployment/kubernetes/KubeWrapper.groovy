@@ -1,5 +1,7 @@
 package com.pearson.deployment.kubernetes
 
+import com.pearson.deployment.AnsiColors
+
 class KubeWrapper {
   String klass
   String namespace

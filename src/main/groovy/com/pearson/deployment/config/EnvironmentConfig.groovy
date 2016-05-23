@@ -1,5 +1,8 @@
 package com.pearson.deployment.config
 
+// import hudson.model.*
+
+
 class EnvironmentConfig extends ConfigReader implements Serializable {
   EnvironmentConfig(String filename) {
     readConfig(filename)
@@ -9,13 +12,26 @@ class EnvironmentConfig extends ConfigReader implements Serializable {
     }
   }
 
-  EnvironmentConfig(AbstractBuild<?, ?> build, String filename) {
-    readConfig(build, filename)
+  EnvironmentConfig(String contents, boolean dummy) {
+    this.attributes = loadYaml(contents)
 
     attributes.environments?.each {
       validate_environment(it)
     }
+
   }
+
+  def getEnvironment(String name) {
+    attributes?.environments?.find{ it.name == name }
+  }
+
+  // EnvironmentConfig(AbstractBuild<?, ?> build, String filename) {
+  //   readConfig(build, filename)
+  //
+  //   attributes.environments?.each {
+  //     validate_environment(it)
+  //   }
+  // }
 
   private def validate_environment(def env) {
     validate {

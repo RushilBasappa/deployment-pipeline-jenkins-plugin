@@ -7,8 +7,11 @@ class KubeService extends KubeResource {
 
   def compareTo(def other) {
     // not sure if this.config == other.config good enough
+    def other_port = other.config.port ? other.config.port : 80
+    def this_port  = this.config.port ? this.config.port : 80
+
     (this.config.name == other.config.name ) &&
-    (this.config.port == other.config.port)
+    (this_port == other_port)
   }
 
 
@@ -30,7 +33,7 @@ class KubeService extends KubeResource {
       "spec": [
         "ports": [
           [
-            "port": 80,
+            "port": svc.port ?: 80,
             "protocol": "TCP",
             "targetPort": svc.port ?: 80
           ]

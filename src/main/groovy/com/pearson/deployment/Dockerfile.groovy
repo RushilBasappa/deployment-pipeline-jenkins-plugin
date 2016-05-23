@@ -1,5 +1,7 @@
 package com.pearson.deployment
 
+import java.util.regex.*
+
 class Dockerfile implements Serializable {
   String filename
   LinkedHashMap app
@@ -17,7 +19,8 @@ class Dockerfile implements Serializable {
   }
 
   def contents() {
-    def entrypoint = app.command?.split(' ').collect{ "\"${it}\"" }.join(",") ?: 'bash'
+    def entrypoint = commandToEntrypoint(app.command)
+
     def dependencies = ""
     app.dependencies.each {
       if (it.origin) {
@@ -31,6 +34,20 @@ class Dockerfile implements Serializable {
        ADD ./deb /packages
        RUN dpkg -i ${dependencies}
        ENTRYPOINT [${entrypoint}]
-    """.trim().stripIndent()
+    """.stripIndent()
+  }
+
+  private def commandToEntrypoint(String cmd) {
+    String regex = "\"([^\"]*)\"|(\\S+)"
+    Matcher m = Pattern.compile(regex).matcher(cmd);
+    def commands = []
+    while (m.find()) {
+      if (m.group(1) != null ) {
+        commands.push "\"${m.group(1)}\"".toString()
+      } else {
+        commands.push "\"${m.group(2)}\"".toString()
+      }
+    }
+    commands.join(",") ?: 'bash'
   }
 }

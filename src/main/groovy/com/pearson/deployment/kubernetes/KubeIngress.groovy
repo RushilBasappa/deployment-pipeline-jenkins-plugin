@@ -7,6 +7,9 @@ class KubeIngress extends KubeResource {
 
   def compareTo(def other) {
     // not sure if this.config == other.config good enough
+    def this_port = this.config.port ? this.config.port : 80
+    def other_port = other.config.port ? other.config.port : 80
+
     (this.config.name == other.config.name ) &&
     (this.config.external_url == other.config.external_url) &&
     (this.config.port == other.config.port) &&

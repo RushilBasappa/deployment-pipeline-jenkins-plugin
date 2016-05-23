@@ -1,5 +1,7 @@
 package com.pearson.deployment.config
 
+// import hudson.model.*
+
 class BuildConfig extends ConfigReader implements Serializable {
   BuildConfig(String filename) {
     readConfig(filename)
@@ -10,13 +12,13 @@ class BuildConfig extends ConfigReader implements Serializable {
 
   }
 
-  BuildConfig(AbstractBuild<?, ?> build, String filename) {
-    readConfig(build, filename)
-
-    attributes.components?.each {
-      validate_component(it)
-    }
-  }
+  // BuildConfig(AbstractBuild<?, ?> build, String filename) {
+  //   readConfig(build, filename)
+  //
+  //   attributes.components?.each {
+  //     validate_component(it)
+  //   }
+  // }
 
   def components() {
     return attributes.components

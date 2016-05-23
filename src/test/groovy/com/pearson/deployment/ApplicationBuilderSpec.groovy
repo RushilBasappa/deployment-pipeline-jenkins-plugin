@@ -5,6 +5,10 @@ import groovy.mock.interceptor.MockFor
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
+
+import com.pearson.deployment.kubernetes.*
+import com.pearson.deployment.config.*
+
 class ApplicationBuilderSpec extends Specification {
 
   def dummyFile = new MockFor(File)

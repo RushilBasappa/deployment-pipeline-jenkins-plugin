@@ -3,6 +3,9 @@ package com.pearson.deployment.kubernetes
 import org.yaml.snakeyaml.Yaml
 import org.codehaus.groovy.runtime.StackTraceUtils
 
+import java.util.logging.Level
+import java.util.logging.Logger
+
 class KubeResource {
   LinkedHashMap config
   private KubeWrapper kube
@@ -11,22 +14,24 @@ class KubeResource {
   String namespace
   private def yaml
 
+  private static final Logger LOG = Logger.getLogger(KubeResource.class.getName());
+
   KubeResource(String klass, String namespace, LinkedHashMap config) {
-    this.config = config
+    this.config    = config
     this.namespace = namespace
-    this.klass = klass
-    this.kube = new KubeWrapper(klass, namespace)
-    this.yaml = new Yaml()
+    this.klass     = klass
+    this.kube      = new KubeWrapper(klass, namespace)
+    this.yaml      = new Yaml()
   }
 
   def get(def name) {
     try {
-      def data = kube.get(name)
+      def data             = kube.get(name)
       def existingResource =  yaml.load(data)
-      def existingConfig = specToConfig(existingResource)
+      def existingConfig   = specToConfig(existingResource)
       return this.class.newInstance(namespace, existingConfig)
     } catch(all) {
-      println StackTraceUtils.deepSanitize(all)
+      LOG.severe StackTraceUtils.deepSanitize(all).toString()
       return null
     }
   }
@@ -44,16 +49,16 @@ class KubeResource {
   }
 
   def create() {
-    println "Must create new ${namespace}/${klass} resource"
+    LOG.fine "Must create new ${namespace}/${klass} resource"
     def contents = yaml.dumpAsMap(configToSpec())
 
-    def writer = new File(resourceFilename())
+    def writer   = new File(resourceFilename())
     writer.write contents
     kube.create(resourceFilename())
   }
 
   def update() {
-    println "Must update new ${namespace}/${klass} resource"
+    LOG.fine "Must update ${namespace}/${klass}/${config.name} resource"
     def contents = yaml.dumpAsMap(configToSpec())
 
     def writer = new File(resourceFilename())
@@ -61,11 +66,22 @@ class KubeResource {
     kube.apply(resourceFilename())
   }
 
+  def exist(def name) {
+    try {
+      def rs = get(name)
+      return rs != null
+    } catch(all) {
+      return false
+    }
+
+  }
+
   // def configToSpec() {
   //   throw new RuntimeException("Method not implemented")
   // }
 
-  private def resourceFilename() {
-    "/tmp/${namespace}-${klass}-${config.name}.yaml"
+  private String resourceFilename() {
+    def tmpDir = System.getProperty('java.io.tmpdir')
+    "${tmpDir}/${namespace}-${klass}-${config.name}.yaml".toString()
   }
 }
