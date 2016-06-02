@@ -23,8 +23,7 @@ class ApplicationConfig extends ConfigReader implements Serializable {
     validate {
       required = [
         "name",
-        "runtime",
-        "version"
+        "runtime"
       ]
       attributes = app
     }

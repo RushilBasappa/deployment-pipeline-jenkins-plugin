@@ -38,7 +38,7 @@ class KubeConfigGenerator {
           "parameter_filename": "${service.type}.parameter".toString(),
           "version": "${service.version}".toString(),
           "namespace": "${config.namespace}".toString(),
-          "name": "${service.type}-${service.name}.${service.namespace}.prsn.io".toString(),
+          "name": "${service.type}-${service.name}.${config.namespace}.prsn.io".toString(),
           "type": "${service.type}".toString(),
           "stack_name": "${service.namespace}-${service.type}-${randomstring}".toString()
         ]

@@ -33,7 +33,10 @@ class DeployEnvironment implements Serializable {
 
   def deploy() {
     for (def i = 0; i < definition.services?.size(); i++ ) {
-      deployService(definition.services[i])
+      def svc = definition.services[i]
+      if (svc.type == null) {
+        deployService(svc)
+      }
     }
   }
 
@@ -50,7 +53,7 @@ class DeployEnvironment implements Serializable {
       if (oldDeployment.config.version == svc.version) {
         out.println  "SAME VERSION ${svc.version} FOUND FOR ${svc.name}"
         out.flush()
-      } else {
+      } else if ( svc.version != "" && svc.version != null ){
         out.println "MUST UPDATE ${svc.name} FROM ${oldDeployment.config.version} TO ${svc.version}"
         out.flush()
         updateService(deployment, svc)

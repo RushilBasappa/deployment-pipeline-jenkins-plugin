@@ -2,6 +2,7 @@ package com.pearson.deployment
 
 import hudson.model.BuildListener
 import com.pearson.deployment.config.ApplicationConfig
+import com.pearson.deployment.helpers.Helper
 
 
 class ApplicationBuilder implements Serializable {
@@ -21,11 +22,20 @@ class ApplicationBuilder implements Serializable {
 
   def getDockerImage(String app) {
     def application = getApplication(app)
-    "${dockerRegistry()}/${project}/${application.name}:${application.version}"
+    if (application == null) {
+      throw Exception("Application ${app} not defined")
+    }
+    
+    def version = getAppVersion(app)
+    "${Helper.dockerRegistry()}/${project}/${application.name}:${version}"
   }
 
-  def dockerRegistry() {
-    Env.get('DOCKER_REGISTRY') ?: "bitesize-registry.default.svc.cluster.local:5000"
+  def getAppVersion(String app) {
+    def application = getApplication(app)
+    if (application.version) { return application.version }
+
+    def dep = application.dependencies?.find { it.origin?.build != null }
+    dep?.version
   }
 
   // def copyDependencyArtifacts(String app) {
