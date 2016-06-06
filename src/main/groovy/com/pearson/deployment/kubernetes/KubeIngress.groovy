@@ -24,6 +24,9 @@ class KubeIngress extends KubeResource {
     }
 
     def enableSSL = svc.ssl ? "true" : "false"
+    def httpsOnly = svc.httpsOnly ? "true" : "false"
+    def httpsBackend = svc.httpsBackend ? "true" : "false"
+    
     [
       "apiVersion": "extensions/v1beta1",
       "kind": "Ingress",
@@ -33,6 +36,8 @@ class KubeIngress extends KubeResource {
           "creator": "pipeline",
           "name": svc.name,
           "ssl": enableSSL
+          "httpsOnly": httpsOnly
+          "httpsBackend": httpsBackend
         ]
       ],
       "spec": [
