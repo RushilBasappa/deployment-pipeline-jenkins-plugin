@@ -35,8 +35,8 @@ class KubeIngress extends KubeResource {
         "labels": [
           "creator": "pipeline",
           "name": svc.name,
-          "ssl": enableSSL
-          "httpsOnly": httpsOnly
+          "ssl": enableSSL,
+          "httpsOnly": httpsOnly,
           "httpsBackend": httpsBackend
         ]
       ],
