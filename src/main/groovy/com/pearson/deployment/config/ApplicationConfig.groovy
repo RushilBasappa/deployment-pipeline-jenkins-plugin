@@ -11,6 +11,14 @@ class ApplicationConfig extends ConfigReader implements Serializable {
     }
   }
 
+  ApplicationConfig(String contents, boolean dummy) {
+    this.attributes = loadYaml(contents)
+
+    attributes.application?.each {
+      validate_application(it)
+    }
+  }
+
   // ApplicationConfig(AbstractBuild<?, ?> build, String filename) {
   //   readConfig(build, filename)
   //
