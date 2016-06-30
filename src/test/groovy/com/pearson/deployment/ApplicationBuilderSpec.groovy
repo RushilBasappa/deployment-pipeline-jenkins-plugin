@@ -51,19 +51,4 @@ class ApplicationBuilderSpec extends Specification {
     then:
     app == null
   }
-
-  def "default dockerRegistry()" () {
-    expect:
-    builder.dockerRegistry() == "bitesize-registry.default.svc.cluster.local:5000"
-  }
-
-  def "custom env dockerRegistry()" () {
-    setup:
-    GroovyMock(Env, global: true)
-    Env.get("DOCKER_REGISTRY") >> "something"
-
-    expect:
-    builder.dockerRegistry() == "something"
-  }
-
 }

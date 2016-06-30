@@ -2,8 +2,8 @@ package com.pearson.deployment.kubernetes
 
 class KubeThirdPartyResource extends KubeResource {
 
-  KubeThirdPartyResource( def namespace, def config) {
-    super('thirdpartyresource', namespace, config)
+  KubeThirdPartyResource( def namespace, def config, def logger=null) {
+    super('thirdpartyresource', namespace, config, logger)
   }
 
   def compareTo(def other) {

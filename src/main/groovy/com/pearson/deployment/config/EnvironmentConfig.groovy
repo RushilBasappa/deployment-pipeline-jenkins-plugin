@@ -25,14 +25,6 @@ class EnvironmentConfig extends ConfigReader implements Serializable {
     attributes?.environments?.find{ it.name == name }
   }
 
-  // EnvironmentConfig(AbstractBuild<?, ?> build, String filename) {
-  //   readConfig(build, filename)
-  //
-  //   attributes.environments?.each {
-  //     validate_environment(it)
-  //   }
-  // }
-
   private def validate_environment(def env) {
     validate {
       required = [

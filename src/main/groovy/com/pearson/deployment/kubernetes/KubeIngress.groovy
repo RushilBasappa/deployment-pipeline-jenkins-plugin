@@ -1,8 +1,8 @@
 package com.pearson.deployment.kubernetes
 
 class KubeIngress extends KubeResource {
-  KubeIngress(def namespace, def c) {
-    super('ing', namespace, c)
+  KubeIngress(def namespace, def c, def logger=null) {
+    super('ing', namespace, c, logger)
   }
 
   def compareTo(def other) {

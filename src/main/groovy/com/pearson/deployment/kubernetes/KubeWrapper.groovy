@@ -5,22 +5,28 @@ import com.pearson.deployment.AnsiColors
 class KubeWrapper {
   String klass
   String namespace
+  OutputStream log
 
   KubeWrapper(String klass, String namespace) {
     this.klass = klass
     this.namespace = namespace
+    this.log = System.out
   }
 
-  def get(def name) {
+  def setLog(OutputStream log) {
+    this.log = log
+  }
+
+  def fetch(def name) {
     exe("kubectl get ${klass} ${name} --namespace=${namespace} -o yaml")
   }
 
   def create(def filename) {
-    exe("kubectl create -f ${filename} --namespace=${namespace}")
+    exe("kubectl create -f ${filename} --namespace=${namespace} --validate=false")
   }
 
   def apply(def filename) {
-    exe("kubectl apply -f ${filename} --namespace=${namespace}")
+    exe("kubectl apply -f ${filename} --namespace=${namespace} --validate=false")
   }
 
   def exe(cmd) {
@@ -30,8 +36,8 @@ class KubeWrapper {
     command.waitFor()
     def errOutput = command.err.text
     if (errOutput) {
-      println("${AnsiColors.red}${errOutput}${AnsiColors.reset}")
-      throw new Exception("Error executing '${cmd}'")
+      // log.println("${AnsiColors.red}${errOutput}${AnsiColors.reset}")
+      throw new Exception("Error executing '${cmd}': ${errOutput}")
     }
     return command.text
   }

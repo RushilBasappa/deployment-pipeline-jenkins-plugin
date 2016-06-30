@@ -1,8 +1,8 @@
 package com.pearson.deployment.kubernetes
 
 class KubeService extends KubeResource {
-  KubeService( def namespace, def config) {
-    super('service', namespace, config)
+  KubeService( def namespace, def config, def logger=null) {
+    super('service', namespace, config, logger)
   }
 
   def compareTo(def other) {

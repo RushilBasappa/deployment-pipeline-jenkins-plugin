@@ -1,8 +1,12 @@
 package com.pearson.deployment.kubernetes
 
 class KubeDeployment extends KubeResource {
-  KubeDeployment(def namespace, def config) {
-    super('deployment', namespace, config)
+  KubeDeployment(def namespace, def config, def log=null) {
+    super('deployment', namespace, config, log)
+
+    // defaults
+    config.env = config.env ?: []
+    config.replicas = config.replicas ?: 1
   }
 
   def watch() {
@@ -23,14 +27,21 @@ class KubeDeployment extends KubeResource {
     def this_app = this.config.application ?: this.config.name
     def other_app = other.config.application ?: other.config.name
 
-    def this_replicas = this.config.replicas ?: 1
-    def other_replicas = other.config.replicas ?: 1
+    // def this_replicas = this.config.replicas ?: 1
+    // def other_replicas = other.config.replicas ?: 1
+
+    // log.println "app: ${this_app} ${other_app}"
+    // log.println "replicas: ${this_replicas} ${other_replicas}"
+    // log.println "name: ${this.config.name} ${other.config.name}"
+    // log.println "port: ${this.config.port} ${other.config.port}"
+    // log.println "this env: ${this.config.env}"
+    // log.println "other env: ${other.config.env}"
 
     // not sure if this.config == other.config good enough
     (this.config.name == other.config.name ) &&
     (this_app == other_app) &&
     (this.config.port == other.config.port) &&
-    (this_replicas == other_replicas)
+    (this.config.replicas == other.config.replicas) &&
     (this.config.env == other.config.env)
   }
 

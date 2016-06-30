@@ -7,6 +7,7 @@ import java.security.SecureRandom
 import java.math.BigInteger
 
 import com.pearson.deployment.kubernetes.*
+import com.pearson.deployment.helpers.*
 
 class KubeConfigGenerator {
   String filename
@@ -18,7 +19,7 @@ class KubeConfigGenerator {
   KubeConfigGenerator(String project, LinkedHashMap cfg) {
     this.config   = cfg
     this.project = project
-    this.docker_registry = System.getenv().DOCKER_REGISTRY ?: "bitesize-registry.default.svc.cluster.local:5000"
+    this.docker_registry = Helper.dockerRegistry()
     this.random = new SecureRandom()
     // this.namespace = namespace
   }

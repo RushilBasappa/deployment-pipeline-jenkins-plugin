@@ -13,15 +13,17 @@ class KubeResource {
   String klass
   String namespace
   private def yaml
+  def log
 
   private static final Logger LOG = Logger.getLogger(KubeResource.class.getName());
 
-  KubeResource(String klass, String namespace, LinkedHashMap config) {
+  KubeResource(String klass, String namespace, LinkedHashMap config, def logger=System.out) {
     this.config    = config
     this.namespace = namespace
     this.klass     = klass
     this.kube      = new KubeWrapper(klass, namespace)
     this.yaml      = new Yaml()
+    this.log       = logger
   }
 
   def get(def name) {
@@ -42,14 +44,17 @@ class KubeResource {
     if (existing) {
       if (!this.compareTo(existing)) {
         update()
+        return true
       }
     } else {
       create()
+      return true
     }
+    return false
   }
 
   def create() {
-    LOG.fine "Must create new ${namespace}/${klass} resource"
+    log.println "Must create new ${namespace}/${klass} resource"
     def contents = yaml.dumpAsMap(configToSpec())
 
     def writer   = new File(resourceFilename())
@@ -58,7 +63,7 @@ class KubeResource {
   }
 
   def update() {
-    LOG.fine "Must update ${namespace}/${klass}/${config.name} resource"
+    log.println "Must update ${namespace}/${klass}/${config.name} resource"
     def contents = yaml.dumpAsMap(configToSpec())
 
     def writer = new File(resourceFilename())

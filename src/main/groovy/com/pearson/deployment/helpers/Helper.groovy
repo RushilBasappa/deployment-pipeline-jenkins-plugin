@@ -5,4 +5,8 @@ class Helper implements Serializable {
     Map<String, String> env = System.getenv()
     env.get('DOCKER_REGISTRY') ?: "bitesize-registry.default.svc.cluster.local:5000"
   }
+
+  public static normalizeName(String name) {
+    name.replaceAll("-","_")
+  }
 }
