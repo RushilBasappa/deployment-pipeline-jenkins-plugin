@@ -24,8 +24,10 @@ class KubeDeploymentHandler extends KubeResourceHandler {
         svc.name = contents.metadata.name
         svc.namespace= contents.metadata.namespace
         svc.replicas = contents.spec.replicas
-        svc.updated_replicas = contents.status.updatedReplicas
-        svc.available_replicas = contents.status.availableReplicas
+        if (contents.status) {
+            svc.updated_replicas = contents.status?.updatedReplicas ?: 0
+            svc.available_replicas = contents.status?.availableReplicas ?: 0
+        }
 
         LinkedHashMap container = contents.spec?.template?.spec?.containers[0]
 

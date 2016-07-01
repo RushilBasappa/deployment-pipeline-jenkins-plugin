@@ -38,18 +38,16 @@ class KubeResourceHandler implements Comparable {
         return 0
     }
 
-    private def update() {
+    def update() {
         LinkedHashMap m = kubeSpec()        
         def f = writeSpecFile m        
-        client.apply f
-        
+        client.apply f    
     }
 
-    private def create() {
+    def create() {
         def m = kubeSpec()
         def f = writeSpecFile m
-        def r = client.create f
-        r
+        client.create f
     }
 
     private String writeSpecFile(LinkedHashMap contents) {

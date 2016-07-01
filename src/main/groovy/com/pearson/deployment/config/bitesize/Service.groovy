@@ -66,13 +66,23 @@ class Service {
         this.httpsBackend ? "true" : "false"
     }
 
-    void setEnvVariables(LinkedHashMap kv) {
-        env = []
-        kv.each {
+    // void setEnvVariables(LinkedHashMap kv) {
+    //     env = []
+    //     kv.each {
+    //         if (it.value) {
+    //             env << new EnvVar(name: it.name, value: it.value)
+    //         }
+    //     }
+    // }
+
+    void setEnvVariables(List<Map> e) {
+        def vars = []
+        e.each {
             if (it.value) {
-                env << new EnvVar(name: it.name, value: it.value)
+                vars << new EnvVar(name: it.name, value: it.value)
             }
         }
+        this.env = vars
     }
 
 }

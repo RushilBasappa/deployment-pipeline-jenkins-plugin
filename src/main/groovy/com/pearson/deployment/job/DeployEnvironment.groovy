@@ -4,9 +4,13 @@ import hudson.FilePath
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
 import hudson.remoting.VirtualChannel
+import hudson.Launcher
 
 import hudson.FilePath
 import hudson.FilePath.FileCallable
+
+import hudson.plugins.copyartifact.CopyArtifact
+import hudson.plugins.copyartifact.WorkspaceSelector
 
 import com.pearson.deployment.*
 import com.pearson.deployment.kubernetes.*
@@ -22,27 +26,24 @@ class DeployEnvironment implements Serializable {
   private EnvironmentConfig envConfig
   private LinkedHashMap definition
   private BuildListener listener
+  private Launcher launcher
   private OutputStream log
   private EnvironmentsBitesize bsize
+  private String filename
   Environment environment
 
-  // DeployEnvironment(AbstractBuild build, BuildListener listener, String filename, String envname) {
-  //   this.build = build
-  //   this.listener = listener
-  //   FilePath fp = new FilePath(build.getWorkspace(), filename)
-  //   String contents = fp.readToString()
-
-  //   this.log = listener.getLogger()
-
-  //   envConfig = new EnvironmentConfig(contents, true)
-  //   definition = envConfig.getEnvironment(envname)
-  // }
-
-  DeployEnvironment(AbstractBuild build, BuildListener listener, String filename, String envname) {
+  DeployEnvironment(AbstractBuild build, Launcher launcher, BuildListener listener, String filename, String envname) {
     this.build = build
     this.listener = listener
+    this.launcher = launcher
     this.log = listener.getLogger()
-    this.bsize = getBsize()
+    this.filename = filename
+
+    try {
+      this.bsize = getBsize()
+    } catch (all) {
+      this.bsize = null
+    } 
 
     this.environment = bsize?.config?.environments?.find {
       it.name == envname
@@ -53,7 +54,9 @@ class DeployEnvironment implements Serializable {
     if (this.bsize != null) {
       return this.bsize
     }
-    FilePath fp = new FilePath(workspace(), this.filename)
+
+    FilePath fp = new FilePath(this.build.workspace, this.filename)
+
     InputStream stream = fp.act(new FileCallable<InputStream>() {
       private static final long serialVersionUID = 1L
             
@@ -71,15 +74,9 @@ class DeployEnvironment implements Serializable {
   }
 
   def deploy() {
-    environment.services.each { 
+    environment?.services.each { 
       deployService(it)
     }
-    // for (def i = 0; i < definition.services?.size(); i++ ) {
-    //   def svc = definition.services[i]
-    //   if (svc.type == null) {
-    //     deployService(svc)
-    //   }
-    // }
   }
 
   private def deployService(Service svc) {
@@ -88,19 +85,20 @@ class DeployEnvironment implements Serializable {
     if (version == null || version == "" || version == "latest") {
       return
     }
-    svc.project = project()
+    svc.project   = project()
     svc.namespace = environment.namespace
+    svc.version   = version
 
     def deployment = new KubeDeploymentHandler(svc, log)
 
     def existing = deployment.getHandler(svc.name)
 
     if (!existing) {
-      log.println "MUST CREATE DEPLOYMENT FOR ${svc.name}:${svc.version}"
+      log.println "MUST CREATE DEPLOYMENT FOR ${svc.name}:${version}"
       deployment.create()
       watchDeploy(deployment)
     } else if (!existing.compareTo(deployment)) {
-      log.println "MUST UPDATE DEPLOYMENT FOR ${svc.name}:${svc.version}"
+      log.println "MUST UPDATE DEPLOYMENT FOR ${svc.name}:${version}"
       deployment.update()
       watchDeploy(deployment)
     }
