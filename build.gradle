@@ -53,6 +53,7 @@ dependencies {
   compile 'org.jenkins-ci.plugins:job-dsl:1.46@jar'
   compile 'org.jenkins-ci.plugins:job-dsl-core:1.46@jar'
   compile 'org.jenkins-ci.plugins:copyartifact:1.38@jar'
+  compile 'org.json:json:20160212'
   optionalJenkinsPlugins 'org.jenkins-ci.plugins:job-dsl:1.46@jar'
   jenkinsPlugins 'org.jenkins-ci.plugins:copyartifact:1.38@jar'
 
