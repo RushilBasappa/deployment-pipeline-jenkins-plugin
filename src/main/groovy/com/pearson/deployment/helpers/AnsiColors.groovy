@@ -1,4 +1,4 @@
-package com.pearson.deployment
+package com.pearson.deployment.helpers
 
 class AnsiColors {
   static reset = "\u001B[0m"

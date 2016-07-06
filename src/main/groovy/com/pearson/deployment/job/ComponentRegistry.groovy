@@ -105,7 +105,4 @@ class ComponentRegistry implements Serializable {
     }
 
   }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.pearson.deployment;
+package com.pearson.deployment.jobdsl;
 
 import hudson.Extension;
 import javaposse.jobdsl.dsl.Context;
@@ -8,6 +8,7 @@ import javaposse.jobdsl.plugin.ContextExtensionPoint;
 import javaposse.jobdsl.dsl.* ;
 // import javaposse.jobdsl.dsl.Context
 
+// DOES NOT WORK
 
 import java.io.IOException;
 import java.util.logging.Level;

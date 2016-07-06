@@ -1,5 +1,7 @@
 package com.pearson.deployment
 
+import com.pearson.deployment.helpers.Helper
+
 import java.util.regex.*
 
 class Dockerfile implements Serializable {
@@ -12,7 +14,7 @@ class Dockerfile implements Serializable {
   Dockerfile(LinkedHashMap app) {
     // this.filename = filename
     this.app = app
-    this.docker_registry = System.getenv().DOCKER_REGISTRY ?: "bitesize-registry.default.svc.cluster.local:5000"
+    this.docker_registry = Helper.dockerRegistry()
     // writer = new File(this.filename)
 
     // writer << this.contents()

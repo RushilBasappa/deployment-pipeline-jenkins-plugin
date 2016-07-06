@@ -1,6 +1,6 @@
 package com.pearson.deployment.kubernetes
 
-import com.pearson.deployment.AnsiColors
+import org.yaml.snakeyaml.Yaml
 
 class KubeWrapper {
   String klass
@@ -17,15 +17,19 @@ class KubeWrapper {
     this.log = log
   }
 
-  def fetch(def name) {
-    exe("kubectl get ${klass} ${name} --namespace=${namespace} -o yaml")
+  LinkedHashMap fetch(def name) {
+    String result = exe("kubectl get ${klass} ${name} --namespace=${namespace} -o yaml")
+    Yaml yaml = new Yaml()
+    yaml.load(result)
   }
 
-  def create(def filename) {
+  def create(LinkedHashMap spec) {
+    String filename = writeSpecFile(spec)
     exe("kubectl create -f ${filename} --namespace=${namespace} --validate=false")
   }
 
-  def apply(def filename) {
+  def apply(LinkedHashMap spec) {
+    String filename = writeSpecFile(spec)
     exe("kubectl apply -f ${filename} --namespace=${namespace} --validate=false")
   }
 
@@ -36,7 +40,6 @@ class KubeWrapper {
     command.waitFor()
     def errOutput = command.err.text
     if (errOutput) {
-      // log.println("${AnsiColors.red}${errOutput}${AnsiColors.reset}")
       throw new Exception("Error executing '${cmd}': ${errOutput}")
     }
     return command.text
@@ -48,5 +51,21 @@ class KubeWrapper {
     commandArray[1] = "-c"
     commandArray[2] = cmd
     return commandArray
+  }
+
+  private String writeSpecFile(LinkedHashMap contents) {
+    Yaml yaml = new Yaml()
+    String output = yaml.dumpAsMap(contents)
+    String filename = resourceFilename(contents)
+    def writer = new File(filename)
+    writer.write output
+
+    return filename
+  }
+
+  private String resourceFilename(LinkedHashMap contents) {
+
+    def tmpDir = System.getProperty('java.io.tmpdir')
+    "${tmpDir}/${namespace}-${contents.Kind}-${contents.metadata.name}.yaml".toString()
   }
 }

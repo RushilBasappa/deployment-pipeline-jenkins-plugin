@@ -18,6 +18,8 @@ class ApplicationBuilder implements Serializable {
   def applications
   String configFile
 
+  // TODO: This should use serialized objects instead of old LinkedHashMap objects
+
   ApplicationBuilder(String configPath) {
     this.appDefinition = new ApplicationConfig(configPath)
     this.project = appDefinition.attributes.project

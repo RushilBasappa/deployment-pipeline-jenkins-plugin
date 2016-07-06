@@ -1,6 +1,7 @@
 package com.pearson.deployment.syspkg
 
 import hudson.remoting.Callable
+import com.pearson.deployment.helpers.*
 
 class GetCommandOutput implements Callable<String,IOException> {
   String cmd
@@ -10,7 +11,7 @@ class GetCommandOutput implements Callable<String,IOException> {
   }
 
   public String call() {
-    println "Executing something ${cmd}"
+    println "Executing ${cmd}"
     exe(cmd)
   }
 

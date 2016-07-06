@@ -2,6 +2,7 @@
 package com.pearson.deployment.syspkg
 
 import com.pearson.deployment.*
+import com.pearson.deployment.helpers.*
 
 class Deb extends SysCmd {
 

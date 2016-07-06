@@ -48,8 +48,8 @@ jenkinsPlugin {
 
 dependencies {
   compile 'org.yaml:snakeyaml:1.16'
-  compile 'org.codehaus.groovy:groovy-all:2.4.6'
-  compile 'org.codehaus.groovy:groovy-backports-compat23:2.4.6'
+  compile 'org.codehaus.groovy:groovy-all:2.4.7'
+  compile 'org.codehaus.groovy:groovy-backports-compat23:2.4.7'
   compile 'org.jenkins-ci.plugins:job-dsl:1.46@jar'
   compile 'org.jenkins-ci.plugins:job-dsl-core:1.46@jar'
   compile 'org.jenkins-ci.plugins:copyartifact:1.38@jar'

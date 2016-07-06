@@ -105,30 +105,27 @@ environments:
 
     def "valid config" () {
         when:
-        def stream = new ByteArrayInputStream(e.getBytes("UTF-8"))
-        def cfg = new EnvironmentsBitesize(stream, System.out)
+        def cfg = EnvironmentsBitesize.readConfigFromString(e)
         then:
-        cfg.config.project == "sample"
-        cfg.config.environments.size() == 1
-        cfg.config.environments[0].services[0].port == 80
-        cfg.config.environments[0].services[0].application == 'myservice'
-        cfg.config.environments[0].services[0].ssl == true
+        cfg.project == "sample"
+        cfg.environments.size() == 1
+        cfg.environments[0].services[0].port == 80
+        cfg.environments[0].services[0].application == 'myservice'
+        cfg.environments[0].services[0].ssl == true
 
     }
 
     def "invalid config" () {
         when:
-        def stream = new ByteArrayInputStream(eInvalid.getBytes("UTF-8"))
-        def cfg = new EnvironmentsBitesize(stream)
+        def cfg = EnvironmentsBitesize.readConfigFromString(eInvalid)
         then:
         ConstructorException ex = thrown()
     }
 
     def "sample app test" () {
         when:
-        def stream = new ByteArrayInputStream(eSampleApp.getBytes("UTF-8"))
-        def cfg = new EnvironmentsBitesize(stream, System.out)
+        def cfg = EnvironmentsBitesize.readConfigFromString(eSampleApp)
         then:
-        cfg.config.project == "example"
+        cfg.project == "example"
     }
 }

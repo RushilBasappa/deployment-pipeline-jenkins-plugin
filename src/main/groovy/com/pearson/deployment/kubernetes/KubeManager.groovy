@@ -2,9 +2,9 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 
-// KubeHandler is the main class managing
+// KubeManager is the main class managing
 // resources in the namespace
-class KubeHandler implements Serializable {
+class KubeManager implements Serializable {
     Service svc // config.service object as serialized from environments.bitesize
     KubeIngressHandler ingress
     KubeDeploymentHandler deployment
@@ -12,7 +12,7 @@ class KubeHandler implements Serializable {
     KubeThirdpartyHandler thirdparty
     private OutputStream log
 
-    KubeHandler(Service svc, OutputStream log=System.out) {
+    KubeManager(Service svc, OutputStream log=System.out) {
         this.svc        = svc
         this.ingress    = new KubeIngressHandler(svc, log)
         this.deployment = new KubeDeploymentHandler(svc, log)

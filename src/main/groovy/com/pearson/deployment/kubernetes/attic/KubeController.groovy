@@ -1,6 +1,5 @@
 package com.pearson.deployment.kubernetes
 
-
 class KubeController extends KubeResource {
   KubeController(def namespace, def config, def logger=null) {
     super('rc', namespace, config, logger)
