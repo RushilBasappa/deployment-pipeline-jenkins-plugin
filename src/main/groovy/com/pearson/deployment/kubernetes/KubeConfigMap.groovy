@@ -3,10 +3,15 @@ package com.pearson.deployment.kubernetes
 import com.pearson.deployment.helpers.Helper
 
 class KubeConfigMap extends KubeResource {
-  KubeConfigMap(def namespace, def c, def type) {
+
+  String type
+  String name
+
+  KubeConfigMap(def namespace, def c, String type) {
     super('configmap', namespace, c)
-    this.helper = new Helper()
+    this.type = type
   }
+
   def compareTo(def other) {
     def this_app = this.config.name
     def other_app = other.config.name
@@ -21,11 +26,12 @@ class KubeConfigMap extends KubeResource {
     }
 
     if (type != null) {
-      def name = svc.name + '_' + type
+      this.name = svc.name + '_' + type
     } else {
-      def name = svc.name
+      this.name = svc.name
       type = 'env'
     }
+
     [
       "apiVersion": "v1",
       "kind": "ConfigMap",
@@ -33,11 +39,10 @@ class KubeConfigMap extends KubeResource {
         "name": name,
         "labels": [
           "creator": "pipeline",
-          "name": name,
-          "application": image_name
+          "name": name
         ]
       ],
-      "data": helper.yamlToJson(svc."${type}" ?: '')
+      "data": Helper.yamlToJson(svc."${type}".toString() ?: '')
     ]
   }
 

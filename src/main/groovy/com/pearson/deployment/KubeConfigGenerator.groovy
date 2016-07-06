@@ -63,12 +63,12 @@ class KubeConfigGenerator {
           def ingress = new KubeIngress(config.namespace, service)
           ingress.createOrUpdate()
         }
-       if (service.secrets != null) {
-          def secretsmap = new KubeConfigMap(config.namespace, service, secrets)
+        if (service.secrets != null) {
+          def secretsmap = new KubeConfigMap(config.namespace, service, 'secrets')
           secretsmap.createOrUpdate()
         }
-       if (service.keyvalue != null) {
-          def kvmap = new KubeConfigMap(config.namespace, service, kv)
+        if (service.keyvalue != null) {
+          def kvmap = new KubeConfigMap(config.namespace, service, 'keyvalue')
           kvmap.createOrUpdate()
         }
       }

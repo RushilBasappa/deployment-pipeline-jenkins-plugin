@@ -10,8 +10,8 @@ class Helper implements Serializable {
     env.get('DOCKER_REGISTRY') ?: "bitesize-registry.default.svc.cluster.local:5000"
   }
 
-  def yamlToJson (String y) {
-    Yaml yaml= new Yaml();
+  public static String yamlToJson(String y) {
+    Yaml yaml = new Yaml();
     Object obj = yaml.load(y);
 
     try {
