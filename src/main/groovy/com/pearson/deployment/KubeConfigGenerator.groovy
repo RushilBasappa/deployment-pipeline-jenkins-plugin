@@ -16,7 +16,7 @@ class KubeConfigGenerator {
   private SecureRandom random
 
   KubeConfigGenerator(String project, LinkedHashMap cfg) {
-    this.config   = cfg
+    this.config  = cfg
     this.project = project
     this.docker_registry = System.getenv().DOCKER_REGISTRY ?: "bitesize-registry.default.svc.cluster.local:5000"
     this.random = new SecureRandom()

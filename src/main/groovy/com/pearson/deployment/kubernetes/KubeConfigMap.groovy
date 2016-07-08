@@ -1,7 +1,5 @@
 package com.pearson.deployment.kubernetes
 
-import com.pearson.deployment.helpers.Helper
-
 class KubeConfigMap extends KubeResource {
 
   String type
@@ -26,10 +24,15 @@ class KubeConfigMap extends KubeResource {
     }
 
     if (type != null) {
-      this.name = svc.name + '_' + type
+      this.name = svc.name + '-' + type
     } else {
       this.name = svc.name
       type = 'env'
+    }
+
+    def j = [:]
+    svc."${type}".each {
+      j[it.name] = it.value
     }
 
     [
@@ -37,12 +40,13 @@ class KubeConfigMap extends KubeResource {
       "kind": "ConfigMap",
       "metadata" : [
         "name": name,
+        "namespace": namespace,
         "labels": [
           "creator": "pipeline",
           "name": name
         ]
       ],
-      "data": Helper.yamlToJson(svc."${type}".toString() ?: '')
+      "data": j
     ]
   }
 
