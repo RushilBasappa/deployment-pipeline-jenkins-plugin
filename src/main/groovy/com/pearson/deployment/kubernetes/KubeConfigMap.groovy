@@ -11,9 +11,11 @@ class KubeConfigMap extends KubeResource {
   }
 
   def compareTo(def other) {
-    def this_app = this.config.name
-    def other_app = other.config.name
-    // Not sure if we can compare values yet
+    def this_name = this.config.name + '-' + this.type
+    def other_name = other.config.name + '-' + this.type
+
+    (this_name == other_name ) &&
+    (this.config."${type}" == other.config."${type}")
   }
 
   def configToSpec(def s) {
