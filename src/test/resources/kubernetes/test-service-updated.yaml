@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    creator: pipeline
+    name: test
+  name: test
+  namespace: sample-app-dev
+spec:
+  clusterIP: 1.1.1.1
+  ports:
+  - name: tcp-port
+    port: 81
+    protocol: TCP
+    targetPort: 81
+  selector:
+    name: test

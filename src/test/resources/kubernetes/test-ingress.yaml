@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    creator: pipeline
+    httpsBackend: "false"
+    httpsOnly: "false"
+    name: test
+    ssl: "false"
+  name: test
+  namespace: sample-app-dev
+spec:
+  rules:
+  - host: test.pearson.com
+    http:
+      paths:
+      - backend:
+          serviceName: test
+          servicePort: 81
+        path: /
+status:
+  loadBalancer: {}

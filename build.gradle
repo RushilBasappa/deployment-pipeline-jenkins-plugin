@@ -16,6 +16,8 @@ buildscript {
 }
 
 apply plugin: 'org.jenkins-ci.jpi'
+apply plugin: "jacoco"
+
 // apply plugin: 'eu.appsatori.fatjar'
 // apply plugin: 'jacoco'
 // apply plugin: 'codenarc'
@@ -44,6 +46,14 @@ jenkinsPlugin {
       email 'simas.cepaitis@snc.lt'
     }
   }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        html.destination "${buildDir}/reports/coverage"
+    }
 }
 
 dependencies {

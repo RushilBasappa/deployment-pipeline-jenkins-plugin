@@ -1,8 +1,10 @@
 package com.pearson.deployment.job
 
 import spock.lang.*
+import spock.lang.MockingApi.*
 import groovy.mock.interceptor.MockFor
 import org.mockito.*
+import org.mockito.Mockito
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
@@ -19,6 +21,7 @@ class ServiceManageSpec extends Specification {
     @Rule final TemporaryFolder configDir = new TemporaryFolder()
 
     ServiceManage manager
+    KubeAPI client
 
     def setup() {
       def envConfig = """
@@ -38,11 +41,12 @@ class ServiceManageSpec extends Specification {
       AbstractBuild build = Mockito.mock(AbstractBuild.class)
       BuildListener listener = Mockito.mock(BuildListener.class)
       Mockito.when(listener.getLogger()).thenReturn(System.out)
-      
-      ServiceManage spied = new ServiceManage(build, listener, 'environments.bitesize')
-      manager = Mockito.spy(spied)                 
-      manager.config = EnvironmentsBitesize.readConfigFromString(envConfig)
 
+      client = new FakeKubeWrapper('sample-app-dev')
+
+      manager = new ServiceManage(build, listener, 'environments.bitesize')
+      manager.setCloudClient(FakeKubeWrapper.class)
+      manager.config = EnvironmentsBitesize.readConfigFromString(envConfig)
     }
 
     def "Basic service manage" () {
@@ -53,7 +57,7 @@ class ServiceManageSpec extends Specification {
     }
 
     def "Service change settings" () {
-      given:
+      given: "port is changed in environments.bitesize"
       def c = """
         project: sample
         environments:
@@ -68,15 +72,15 @@ class ServiceManageSpec extends Specification {
               external_url: www.google.co.uk
               port: 81
       """
+      manager.run()
       manager.config = EnvironmentsBitesize.readConfigFromString(c)
 
-      def serviceWrap = new KubeWrapper('service', 'sample-app-dev')
-      def deploymentWrap = new KubeWrapper('deployment', 'sample-app-dev')
-      when:
+      when: "service-manage runs"
       manager.run()
-      def svc = serviceWrap.fetch('myservice')
-      def h = new KubeServiceHandler(svc)
-      then:
+      then: "service port is updated"
+      def environmentManager = manager.getEnvironmentManager('sample-app-dev')
+      KubeServiceManager m = environmentManager.getService('myservice')
+      def h = m.service.getHandler('myservice')
       h.svc.port == 81
     }
 

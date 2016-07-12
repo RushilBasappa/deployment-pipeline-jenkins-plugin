@@ -8,44 +8,43 @@ import org.yaml.snakeyaml.Yaml
 //   implements create, update resources
 //   uses kubectl (KubeWrapper) to action against cluster
 
-class KubeResourceHandler implements Comparable {
+class KubeResourceHandler {
   Service svc
-  KubeWrapper client
-  protected String handlerType = "pod"
+  KubeAPI client
+  protected String kind = "pod"
   protected OutputStream log
 
-  KubeResourceHandler(Service svc, OutputStream log=System.out) {
+  KubeResourceHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
     this.svc = svc
     this.log = log
-    this.client = new KubeWrapper(handlerType, svc.namespace)
+    this.client = client
   }
 
   KubeResourceHandler() {
+    this.svc = new Service()
+    this.log = System.out
   }
 
   def createOrUpdate() {
     try {
       def existing = getHandler(svc.name)
-      if (existing.compareTo(this)) {
-        log.println "... > updating ${svc.namespace}/${handlerType}/${svc.name}"
+      log.println existing
+      
+      if (existing != this) {
+        log.println "... > updating ${svc.namespace}/${kind}/${svc.name}"
         update()
       }
     } catch (ResourceNotFoundException e) {
-      log.println("... > creating ${svc.namespace}/${handlerType}/${svc.name} ")
+      log.println("... > creating ${svc.namespace}/${kind}/${svc.name} ")
       create()
     }
   }
 
-  int compareTo(def other) {
-    // implemented in subclasses
-    return 0
-  }
-
   def update() {          
-    client.apply kubeSpec()
+    client.apply kind, resource()
   }
 
   def create() {
-    client.create kubeSpec()
+    client.create kind, resource()
   }
 }

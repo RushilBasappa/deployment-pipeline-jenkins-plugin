@@ -2,3 +2,4 @@ build/
 gradle/
 work/
 .gradle
+.DS_Store

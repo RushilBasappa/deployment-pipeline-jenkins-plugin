@@ -38,27 +38,28 @@ class Service {
   }
 
   public void setSslString(String val) {
-    this.ssl = (val == "true")
+    ssl = val.toBoolean()
   }
 
   public String getSslString() {
-    this.ssl ? "true" : "false"
+    String.valueOf ssl
   }
 
   public void setHttpsOnlyString(String val) {
-    this.httpsOnly = (val == "true")
+    httpsOnly = val.toBoolean()
   }
 
   public String getHttpsOnlyString() {
-    this.httpsOnly ? "true" : "false"
+    String.valueOf httpsOnly
+   
   }
 
   public void setHttpsBackendString(String val) {
-    this.httpsBackend = (val == "true")
+    httpsBackend = val.toBoolean()
   }
 
   public String getHttpsBackendString() {
-    this.httpsBackend ? "true" : "false"
+    String.valueOf httpsBackend
   }
 
   void setEnvVariables(List<Map> e) {

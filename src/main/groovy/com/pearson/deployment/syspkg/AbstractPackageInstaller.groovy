@@ -1,8 +1,12 @@
 package com.pearson.deployment.syspkg
 
+import java.util.concurrent.ExecutionException
+
 import hudson.Launcher
+import hudson.Launcher.ProcStarter
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
+import hudson.Proc
 
 import com.pearson.deployment.config.bitesize.BuildDependency
 
@@ -25,9 +29,21 @@ public abstract class AbstractPackageInstaller {
 
   abstract void install()
 
-  def exe(String cmd, OutputStream logger=this.log) {
+  String exe(String cmd, OutputStream logger=this.log) {
     log.println("Executing ${cmd}")
-    launcher.launch(cmd, build.getEnvVars(), logger, build.workspace)
+    ProcStarter procStarter = launcher.launch().cmds(cmd)
+
+    Proc proc = procStarter.start()
+
+    // Proc proc = launcher.launch(cmd, build.getEnvVars(), logger, build.workspace)
+
+    int exitCode = proc.join()
+
+    if (exitCode != 0) {
+      throw new ExecutionException("Executing ${cmd} failed")
+    }
+
+    return logger.toString()
   }
 
   abstract class Package {

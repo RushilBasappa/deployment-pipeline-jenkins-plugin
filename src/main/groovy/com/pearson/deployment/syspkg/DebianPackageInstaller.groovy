@@ -21,7 +21,7 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
     if (dependency.location != null) {
       pkg.installFromLocation(dependency.location)
     } else {
-      repository = new Repository()
+      Repository repository = new Repository()
       repository.addKey()
       repository.add()
       pkg.install()
@@ -44,11 +44,7 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
       } 
 
       String query = version ? "${name}=${version}" : name  
-      Proc proc = exe("sudo apt-get install -q -y ${query}")
-      int exitCode = proc.join()
-      if (exitCode != 1) {
-        throw new Exception("Debian install failed")
-      }
+      exe("sudo apt-get install -q -y ${query}")
     }
 
     void installFromLocation(String location) {
@@ -69,7 +65,7 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
 
     boolean isInstalled() {
       OutputStream stream = new ByteArrayOutputStream()
-      exe("dpkg-query --show -f='${Version}' ${name}", stream)
+      exe("dpkg-query --show -f='${version}' ${name}", stream)
       String installedVersion = stream.toString("UTF-8")
       
       if (!version || version == installedVersion) {
@@ -89,10 +85,16 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
     }
 
     void addKey() {
-      exe "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${repoKey}"
+      if (repoKey) {
+        exe "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ${repoKey}"
+      }
     }
 
     void add() {
+      if (!repo) {
+        return
+      }
+
       if (directRepoString()) {
         exe "sudo add-apt-repository ${repo}"
       } else {

@@ -28,6 +28,10 @@ class ServiceManage implements Serializable {
   private String filename
   private SecureRandom random
   private OutputStream log
+  private Map<String, KubeEnvironmentManager> environmentManagers
+
+  // need to move this to factory 
+  private def cloudClientClass = KubeWrapper.class
 
   ServiceManage(AbstractBuild build, BuildListener listener, String filename) {
     this.build = build
@@ -36,6 +40,7 @@ class ServiceManage implements Serializable {
     this.log = listener.getLogger()
     this.random = new SecureRandom()
     this.filename = filename
+    this.environmentManagers = new LinkedHashMap()
 
     FilePath fp = new FilePath(build.workspace, filename)
     try {
@@ -48,20 +53,26 @@ class ServiceManage implements Serializable {
   def run() {
     config?.environments?.each {
       log.println "Configuring environment ${it.name}"
-      manage(it)
+      KubeAPI client = getKubeAPI(it.namespace)
+      KubeEnvironmentManager envManager = new KubeEnvironmentManager(client, config.project, it, log)
+      environmentManagers[it.namespace] = envManager
+
+      envManager.manage()
     }
   }
 
-  private def manage(Environment environment) {
-    environment.services?.each { service ->
-      service.project = project()
-      service.namespace = environment.namespace
+  KubeEnvironmentManager getEnvironmentManager(String name) {
+    return environmentManagers.get(name)
+  }
 
-      def kube = new KubeManager(service, log)
-      def ch = kube.manage()
-      changed = ch ?: changed
-    }
-    log.println "Changed: ${changed}"
+  private KubeAPI getKubeAPI(String namespace) {
+    KubeAPI api = this.cloudClientClass.newInstance()
+    api.setNamespace(namespace)
+    return api
+  }
+
+  def setCloudClient(def klass) {
+    this.cloudClientClass = klass
   }
 
   String project() {

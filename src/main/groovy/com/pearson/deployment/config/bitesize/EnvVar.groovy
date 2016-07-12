@@ -1,6 +1,13 @@
 package com.pearson.deployment.config.bitesize
 
-class EnvVar {
-    String name
-    String value
+class EnvVar implements Comparable {
+  String name
+  String value
+
+  int compareTo(def other) {
+    if (name == other.name && value == other.value) {
+      return 0
+    }
+    return 1
+  }
 }

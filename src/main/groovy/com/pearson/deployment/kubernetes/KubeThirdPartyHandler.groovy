@@ -5,50 +5,55 @@ import com.pearson.deployment.config.bitesize.Service
 import org.yaml.snakeyaml.Yaml
 
 class KubeThirdpartyHandler extends KubeResourceHandler {
-  KubeThirdpartyHandler(Service svc, OutputStream log=System.out) {
-    super(svc, log)
-    this.handlerType = 'thirdpartyresources'
-    this.client = new KubeWrapper(handlerType, svc.namespace)
+  KubeThirdpartyHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
+    super(client, svc, log)
+    this.kind = 'thirdpartyresource'
   }
 
-  KubeThirdpartyHandler(LinkedHashMap resource, OutputStream log=System.out) {
-    this.handlerType = 'thirdpartyresources'
-    this.log = log
+  KubeThirdpartyHandler(KubeAPI client, LinkedHashMap resource, OutputStream log=System.out) {
+    super(client, new Service(), log)
+    this.kind = 'thirdpartyresource'
 
-    svc = new Service()
     svc.name = resource.metadata.name
-    svc.namespace = resource.metadata.namespace
+    // svc.namespace = resource.metadata.namespace
     svc.template_filename = resource.metadata.labels?.template_filename
     svc.parameter_filename = resource.metadata.labels?.parameter_filename
     svc.stack_name = resource.metadata.labels?.stack_name
     svc.version = resource.metadata.labels?.version
     svc.type = resource.metadata.labels?.type
-    this.client = new KubeWrapper(handlerType, svc.namespace)
   }
 
-  int compareTo(KubeThirdpartyHandler other) {
+  @Override
+  boolean equals(Object obj) {
+    if (obj == null) {
+      return false
+    }
+
+    if (!KubeThirdpartyHandler.class.isAssignableFrom(obj.getClass())) {
+      return false
+    }
+    
+    KubeThirdpartyHandler other = (KubeThirdpartyHandler)obj
+
     if ((svc.name == other.svc.name) &&
-    (svc.namespace == other.svc.namespace) &&
+    // (svc.namespace == other.svc.namespace) &&
     (svc.template_filename == other.svc.template_filename) &&
     (svc.parameter_filename == other.svc.parameter_filename) &&
+    (svc.stack_name == other.svc.stack_name) &&
     (svc.version == other.svc.version) &&
     (svc.type == other.svc.type)) {
-      return 0
-    } else { 
-      return 1
+      return true
     }
+
+    return false
   }
 
-  private KubeThirdpartyHandler getHandler(String name) {
-    try {
-      LinkedHashMap thirdparty = client.fetch(name)
-      return new KubeThirdpartyHandler(thirdparty, log)
-    } catch (all) {
-      throw new ResourceNotFoundException("ThirdPartyResource ${name} not found")
-    }
+  private KubeThirdpartyHandler getHandler(String name) {    
+    LinkedHashMap thirdparty = client.fetch(kind, name)
+    new KubeThirdpartyHandler(client, thirdparty, log)
   }
 
-  private LinkedHashMap kuberesource() {
+  private LinkedHashMap resource() {
     [
       "apiVersion": "extensions/v1beta1",
       "kind": "ThirdPartyResource",

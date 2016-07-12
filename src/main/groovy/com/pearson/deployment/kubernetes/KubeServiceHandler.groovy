@@ -4,45 +4,48 @@ import com.pearson.deployment.config.bitesize.Service
 
 import org.yaml.snakeyaml.Yaml
 
-class KubeServiceHandler extends KubeResourceHandler implements Comparable {
+class KubeServiceHandler extends KubeResourceHandler {
 
-  KubeServiceHandler(Service svc, OutputStream log=System.out) {
-    super(svc, log)
-    this.handlerType = 'service'
-    this.client = new KubeWrapper(handlerType, svc.namespace)
+  KubeServiceHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
+    super(client, svc, log)
+    this.kind = 'service'
   }
 
-  KubeServiceHandler(LinkedHashMap resource, OutputStream log=System.out) {
-    this.handlerType = 'service'
-    this.log = log
-
-    svc = new Service()
+  KubeServiceHandler(KubeAPI client, LinkedHashMap resource, OutputStream log=System.out) {
+    super(client, new Service(), log)
+    this.kind = 'service'
+  
     svc.name = resource.metadata.name
     svc.namespace = resource.metadata.namespace
     svc.port = resource.spec.ports[0].port
-    this.client = new KubeWrapper(handlerType, svc.namespace)
   }
 
-  int compareTo(KubeServiceHandler other) {
-    if ((svc.name == other.svc.name) &&
-    (svc.namespace == other.svc.namespace) &&
-    (svc.port == other.svc.port)) {
-      return 0
-    } else {
-      return 1
+  @Override
+  boolean equals(Object obj) {
+    if (obj == null) {
+      return false
     }
+
+    if (!KubeServiceHandler.class.isAssignableFrom(obj.getClass())) {
+      return false
+    }
+    
+    KubeServiceHandler other = (KubeServiceHandler)obj
+
+    if ((svc.name == other.svc.name) &&
+      (svc.namespace == other.svc.namespace) &&
+      (svc.port == other.svc.port)) {
+      return true
+    }
+    return false
   }
 
   private KubeServiceHandler getHandler(String name) {
-    try {
-      LinkedHashMap service = client.fetch(name)
-      return new KubeServiceHandler(service, log)
-    } catch (all) {
-      throw new ResourceNotFoundException("Service ${name} not found")
-    }
+    LinkedHashMap service = client.fetch(kind, name)
+    new KubeServiceHandler(client, service, log)
   }
 
-  private LinkedHashMap kubeSpec() {
+  private LinkedHashMap resource() {
     [
       "apiVersion": "v1",
       "kind": "Service",

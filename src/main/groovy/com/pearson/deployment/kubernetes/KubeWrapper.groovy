@@ -2,38 +2,44 @@ package com.pearson.deployment.kubernetes
 
 import org.yaml.snakeyaml.Yaml
 
-class KubeWrapper {
-  String klass
+class KubeWrapper implements KubeAPI {
   String namespace
   OutputStream log
 
-  KubeWrapper(String klass, String namespace) {
-    this.klass = klass
+  KubeWrapper(String namespace, OutputStream log=System.out) {
     this.namespace = namespace
-    this.log = System.out
+    this.log = log
   }
 
   def setLog(OutputStream log) {
     this.log = log
   }
 
-  LinkedHashMap fetch(def name) {
-    String result = exe("kubectl get ${klass} ${name} --namespace=${namespace} -o yaml")
-    Yaml yaml = new Yaml()
-    yaml.load(result)
+  LinkedHashMap fetch(String kind, String name) {
+    try {
+      String result = exe("kubectl get ${kind} ${name} --namespace=${namespace} -o yaml")
+      Yaml yaml = new Yaml()
+      yaml.load(result)
+    } catch (all) {
+      throw new ResourceNotFoundException("Cannot find ${kind} ${name}")
+    }
   }
 
-  def create(LinkedHashMap spec) {
-    String filename = writeSpecFile(spec)
+  void create(String kind, LinkedHashMap resource) {
+    String filename = writeSpecFile(resource)
     exe("kubectl create -f ${filename} --namespace=${namespace} --validate=false")
   }
 
-  def apply(LinkedHashMap spec) {
-    String filename = writeSpecFile(spec)
+  void apply(String kind, LinkedHashMap resource) {
+    String filename = writeSpecFile(resource)
     exe("kubectl apply -f ${filename} --namespace=${namespace} --validate=false")
   }
 
-  def exe(cmd) {
+  void setNamespace(String namespace) {
+    this.namespace = namespace
+  }
+
+  protected def exe(cmd) {
     Process command
     def c = appendShellPrefix(cmd)
     command = c.execute()

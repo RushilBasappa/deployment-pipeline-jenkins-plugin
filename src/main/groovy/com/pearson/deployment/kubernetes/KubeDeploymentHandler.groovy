@@ -7,16 +7,16 @@ import org.yaml.snakeyaml.Yaml
 
 class KubeDeploymentHandler extends KubeResourceHandler {
 
-  KubeDeploymentHandler(Service svc, OutputStream log) {
-    super(svc, log)
-    this.handlerType = 'deployment'
-    this.client = new KubeWrapper(handlerType, svc.namespace)
+  KubeDeploymentHandler(KubeAPI client, Service svc, OutputStream log) {
+    super(client, svc, log)
+    this.kind = 'deployment'
+    this.client = client
   }
 
   // Create deployment from kubectl yaml
-  KubeDeploymentHandler(LinkedHashMap resource, OutputStream log=System.out) {
-    this.log = log
-    this.handlerType = 'deployment'
+  KubeDeploymentHandler(KubeAPI client, LinkedHashMap resource, OutputStream log=System.out) {
+    super(client, new Service(), log)
+    this.kind = 'deployment'
 
     svc = new Service()
     svc.name = resource.metadata.name
@@ -35,32 +35,33 @@ class KubeDeploymentHandler extends KubeResourceHandler {
 
     svc.setEnvVariables(container.env)
 
-    this.client = new KubeWrapper(handlerType, svc.namespace)
   }
 
   private KubeDeploymentHandler getHandler(String name) {
-    try {
-      LinkedHashMap deployment = client.fetch(name)
-      return new KubeDeploymentHandler(deployment, log)
-    } catch (all) {
-      throw new ResourceNotFoundException("Deployment ${name} not found")
-    }
+    LinkedHashMap deployment = client.fetch(kind, name)
+    new KubeDeploymentHandler(client, deployment, log)
   }
 
-  int compareTo(KubeDeploymentHandler other) {
+  @Override
+  boolean equals(Object obj) {
+    if (obj == null) {
+      return false
+    }
+
+    if (!KubeDeploymentHandler.class.isAssignableFrom(obj.getClass())) {
+      return false
+    }
+
+    KubeDeploymentHandler other = (KubeDeploymentHandler)obj
+
     if ((svc.name == other.svc.name) &&
     (svc.application == other.svc.application) &&
     (svc.port == other.svc.port) &&
     (svc.replicas == other.svc.replicas) &&
     (svc.env == other.svc.env)) {
-      return 0
-    } else {
-      return 1
+      return true
     }
-  }
-
-  boolean differs(KubeDeploymentHandler other) {
-    return ! compareTo(other)
+    return false
   }
 
   String watch() {
@@ -95,7 +96,7 @@ class KubeDeploymentHandler extends KubeResourceHandler {
     return "latest"
   }
 
-  private LinkedHashMap kubeSpec() {
+  private LinkedHashMap resource() {
     String image = "${dockerImageName()}:${version()}".toString()
 
     [

@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+description: A specification for mysql
+kind: ThirdPartyResource
+metadata:
+    labels:
+        creator: pipeline
+        name: mysql-db.sample-app-dev.prsn.io
+        parameter_filename: mysql.parameter
+        stack_name: null-mysql-4te5c4dahc8ug
+        template_filename: mysql.template
+        type: mysql
+        version: "0.1"
+    name: mysql-db.sample-app-dev.prsn.io

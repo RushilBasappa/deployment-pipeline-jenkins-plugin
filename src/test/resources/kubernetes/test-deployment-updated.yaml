@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    application: sample-app
+    creator: pipeline
+    name: test
+    version: 1.1.2
+  name: test
+  namespace: sample-app-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: test
+  template:
+    metadata:
+      labels:
+        creator: pipeline
+        name: test
+    spec:
+      containers:
+      - env:
+        - name: NODE_ENV
+          value: production
+        - name: SOMETHING
+          value: new_value
+        - name: BOO
+          value: changed
+        - name: tos_url
+          value: nononono
+        image: bitesize-registry.default.svc.cluster.local:5000/example/sample-app:1.1.2
+        imagePullPolicy: Always
+        name: test
+        ports:
+        - containerPort: 80
+          protocol: TCP
