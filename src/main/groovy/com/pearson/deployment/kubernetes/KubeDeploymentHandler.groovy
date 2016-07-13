@@ -20,6 +20,7 @@ class KubeDeploymentHandler extends KubeResourceHandler {
 
     svc = new Service()
     svc.name = resource.metadata.name
+    svc.application = resource.metadata.labels?.application ?: svc.name
     svc.namespace= resource.metadata.namespace
     svc.replicas = resource.spec.replicas
     
