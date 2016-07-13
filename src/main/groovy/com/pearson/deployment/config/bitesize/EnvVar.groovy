@@ -1,13 +1,23 @@
 package com.pearson.deployment.config.bitesize
 
-class EnvVar implements Comparable {
+class EnvVar {
   String name
   String value
 
-  int compareTo(def other) {
-    if (name == other.name && value == other.value) {
-      return 0
+  boolean equals(Object obj) {
+
+    if (obj == null) {
+      return false
     }
-    return 1
+
+    if (!EnvVar.class.isAssignableFrom(obj.getClass())) {
+      return false
+    }
+
+    EnvVar other = (EnvVar)obj
+    if (name == other.name && value == other.value) {
+      return true
+    }
+    return false
   }
 }
