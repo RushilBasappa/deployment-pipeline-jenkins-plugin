@@ -83,5 +83,34 @@ class KubeDeploymentHandlerSpec extends Specification {
       ResourceNotFoundException ex = thrown()
       ex.message == "Cannot find deployment nonexisting"
   }
+
+  // Uncomment this if failing
+  // @Unroll
+  def "KubeDeploymentHandler comparison" () {
+    given:
+      handler.create()
+
+    when:
+      def newHandler = handler.getHandler('test')
+      newHandler.svc."${attribute}" = attr_value
+
+    then:
+      handler.equals(newHandler) == expected
+
+    where:
+      attribute     | attr_value                                          | expected
+      "name"        | "other"                                             | false
+      "name"        | "test"                                              | true
+      "application" | "test"                                              | false 
+      "application" | "sample-app"                                        | true
+      "port"        | 88                                                  | false
+      "port"        | 80                                                  | true
+      "replicas"    | 1                                                   | true
+      "replicas"    | 2                                                   | false
+      "env"         | [new EnvVar(name: "NODE_ENV", value: "production")] | true
+      "env"         | [new EnvVar(name: "NODE_ENV", value: "dev")]        | false
+      "env"         | [new EnvVar(name: "DIFFERENT", value: "dev")]       | false
+   
+  }
     
 }
