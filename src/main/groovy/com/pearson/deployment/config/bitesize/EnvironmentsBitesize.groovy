@@ -30,7 +30,11 @@ class EnvironmentsBitesize implements Serializable {
   }
 
   public Environment getEnvironment(String name) {
-    environments?.find{ it.name == name }
+    Environment ret = environments?.find{ it.name == name }
+    if (ret == null) {
+      throw new EnvironmentNotFoundException("Environment ${name} not found")
+    }
+    ret
   }
 
 } 

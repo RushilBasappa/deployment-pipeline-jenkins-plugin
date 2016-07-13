@@ -6,6 +6,6 @@ class BuildComponent implements Serializable {
   String os
   List<BuildDependency> dependencies
   BuildRepository repository
-  List<String,String> build
-  List<String,String> artifacts
+  List<? extends Map<String,String>> build
+  List<? extends Map<String,String>> artifacts
 } 

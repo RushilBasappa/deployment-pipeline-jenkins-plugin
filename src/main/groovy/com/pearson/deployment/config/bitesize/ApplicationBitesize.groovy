@@ -14,7 +14,7 @@ class ApplicationBitesize implements Serializable {
   String project
   List<Application> applications
 
-  EnvironmentsBitesize() {
+  ApplicationBitesize() {
     applications = []
     project      = ''
   }

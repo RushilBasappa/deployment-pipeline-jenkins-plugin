@@ -1,0 +1,31 @@
+project: example
+components:
+  - name: static-content
+    version: 1.1.2
+    os: linux
+    dependencies:
+      - type: gem-package
+        package: fpm
+    repository:
+      git: git@bitbucket.org:pearson-techops/sample-app.git
+      branch: master
+    build:
+      - shell: "rm -f *.deb"
+      - shell: fpm -s dir -t deb -n static-content -v 1.1.2 -C src --prefix /usr/share/nginx/html .
+      - shell: fpm -s dir -t deb -n different-dir -v 1.1.1 -C src --prefix /opt/www .
+    artifacts:
+      - location: "*.deb"
+  - name: another-artifact
+    version: 1.1.2
+    os: linux
+    dependencies:
+      - type: gem-package
+        package: fpm
+    repository:
+      git: git@bitbucket.org:pearson-techops/sample-app.git
+      branch: master
+    build:
+      - shell: "rm -rf *.deb"
+      - shell: fpm -s dir -t deb -n another-artifact -v 1.1.2 -C src --prefix /usr/share/nginx/html .
+    artifacts:
+      - location: "*.deb"
