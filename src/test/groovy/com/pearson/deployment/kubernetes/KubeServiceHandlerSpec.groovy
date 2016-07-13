@@ -78,4 +78,27 @@ class KubeServiceHandlerSpec extends Specification {
       ResourceNotFoundException ex = thrown()
       ex.message == "Cannot find service nonexisting"
   }
+
+  // Uncomment annotation if fails
+  // @Unroll
+  def "KubeServiceHandler comparison" () {
+   given:
+      handler.create()
+
+    when:
+      def newHandler = handler.getHandler('test')
+      newHandler.svc."${attribute}" = attr_value
+
+    then:
+      handler.equals(newHandler) == expected
+
+    where:
+      attribute     | attr_value            | expected
+      "name"        | "other"               | false
+      "name"        | "test"                | true
+      "namespace"   | "sample-app-prod"     | false
+      "namespace"   | "sample-app-dev"      | true
+      "port"         | 88                   | false
+      "port"         | 80                   | true
+  }
 }
