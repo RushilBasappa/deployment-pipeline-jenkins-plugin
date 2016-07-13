@@ -10,7 +10,6 @@ import hudson.FilePath
 
 import com.pearson.deployment.callable.WorkspaceReader
 
-
 class EnvironmentsBitesize implements Serializable {
   String project
   List<Environment> environments
