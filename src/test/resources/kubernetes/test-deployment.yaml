@@ -24,12 +24,6 @@ spec:
       - env:
         - name: NODE_ENV
           value: production
-        - name: SOMETHING
-          value: new_value
-        - name: BOO
-          value: ok
-        - name: tos_url
-          value: nononono
         image: bitesize-registry.default.svc.cluster.local:5000/example/sample-app:1.1.2
         imagePullPolicy: Always
         name: test
