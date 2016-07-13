@@ -84,4 +84,34 @@ class KubeThirdpartyHandlerSpec extends Specification {
       ResourceNotFoundException ex = thrown()
       ex.message == "Cannot find thirdpartyresource nonexisting"
   }
+
+  // Uncomment annotation if fails
+  // @Unroll
+  def "KubeThirdpartyHandler comparison" () {
+   given:
+      handler.create()
+
+    when:
+      def newHandler = handler.getHandler('mysql-db.sample-app-dev.prsn.io')
+      newHandler.svc."${attribute}" = attr_value
+
+    then:
+      handler.equals(newHandler) == expected
+
+    where:
+      attribute            | attr_value                        | expected
+      "name"               | "nosql-db.sample-app-dev.prsn.io" | false
+      "name"               | "mysql-db.sample-app-dev.prsn.io" | true
+      "template_filename"  | "nosql.template"                  | false
+      "template_filename"  | "mysql.template"                  | true
+      "parameter_filename" | "nosql.parameter"                 | false
+      "parameter_filename" | "mysql.parameter"                 | true
+      "stack_name"         | "neee-mysql-4te5c4dahc8ug"        | false
+      "stack_name"         | "null-mysql-4te5c4dahc8ug"        | true
+      "version"            | "0.2"                             | false
+      "version"            | "0.1"                             | true
+      "type"               | "nosql"                           | false
+      "type"               | "mysql"                           | true
+  
+  }
 }
