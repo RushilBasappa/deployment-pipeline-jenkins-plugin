@@ -93,4 +93,35 @@ class KubeIngressHandlerSpec extends Specification {
     ResourceNotFoundException ex = thrown()
     ex.message == "Cannot find ingress nonexisting"
   }
+
+  // Uncomment annotation if fails
+  // @Unroll
+  def "KubeIngressHandler comparison" () {
+   given:
+      handler.create()
+
+    when:
+      def newHandler = handler.getHandler('test')
+      newHandler.svc."${attribute}" = attr_value
+
+    then:
+      handler.equals(newHandler) == expected
+
+    where:
+      attribute     | attr_value            | expected
+      "name"        | "other"               | false
+      "name"        | "test"                | true
+      "namespace"   | "sample-app-prod"     | false
+      "namespace"   | "sample-app-dev"      | true
+      "external_url" | "test2.pearson.com"  | false
+      "external_url" | "test.pearson.com"   | true
+      "port"         | 88                   | false
+      "port"         | 81                   | true
+      "ssl"          | false                | true
+      "ssl"          | true                 | false
+      "httpsBackend" | false                | true
+      "httpsBackend" | true                 | false
+      "httpsOnly"    | false                | true
+      "httpsOnly"    | true                 | false
+  }
 } 
