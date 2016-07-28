@@ -1,7 +1,7 @@
 package com.pearson.deployment.syspkg
 
 import jenkins.util.*
-import hudson.remoting.Callable
+// import hudson.remoting.Callable
 
 
 class DebInfo extends SysCmd implements Serializable {

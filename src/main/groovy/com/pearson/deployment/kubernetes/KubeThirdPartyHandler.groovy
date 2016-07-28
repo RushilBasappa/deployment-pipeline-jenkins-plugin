@@ -2,7 +2,7 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 
-import org.yaml.snakeyaml.Yaml
+// import org.yaml.snakeyaml.Yaml
 
 class KubeThirdpartyHandler extends KubeResourceHandler {
   KubeThirdpartyHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
@@ -35,17 +35,13 @@ class KubeThirdpartyHandler extends KubeResourceHandler {
     
     KubeThirdpartyHandler other = (KubeThirdpartyHandler)obj
 
-    if ((svc.name == other.svc.name) &&
+    (svc.name == other.svc.name) &&
     // (svc.namespace == other.svc.namespace) &&
     (svc.template_filename == other.svc.template_filename) &&
     (svc.parameter_filename == other.svc.parameter_filename) &&
     (svc.stack_name == other.svc.stack_name) &&
     (svc.version == other.svc.version) &&
-    (svc.type == other.svc.type)) {
-      return true
-    }
-
-    return false
+    (svc.type == other.svc.type)
   }
 
   private KubeThirdpartyHandler getHandler(String name) {    

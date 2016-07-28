@@ -2,7 +2,7 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 
-import org.yaml.snakeyaml.Yaml
+// import org.yaml.snakeyaml.Yaml
 
 class KubeServiceHandler extends KubeResourceHandler {
 
@@ -32,12 +32,9 @@ class KubeServiceHandler extends KubeResourceHandler {
     
     KubeServiceHandler other = (KubeServiceHandler)obj
 
-    if ((svc.name == other.svc.name) &&
-      (svc.namespace == other.svc.namespace) &&
-      (svc.port == other.svc.port)) {
-      return true
-    }
-    return false
+    (svc.name == other.svc.name) &&
+    (svc.namespace == other.svc.namespace) &&
+    (svc.port == other.svc.port)
   }
 
   private KubeServiceHandler getHandler(String name) {

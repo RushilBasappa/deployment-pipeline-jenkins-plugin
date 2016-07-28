@@ -16,11 +16,8 @@ buildscript {
 }
 
 apply plugin: 'org.jenkins-ci.jpi'
-apply plugin: "jacoco"
-
-// apply plugin: 'eu.appsatori.fatjar'
-// apply plugin: 'jacoco'
-// apply plugin: 'codenarc'
+apply plugin: 'jacoco'
+apply plugin: 'codenarc'
 
 group = "org.jenkins-ci.plugins"
 version = "3.4.21-SNAPSHOT"    // Or whatever your version is.

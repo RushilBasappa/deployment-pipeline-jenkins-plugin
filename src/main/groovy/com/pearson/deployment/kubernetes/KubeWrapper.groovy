@@ -6,15 +6,15 @@ class KubeWrapper implements KubeAPI {
   String namespace
   OutputStream log
 
+  KubeWrapper() {  
+    this.namespace = 'default'  
+  }
+
   KubeWrapper(String namespace, OutputStream log=System.out) {
     this.namespace = namespace
     this.log = log
   }
-
-  def setLog(OutputStream log) {
-    this.log = log
-  }
-
+  
   LinkedHashMap fetch(String kind, String name) {
     try {
       String result = exe("kubectl get ${kind} ${name} --namespace=${namespace} -o yaml")

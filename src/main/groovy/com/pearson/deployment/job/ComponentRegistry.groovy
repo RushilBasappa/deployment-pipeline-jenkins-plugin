@@ -2,8 +2,8 @@ package com.pearson.deployment.job
 
 import hudson.model.*
 import jenkins.model.*
-import java.util.Properties
-import java.io.FileInputStream
+// import java.util.Properties
+// import java.io.FileInputStream
 
 import hudson.plugins.copyartifact.*
 // import hudson.model.AbstractBuild

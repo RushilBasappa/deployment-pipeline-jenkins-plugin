@@ -3,8 +3,6 @@ package com.pearson.deployment.kubernetes
 import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.helpers.Helper
 
-import org.yaml.snakeyaml.Yaml
-
 class KubeDeploymentHandler extends KubeResourceHandler {
 
   KubeDeploymentHandler(KubeAPI client, Service svc, OutputStream log) {
@@ -55,14 +53,11 @@ class KubeDeploymentHandler extends KubeResourceHandler {
 
     KubeDeploymentHandler other = (KubeDeploymentHandler)obj
 
-    if ((svc.name == other.svc.name) &&
+    (svc.name == other.svc.name) &&
     (svc.application == other.svc.application) &&
     (svc.port == other.svc.port) &&
     (svc.replicas == other.svc.replicas) &&
-    (svc.env == other.svc.env)) {
-      return true
-    }
-    return false
+    (svc.env == other.svc.env)
   }
 
   String watch() {

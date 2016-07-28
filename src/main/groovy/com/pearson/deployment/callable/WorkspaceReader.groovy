@@ -1,9 +1,9 @@
 package com.pearson.deployment.callable
 
-import java.io.InputStream
-import java.io.File
+// import java.io.InputStream
+// import java.io.File
 
-import hudson.FilePath
+// import hudson.FilePath
 import hudson.FilePath.FileCallable
 import hudson.remoting.VirtualChannel
 

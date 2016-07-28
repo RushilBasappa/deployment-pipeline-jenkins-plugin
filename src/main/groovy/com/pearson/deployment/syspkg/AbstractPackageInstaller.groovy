@@ -31,7 +31,7 @@ public abstract class AbstractPackageInstaller {
 
   String exe(String cmd, OutputStream logger=this.log) {
     log.println("Executing ${cmd}")
-    ProcStarter procStarter = launcher.launch().cmds(cmd)
+    ProcStarter procStarter = launcher.launch().cmdAsSingleString(cmd)
 
     Proc proc = procStarter.start()
 

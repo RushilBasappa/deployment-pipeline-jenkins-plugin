@@ -7,14 +7,14 @@ import java.util.regex.*
 class Dockerfile implements Serializable {
   String filename
   LinkedHashMap app
-  String docker_registry
+  String dockerRegistry
 
   private writer
 
   Dockerfile(LinkedHashMap app) {
     // this.filename = filename
     this.app = app
-    this.docker_registry = Helper.dockerRegistry()
+    this.dockerRegistry = Helper.dockerRegistry()
     // writer = new File(this.filename)
 
     // writer << this.contents()
@@ -31,7 +31,7 @@ class Dockerfile implements Serializable {
     }
 
     """\
-       FROM ${this.docker_registry}/baseimages/${app.runtime}
+       FROM ${this.dockerRegistry}/baseimages/${app.runtime}
        MAINTAINER Simas Cepaitis <simas.cepaitis@pearson.com>
        ADD ./deb /packages
        RUN dpkg -i ${dependencies}

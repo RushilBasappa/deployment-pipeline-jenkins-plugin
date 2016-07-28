@@ -29,6 +29,37 @@ class Service {
     this.application = this.application ?: this.name
   }
 
+
+  boolean equals(Object obj) {
+    if (obj == null) { 
+      return false
+    }
+
+    if (!Service.class.isAssignableFrom(obj.getClass())) {
+      return false
+    }
+
+    Service other = (Service)obj
+
+    (name == other.name) &&
+    (type == other.type) &&
+    (version == other.version) &&
+    (external_url == other.external_url) &&
+    (port == other.port) &&
+    (env == other.env) &&
+    (namespace == other.namespace) &&
+    (project == other.project) &&
+    (image == other.image) &&
+    (replicas == other.replicas) &&
+    (available_replicas == other.available_replicas) &&
+    (template_filename == other.template_filename) &&
+    (parameter_filename == other.parameter_filename) &&
+    (stack_name == other.stack_name) &&
+    (ssl == other.ssl) &&
+    (httpsOnly == other.httpsOnly) &&
+    (httpsBackend == other.httpsBackend)
+  }
+
   public void setApplication(String app) {
     this.application = app ? app : this.name
   }
@@ -38,7 +69,7 @@ class Service {
   }
 
   public void setSslString(String val) {
-    ssl = val.toBoolean()
+    ssl = val ? val.toBoolean() : false
   }
 
   public String getSslString() {
@@ -46,16 +77,15 @@ class Service {
   }
 
   public void setHttpsOnlyString(String val) {
-    httpsOnly = val.toBoolean()
+    httpsOnly = val ? val.toBoolean() : false
   }
 
   public String getHttpsOnlyString() {
-    String.valueOf httpsOnly
-   
+    String.valueOf httpsOnly   
   }
 
   public void setHttpsBackendString(String val) {
-    httpsBackend = val.toBoolean()
+    httpsBackend = val ? val.toBoolean() : false
   }
 
   public String getHttpsBackendString() {

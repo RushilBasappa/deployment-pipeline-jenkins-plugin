@@ -1,7 +1,10 @@
 package com.pearson.deployment.kubernetes
 
 class FakeKubeWrapper implements KubeAPI {
-   Map<String, Map> store = [
+  OutputStream log
+  String namespace
+
+  Map<String, Map> store = [
     "service" : new LinkedHashMap(),
     "ingress" : new LinkedHashMap(),
     "thirdpartyresource": new LinkedHashMap(),

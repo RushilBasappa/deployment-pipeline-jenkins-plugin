@@ -1,9 +1,9 @@
 package com.pearson.deployment.syspkg
 
-import java.lang.Process
+// import java.lang.Process
 
 import hudson.Launcher
-import hudson.Proc
+// import hudson.Proc
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
 
@@ -32,12 +32,7 @@ class GemPackageInstaller extends AbstractPackageInstaller {
     void install() {
       String  query = version ? "${name} -v ${version}" : name
 
-      Proc proc = exe "sudo gem install ${query}"
-      int exitCode = proc.join()
-
-      if (exitCode != 0) {
-        throw new Exception("Gem install failed")
-      }
+      exe "sudo gem install ${query}"
     }
   }
 }

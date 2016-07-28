@@ -2,7 +2,7 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 
-import org.yaml.snakeyaml.Yaml
+// import org.yaml.snakeyaml.Yaml
 
 // Parent class for all Resource Handlers
 //   implements create, update resources

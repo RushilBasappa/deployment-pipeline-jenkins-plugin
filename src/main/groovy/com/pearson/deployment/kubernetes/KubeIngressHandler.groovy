@@ -2,8 +2,6 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 
-import org.yaml.snakeyaml.Yaml
-
 class KubeIngressHandler extends KubeResourceHandler {
 
   KubeIngressHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
@@ -39,16 +37,13 @@ class KubeIngressHandler extends KubeResourceHandler {
     
     KubeIngressHandler other = (KubeIngressHandler)obj
 
-    if ((this.svc.name == other.svc.name) &&
+    (this.svc.name == other.svc.name) &&
     (this.svc.namespace == other.svc.namespace) &&
     (this.svc.external_url == other.svc.external_url) &&
     (this.svc.port == other.svc.port) &&
     (this.svc.ssl == other.svc.ssl) &&
     (this.svc.httpsBackend == other.svc.httpsBackend) &&
-    (this.svc.httpsOnly == other.svc.httpsOnly)) {
-      return true
-    }
-    return false
+    (this.svc.httpsOnly == other.svc.httpsOnly)
   }
 
   private KubeIngressHandler getHandler(String name) {

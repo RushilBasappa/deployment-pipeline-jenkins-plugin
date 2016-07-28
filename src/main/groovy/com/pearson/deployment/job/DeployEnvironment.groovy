@@ -1,23 +1,23 @@
 package com.pearson.deployment.job
 
-import hudson.FilePath
+// import hudson.FilePath
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
-import hudson.remoting.VirtualChannel
+// import hudson.remoting.VirtualChannel
 import hudson.Launcher
 
 import hudson.FilePath
-import hudson.FilePath.FileCallable
+// import hudson.FilePath.FileCallable
 
-import hudson.plugins.copyartifact.CopyArtifact
-import hudson.plugins.copyartifact.WorkspaceSelector
+// import hudson.plugins.copyartifact.CopyArtifact
+// import hudson.plugins.copyartifact.WorkspaceSelector
 
 import com.pearson.deployment.*
 import com.pearson.deployment.kubernetes.*
 import com.pearson.deployment.config.*
 import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.helpers.*
-import com.pearson.deployment.callable.WorkspaceReader
+// import com.pearson.deployment.callable.WorkspaceReader
 
 
 class DeployEnvironment implements Serializable {

@@ -1,7 +1,6 @@
 package com.pearson.deployment.callable
 
-import java.util.Properties
-import hudson.FilePath
+// import java.util.Properties
 
 import hudson.FilePath.FileCallable
 import hudson.remoting.VirtualChannel

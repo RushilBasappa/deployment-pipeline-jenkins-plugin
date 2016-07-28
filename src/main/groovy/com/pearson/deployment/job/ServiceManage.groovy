@@ -6,18 +6,18 @@ import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.builder.*
 import com.pearson.deployment.kubernetes.*
 import com.pearson.deployment.helpers.*
-import com.pearson.deployment.callable.WorkspaceReader
+// import com.pearson.deployment.callable.WorkspaceReader
 
-import org.yaml.snakeyaml.Yaml
+// import org.yaml.snakeyaml.Yaml
 import hudson.FilePath
-import hudson.FilePath.FileCallable
+// import hudson.FilePath.FileCallable
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
-import hudson.remoting.VirtualChannel
+// import hudson.remoting.VirtualChannel
 
 import java.security.SecureRandom
-import java.math.BigInteger
-import java.io.*
+// import java.math.BigInteger
+// import java.io.*
 
 class ServiceManage implements Serializable {
   EnvironmentsBitesize config
@@ -68,6 +68,7 @@ class ServiceManage implements Serializable {
   private KubeAPI getKubeAPI(String namespace) {
     KubeAPI api = this.cloudClientClass.newInstance()
     api.setNamespace(namespace)
+    api.log = log
     return api
   }
 
