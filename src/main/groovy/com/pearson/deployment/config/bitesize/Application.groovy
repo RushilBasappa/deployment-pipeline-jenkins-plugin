@@ -1,5 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
+import com.pearson.deployment.helpers.*
 // import org.yaml.snakeyaml.Yaml
 
 // import java.io.InputStream
@@ -15,5 +16,27 @@ class Application implements Serializable {
   String name
   String runtime
   String command
+  String version = null
+  String project
   List<ApplicationDependency> dependencies
+
+  def getDockerImage() {
+    "${Helper.dockerRegistry()}/${project}/${name}:${getVersion()}"
+  }
+
+  def getVersion() {
+    if (this.version) {
+      return this.version
+    }
+
+    def dep = application.dependencies?.find { it.origin?.build != null }
+    dep?.version
+  }
+
+  String normalizedName() {
+    if (name == null) {
+      return ""
+    }
+    Helper.normalizeName(name)
+  }
 } 

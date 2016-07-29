@@ -1,19 +1,20 @@
 package com.pearson.deployment
 
 import com.pearson.deployment.helpers.Helper
+import com.pearson.deployment.config.bitesize.*
 
 import java.util.regex.*
 
 class Dockerfile implements Serializable {
   String filename
-  LinkedHashMap app
+  Application application
   String dockerRegistry
 
   private writer
 
-  Dockerfile(LinkedHashMap app) {
+  Dockerfile(Application app) {
     // this.filename = filename
-    this.app = app
+    this.application = app
     this.dockerRegistry = Helper.dockerRegistry()
     // writer = new File(this.filename)
 
@@ -21,18 +22,18 @@ class Dockerfile implements Serializable {
   }
 
   def contents() {
-    def entrypoint = commandToEntrypoint(app.command)
+    def entrypoint = commandToEntrypoint(application.command)
 
     def dependencies = ""
-    app.dependencies.each {
+    application.dependencies.each {
       if (it.origin) {
         dependencies = "${dependencies} /packages/${it.name}_${it.version}_amd64.deb"
       }
     }
 
     """\
-       FROM ${this.dockerRegistry}/baseimages/${app.runtime}
-       MAINTAINER Simas Cepaitis <simas.cepaitis@pearson.com>
+       FROM ${this.dockerRegistry}/baseimages/${application.runtime}
+       MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
        ADD ./deb /packages
        RUN dpkg -i ${dependencies}
        ENTRYPOINT [${entrypoint}]

@@ -30,4 +30,19 @@ class ApplicationBitesize implements Serializable {
     applications?.find{ it.name == name }
   }
 
+  void setProject(String p) {
+    project = p
+    applications?.each {
+      it.project = p
+    }
+
+  }
+
+  void setApplications(List<Application> apps) {
+    apps.each {
+      it.project = project
+    }
+    applications = apps
+  }
+
 } 
