@@ -28,7 +28,6 @@ class KubeResourceHandler {
   def createOrUpdate() {
     try {
       def existing = getHandler(svc.name)
-      log.println existing
       
       if (existing != this) {
         log.println "... > updating ${svc.namespace}/${kind}/${svc.name}"

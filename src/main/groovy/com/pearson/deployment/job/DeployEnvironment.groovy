@@ -27,7 +27,6 @@ class DeployEnvironment implements Serializable {
   Environment environment
 
   private AbstractBuild build
-  private EnvironmentConfig envConfig
   private LinkedHashMap definition
   private BuildListener listener
   private Launcher launcher

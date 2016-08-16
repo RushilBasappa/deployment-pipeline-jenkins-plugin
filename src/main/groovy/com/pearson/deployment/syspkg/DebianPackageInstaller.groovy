@@ -11,10 +11,9 @@ import hudson.model.AbstractBuild
 import com.pearson.deployment.config.bitesize.BuildDependency
 
 class DebianPackageInstaller extends AbstractPackageInstaller {
-
   DebianPackageInstaller(AbstractBuild build, Launcher launcher, BuildListener listener, BuildDependency dependency) {
     super(build, launcher, listener, dependency)
-    this.pkg = new Package()
+    pkg = new Package()
   }
 
   void install() {
@@ -34,8 +33,8 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
     String version
 
     Package() {
-      this.name = dependency.package
-      this.version = dependency.version
+      name = dependency.pkg
+      version = dependency.version
     }
 
     void install() {

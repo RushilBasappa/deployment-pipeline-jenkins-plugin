@@ -13,11 +13,12 @@ class GemPackageInstaller extends AbstractPackageInstaller {
 
   GemPackageInstaller(AbstractBuild build, Launcher launcher, BuildListener listener, BuildDependency dependency) {
     super(build, launcher, listener, dependency)
-    this.pkg = new Package()
+    pkg = new Package()
   }
 
   void install() {
-    pkg.install()
+    String  query = pkg.version ? "${pkg.name} -v ${pkg.version}" : pkg.name
+    exe "sudo gem install ${query}"
   }
 
   class Package extends AbstractPackageInstaller.Package {
@@ -25,14 +26,8 @@ class GemPackageInstaller extends AbstractPackageInstaller {
     String version
 
     Package() {
-      this.name = dependency.package
-      this.version = dependency.version
-    }
-
-    void install() {
-      String  query = version ? "${name} -v ${version}" : name
-
-      exe "sudo gem install ${query}"
+      name = dependency.pkg
+      version = dependency.version
     }
   }
 }

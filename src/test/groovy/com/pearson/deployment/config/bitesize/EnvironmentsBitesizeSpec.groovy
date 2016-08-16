@@ -1,13 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
 import spock.lang.*
-import groovy.mock.interceptor.MockFor
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-
-import java.io.*
-import java.lang.*
-
 import org.yaml.snakeyaml.constructor.ConstructorException
 
 class EnvironmentsBitesizeSpec extends Specification {

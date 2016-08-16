@@ -4,6 +4,7 @@ class BuildComponent implements Serializable {
   String name
   String version
   String os
+  String type = "debian-package"
   List<BuildDependency> dependencies
   BuildRepository repository
   List<? extends Map<String,String>> build

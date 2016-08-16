@@ -1,13 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
 import spock.lang.*
-import groovy.mock.interceptor.MockFor
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-
-import java.io.*
-import java.lang.*
-
 import org.yaml.snakeyaml.constructor.ConstructorException
 
 class ApplicationBitesizeSpec extends Specification {
@@ -32,10 +25,10 @@ class ApplicationBitesizeSpec extends Specification {
         cfg.project == "example"
         cfg.applications.size() == 2
         
-        def first_app = cfg.applications.first()
-        first_app.runtime == "nginx"
-        first_app.dependencies.size() == 2
-        first_app.command == 'nginx -g "daemon off;"'
+        def firstApp = cfg.applications.first()
+        firstApp.runtime == "nginx"
+        firstApp.dependencies.size() == 2
+        firstApp.command == 'nginx -g "daemon off;"'
     }
 
     def "invalid config" () {

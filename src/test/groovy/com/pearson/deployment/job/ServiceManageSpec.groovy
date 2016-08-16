@@ -9,7 +9,6 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 
 import hudson.model.*
-import hudson.FilePath
 
 import com.pearson.deployment.kubernetes.*
 import com.pearson.deployment.config.*

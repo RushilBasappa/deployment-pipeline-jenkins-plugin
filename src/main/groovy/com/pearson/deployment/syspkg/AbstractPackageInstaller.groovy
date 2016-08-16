@@ -12,12 +12,12 @@ import com.pearson.deployment.config.bitesize.BuildDependency
 
 
 public abstract class AbstractPackageInstaller {
-  AbstractBuild build
-  Launcher launcher
-  BuildListener listener
-  OutputStream log
-  BuildDependency dependency
-  Package pkg
+  protected AbstractBuild build
+  protected Launcher launcher
+  protected BuildListener listener
+  protected OutputStream log
+  protected BuildDependency dependency
+  protected Package pkg
 
   AbstractPackageInstaller(AbstractBuild build, Launcher launcher, BuildListener listener, BuildDependency dependency) {
     this.build = build

@@ -1,10 +1,6 @@
 package com.pearson.deployment.kubernetes
 
 import spock.lang.*
-import groovy.mock.interceptor.MockFor
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-
 import org.yaml.snakeyaml.Yaml
 
 import com.pearson.deployment.config.bitesize.*

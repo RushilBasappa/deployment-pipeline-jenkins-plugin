@@ -1,17 +1,16 @@
 package com.pearson.deployment.syspkg
 
 import spock.lang.*
-import groovy.mock.interceptor.MockFor
 import org.mockito.*
-import org.junit.Rule
 
-import hudson.FilePath
-import hudson.Launcher
-import hudson.Launcher.LocalLauncher
-import hudson.model.BuildListener
-import hudson.model.StreamBuildListener
-import hudson.model.AbstractBuild
-import java.io.OutputStream
+
+// import hudson.FilePath
+// import hudson.Launcher
+// import hudson.Launcher.LocalLauncher
+// import hudson.model.BuildListener
+// import hudson.model.StreamBuildListener
+// import hudson.model.AbstractBuild
+// import java.io.OutputStream
 
 import com.pearson.deployment.config.bitesize.*
 
