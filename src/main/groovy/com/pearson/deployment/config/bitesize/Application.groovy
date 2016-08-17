@@ -29,7 +29,7 @@ class Application implements Serializable {
       return this.version
     }
 
-    def dep = application.dependencies?.find { it.origin?.build != null }
+    def dep = dependencies?.find { it.origin?.build != null }
     dep?.version
   }
 

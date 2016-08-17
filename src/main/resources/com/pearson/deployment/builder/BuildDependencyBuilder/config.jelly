@@ -1,0 +1,26 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+  <f:entry title="Package type">
+    <f:textbox field="type" name="type" value="${it.type}"/>
+  </f:entry>
+
+  <f:entry title="Package name">
+    <f:textbox field="pkg" name="pkg" value="${it.pkg}"/>
+  </f:entry>
+
+  <f:entry title="Package version">
+    <f:textbox field="version" name="version" value="${it.version}"/>
+  </f:entry>
+
+  <f:entry title="Package location">
+    <f:textbox field="location" name="location" value="${it.location}"/>
+  </f:entry>
+
+  <f:entry title="Package repository">
+    <f:textbox field="repository" name="repository" value="${it.repository}"/>
+  </f:entry>
+
+  <f:entry title="Package repository key">
+    <f:textbox field="repository_key" name="repository_key" value="${it.repository_key}"/>
+  </f:entry>
+</j:jelly>

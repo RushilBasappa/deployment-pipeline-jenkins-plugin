@@ -39,6 +39,10 @@ class FakeKubeWrapper implements KubeAPI {
     this.namespace = namespace
   }
 
+  boolean namespaceExist(String namespace) {
+    true
+  }
+
   LinkedHashMap fetch(String kind, String name) {
     def kindStore = store.get(kind)
     def resource = kindStore.get(name)

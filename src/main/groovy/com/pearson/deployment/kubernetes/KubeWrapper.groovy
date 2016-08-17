@@ -39,6 +39,15 @@ class KubeWrapper implements KubeAPI {
     this.namespace = namespace
   }
 
+  boolean namespaceExist(String namespace) {
+    try {
+      exe("kubectl get ns ${namespace}")
+    } catch(Exception e) {
+      return false
+    }
+    true
+  }
+
   protected def exe(cmd) {
     Process command
     def c = appendShellPrefix(cmd)

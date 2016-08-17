@@ -25,11 +25,19 @@ class KubeEnvironmentManager {
       service.project = project
       service.namespace = environment.namespace
 
-      def kube = new KubeServiceManager(client, service, log)
-      serviceManagers[service.name] = kube
+      // Here we should have if namespace exist, otherwise log
+      // 
 
-      def ch = kube.manage()
-      changed = ch ?: changed
+      if (client.namespaceExist(service.namespace)) {
+
+        def kube = new KubeServiceManager(client, service, log)
+        serviceManagers[service.name] = kube
+
+        def ch = kube.manage()
+        changed = ch ?: changed
+      } else {
+        log.println "Namespace ${service.namespace} does not exist"
+      }
     }
     log.println "Changed: ${changed}"
   }

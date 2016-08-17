@@ -25,17 +25,19 @@ class Dockerfile implements Serializable {
     def entrypoint = commandToEntrypoint(application.command)
 
     def dependencies = ""
-    application.dependencies.each {
-      if (it.origin) {
-        dependencies = "${dependencies} /packages/${it.name}_${it.version}_amd64.deb"
+    application.dependencies?.each {
+      if (it.origin) {     
+        dependencies += it.version ? " ${it.name}=${it.version}-*" : "${it.name}"       
       }
     }
 
     """\
        FROM ${this.dockerRegistry}/baseimages/${application.runtime}
        MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
-       ADD ./deb /packages
-       RUN dpkg -i ${dependencies}
+       RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
+       RUN apt-get -q update && \
+           apt-get install -y --force-yes ${dependencies} && \
+           rm -rf /var/cache/apt
        ENTRYPOINT [${entrypoint}]
     """.stripIndent()
   }

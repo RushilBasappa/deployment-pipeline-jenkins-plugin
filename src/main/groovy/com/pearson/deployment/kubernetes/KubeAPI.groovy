@@ -6,4 +6,6 @@ interface KubeAPI {
     LinkedHashMap fetch(String kind, String name) throws ResourceNotFoundException
 
     void setNamespace(String namespace)
+
+    boolean namespaceExist(String namespace)
 }
