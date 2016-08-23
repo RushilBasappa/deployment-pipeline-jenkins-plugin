@@ -5,6 +5,10 @@ import com.pearson.deployment.config.bitesize.*
 
 import java.util.regex.*
 
+import java.util.Date
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 class Dockerfile implements Serializable {
   String filename
   Application application
@@ -13,12 +17,8 @@ class Dockerfile implements Serializable {
   private writer
 
   Dockerfile(Application app) {
-    // this.filename = filename
     this.application = app
     this.dockerRegistry = Helper.dockerRegistry()
-    // writer = new File(this.filename)
-
-    // writer << this.contents()
   }
 
   def contents() {
@@ -26,9 +26,7 @@ class Dockerfile implements Serializable {
 
     def dependencies = ""
     application.dependencies?.each {
-      if (it.origin) {     
-        dependencies += it.version ? " ${it.name}=${it.version}-*" : "${it.name}"       
-      }
+      dependencies += it.version ? " ${it.name}=${it.version}-*" : "${it.name}"
     }
 
     """\
@@ -37,9 +35,13 @@ class Dockerfile implements Serializable {
        RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
        RUN apt-get -q update && \
            apt-get install -y --force-yes ${dependencies} && \
-           rm -rf /var/cache/apt
+           rm -rf /var/cache/apt           
        ENTRYPOINT [${entrypoint}]
     """.stripIndent()
+  }
+
+  String currentTimeTag() {
+    new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
   }
 
   private def commandToEntrypoint(String cmd) {

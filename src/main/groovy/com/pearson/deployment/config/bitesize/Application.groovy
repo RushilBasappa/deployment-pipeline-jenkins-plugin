@@ -21,7 +21,7 @@ class Application implements Serializable {
   List<ApplicationDependency> dependencies
 
   def getDockerImage() {
-    "${Helper.dockerRegistry()}/${project}/${name}:${getVersion()}"
+    "${Helper.dockerRegistry()}/${project}/${name}"
   }
 
   def getVersion() {

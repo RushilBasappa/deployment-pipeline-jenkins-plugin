@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class Service {
+class Service implements Serializable {
   String name
   String application
   String type = null

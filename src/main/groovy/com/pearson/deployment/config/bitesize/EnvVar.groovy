@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class EnvVar {
+class EnvVar implements Serializable {
   String name
   String value
 

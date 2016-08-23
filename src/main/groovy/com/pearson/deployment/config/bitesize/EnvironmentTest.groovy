@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class EnvironmentTest {
+class EnvironmentTest implements Serializable {
     String name
     String repository
     String branch

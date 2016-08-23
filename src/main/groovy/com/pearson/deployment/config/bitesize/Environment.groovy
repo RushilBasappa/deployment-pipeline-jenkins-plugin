@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class Environment {
+class Environment implements Serializable {
   String name
   String namespace
   String next_environment // not used

@@ -33,6 +33,9 @@ class DeployEnvironment implements Serializable {
   private OutputStream log
   private String filename
 
+  // need to move this to factory 
+  private def cloudClientClass = KubeWrapper.class
+
   DeployEnvironment(AbstractBuild build, Launcher launcher, BuildListener listener, String filename, String envname) {
     this.build = build
     this.listener = listener
@@ -62,17 +65,26 @@ class DeployEnvironment implements Serializable {
     svc.project   = config.project
     svc.namespace = environment.namespace
     svc.version   = version
+
+    KubeAPI client = getKubeAPI(svc.namespace)
     
     try {
-      def deployment = new KubeDeploymentHandler(svc, log)
+      def deployment = new KubeDeploymentHandler(client, svc, log)
       def existing   = deployment.getHandler(svc.name)
 
-      if (existing.differs(deployment)) {
+      if (existing != deployment) {
         updateDeployment(deployment)
       }
     } catch (ResourceNotFoundException e) {
       createDeployment(deployment)
     }
+  }
+
+  private KubeAPI getKubeAPI(String namespace) {
+    KubeAPI api = this.cloudClientClass.newInstance()
+    api.setNamespace(namespace)
+    api.log = log
+    return api
   }
 
   private String getServiceVersion(String serviceName) {
@@ -92,7 +104,7 @@ class DeployEnvironment implements Serializable {
   }
 
   private void updateDeployment(KubeDeploymentHandler deployment) {
-    log.println "MUST UPDATE DEPLOYMENT FOR ${svc.name}:${version}"
+    log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.svc.name}:${deployment.svc.version}"
     deployment.update()
     watchDeploy(deployment)
   }
