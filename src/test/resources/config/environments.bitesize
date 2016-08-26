@@ -37,7 +37,8 @@ environments:
   - name: Staging
     namespace: sample-app-stage
     deployment:
-      method: rolling-upgrade
+      method: bluegreen
+      active: blue
       mode: manual
       timeout: 300
     services:

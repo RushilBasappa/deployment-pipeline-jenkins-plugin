@@ -1,0 +1,26 @@
+name: Sample
+namespace: sample-app-stage
+deployment:
+    method: bluegreen
+    mode: manual
+    timeout: 300
+services:
+    - type: mysql
+      name: db
+      version: 0.1
+    - type: mongo
+      name: mongodb
+      version: 0.1
+    - name: bluegreen-service
+      application: sample-app
+      external_url: bghost.pearson.com
+      replicas: 4
+      port: 80
+      env:
+        - name: NODE_ENV
+          value: staging
+tests:
+    - name: Sample test
+      repository: git@github.com/sample-test.git
+      commands:
+        - shell: ls

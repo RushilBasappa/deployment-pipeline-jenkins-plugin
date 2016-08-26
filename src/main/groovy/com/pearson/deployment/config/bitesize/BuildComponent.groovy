@@ -7,6 +7,7 @@ class BuildComponent implements Serializable {
   String type = "debian-package"
   List<BuildDependency> dependencies
   BuildRepository repository
+  List<EnvVar> env = []
   List<? extends Map<String,String>> build
   List<? extends Map<String,String>> artifacts
 } 

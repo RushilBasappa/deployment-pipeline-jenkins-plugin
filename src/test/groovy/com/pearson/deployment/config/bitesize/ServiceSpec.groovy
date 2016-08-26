@@ -35,4 +35,18 @@ class ServiceSpec extends Specification {
       "sslString" | "true"  | "true"
       "sslString" | "false" | "false"
   }
+
+
+  def "isThirdparty method checks type" () {
+    when:
+      Service s = new Service( type: typeValue)
+      
+    then:
+      s.isThirdParty() == expected
+    
+    where:
+      typeValue | expected
+      'custom'  | true
+      null      | false
+  }
 }

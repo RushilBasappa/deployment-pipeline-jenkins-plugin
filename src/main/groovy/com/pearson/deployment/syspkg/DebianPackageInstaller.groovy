@@ -64,7 +64,12 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
 
     boolean isInstalled() {
       OutputStream stream = new ByteArrayOutputStream()
-      exe("dpkg-query --show -f='${version}' ${name}", stream)
+      String query = (version || version == 'null' || version == '') ? "--show -f='${version}'" : "--show"
+      try {
+        exe("dpkg-query ${query} ${name}", stream)
+      } catch(e) {
+        return false
+      }
       String installedVersion = stream.toString("UTF-8")
       
       if (!version || version == installedVersion) {

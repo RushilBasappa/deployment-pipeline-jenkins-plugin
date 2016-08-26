@@ -36,12 +36,12 @@ public class DeploymentDslExtension extends ContextExtensionPoint {
     LOG.info("We have ${context.type}: ${context.pkg} to install")
 
     return new BuildDependencyBuilder(
-      pkg: context.pkg,
-      type: context.type,
-      version: context.version,
-      location: context.location,
-      repository_key: context.repository_key,
-      repository: context.repository
+      context.pkg,
+      context.version,
+      context.type,
+      context.location,
+      context.repository,
+      context.repository_key
     )
   }
 }

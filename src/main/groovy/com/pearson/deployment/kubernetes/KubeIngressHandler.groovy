@@ -75,7 +75,7 @@ class KubeIngressHandler extends KubeResourceHandler {
               [
               "path": "/",
               "backend": [
-                "serviceName": svc.name,
+                "serviceName": svc.backend,
                 "servicePort": svc.port
               ]
               ]

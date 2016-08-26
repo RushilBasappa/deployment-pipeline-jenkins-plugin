@@ -4,7 +4,7 @@ import com.pearson.deployment.config.bitesize.Service
 
 // KubeServiceManager is the main class managing
 // resources in the namespace
-class KubeServiceManager implements Serializable {
+class KubeServiceManager  extends AbstractKubeManager implements Serializable {
     Service svc // config.service object as serialized from environments.bitesize
     KubeAPI client
     protected KubeIngressHandler ingress
@@ -23,9 +23,9 @@ class KubeServiceManager implements Serializable {
         this.thirdparty = new KubeThirdpartyHandler(client, svc, log)
     }
 
-    def manage() {
+    boolean  manage() {
         def ch = false
-        if (svc.type == null ) {
+        if (!svc.isThirdParty() ) {
             ch = ingress.createOrUpdate() ? true : ch
             ch = deployment.createOrUpdate() ? true : ch
             ch = service.createOrUpdate() ? true : ch

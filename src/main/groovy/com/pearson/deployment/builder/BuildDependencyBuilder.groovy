@@ -11,6 +11,9 @@ import org.kohsuke.stapler.DataBoundSetter
 
 import java.util.logging.Logger
 
+import hudson.util.ListBoxModel
+import hudson.util.ListBoxModel.Option
+
 import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.syspkg.*
 
@@ -28,15 +31,21 @@ public class BuildDependencyBuilder extends Builder {
 
 
   @DataBoundConstructor
-  public BuildDependencyBuilder(LinkedHashMap dep) {
-    this.pkg = dep.pkg
-    this.version = dep.version
-    this.type = dep.type
-    this.location = dep.location
-    this.repository = dep.repository
-    this.repositoryKey = dep.repository_key
+  public BuildDependencyBuilder(String pkg, String version, String type, String location, String repository, String repository_key) {
+    // this.pkg = dep.pkg
+    // this.version = dep.version
+    // this.type = dep.type
+    // this.location = dep.location
+    // this.repository = dep.repository
+    // this.repositoryKey = dep.repository_key
+    this.pkg = pkg
+    this.version = version
+    this.type = type
+    this.location = location
+    this.repositoryKey = repository_key
+    this.repository = repository
     
-    dependency = new BuildDependency(
+    dependency = new BuildDependency(      
       pkg: pkg,
       version: version,
       type: type,
@@ -65,6 +74,14 @@ public class BuildDependencyBuilder extends Builder {
 
     public DescriptorImpl() {
       load();
+    }
+
+    public ListBoxModel doFillTypeItems() {      
+      ListBoxModel m = new ListBoxModel()
+      m.add("Debian package", "debian-package")
+      m.add("Gem package", "gem-package")
+      m.add("Pip package", "pip-package")       
+      return m
     }
 
     @Override

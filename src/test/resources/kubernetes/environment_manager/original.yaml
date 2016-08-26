@@ -1,0 +1,26 @@
+name: Sample
+namespace: sample-app-stage
+deployment:
+    method: rolling-upgrade
+    mode: manual
+    timeout: 300
+services:
+    - type: mysql
+      name: db
+      version: 0.1
+    - type: mongo
+      name: mongodb
+      version: 0.1
+    - name: test-service
+      application: sample-app
+      external_url: test-service-stg.pearson.com
+      replicas: 2
+      port: 80
+      env:
+        - name: NODE_ENV
+          value: staging
+tests:
+    - name: Sample test
+      repository: git@github.com/sample-test.git
+      commands:
+        - shell: ls

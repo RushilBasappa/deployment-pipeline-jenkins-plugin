@@ -131,7 +131,7 @@ class KubeDeploymentHandler extends KubeResourceHandler {
               ]
             ],
             "nodeSelector": [
-              "label": "minion"
+              "role": "minion"
             ]
           ]
         ]

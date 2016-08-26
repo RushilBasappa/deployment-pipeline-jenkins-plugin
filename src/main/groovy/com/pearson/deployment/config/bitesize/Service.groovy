@@ -1,8 +1,12 @@
 package com.pearson.deployment.config.bitesize
 
-class Service implements Serializable {
+import java.lang.Cloneable
+import java.lang.CloneNotSupportedException
+
+class Service implements Serializable, Cloneable {
   String name
   String application
+  String backend
   String type = null
   String version = null
   String external_url
@@ -27,6 +31,10 @@ class Service implements Serializable {
 
   Service() {
     this.application = this.application ?: this.name
+  }
+
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone()
   }
 
 
@@ -60,12 +68,20 @@ class Service implements Serializable {
     (httpsBackend == other.httpsBackend)
   }
 
+  public boolean isThirdParty() {
+    this.type != null
+  }
+
   public void setApplication(String app) {
     this.application = app ? app : this.name
   }
   
   public String getApplication() {
     this.application ? this.application : this.name
+  }
+
+  public String getBackend() {
+    this.backend ? this.backend : this.name
   }
 
   public void setSslString(String val) {

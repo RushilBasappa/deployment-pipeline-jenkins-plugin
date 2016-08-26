@@ -40,7 +40,7 @@ class FakeKubeWrapper implements KubeAPI {
   }
 
   boolean namespaceExist(String namespace) {
-    true
+    namespace == this.namespace
   }
 
   LinkedHashMap fetch(String kind, String name) {

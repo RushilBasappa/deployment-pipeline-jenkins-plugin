@@ -72,7 +72,7 @@ class DeployEnvironment implements Serializable {
       def deployment = new KubeDeploymentHandler(client, svc, log)
       def existing   = deployment.getHandler(svc.name)
 
-      if (existing != deployment) {
+      if (existing.svc.version != deployment.svc.version) {
         updateDeployment(deployment)
       }
     } catch (ResourceNotFoundException e) {
@@ -94,6 +94,7 @@ class DeployEnvironment implements Serializable {
     if ( version == "" || version == "latest") {
       version = null
     }
+    log.println "${serviceName} deploy: got version ${version}"
     return version
   }
 
@@ -131,7 +132,8 @@ class DeployEnvironment implements Serializable {
   }
 
   private void checkTimeout(KubeDeploymentHandler deploy, int timer) {
-    def timeout = deploy.svc.deployment?.timeout ?: DEFAULT_TIMEOUT
+    // def timeout = deploy.svc.deployment?.timeout ?: DEFAULT_TIMEOUT
+    def timeout = DEFAULT_TIMEOUT
     if (timer >= timeout) {
       throw new hudson.AbortException("Timeout reached, deployment failed")
     }

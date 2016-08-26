@@ -3,6 +3,8 @@ package com.pearson.deployment.syspkg
 import spock.lang.*
 import org.mockito.*
 
+import hudson.Launcher
+
 
 // import hudson.FilePath
 // import hudson.Launcher
@@ -39,10 +41,12 @@ class DebianPackageInstallerSpec extends Specification {
   // //   ).thenReturn("1.0.0")
   // }
 
-  // def "it must do something" () {
-  //   when: "we install missing package"
-  //   installer.install()
-  //   then: "apt-get install must be called"
-  //   Mockito.verify(launcher, times(1)).launch("apt-get install curl")
-  // }
+  def "it must install package without version specified" () {
+
+  }
+
+  def "it must install package with version specified" () {
+
+  }
+
 }

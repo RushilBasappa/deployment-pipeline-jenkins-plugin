@@ -1,6 +1,7 @@
 package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Environment
+import com.pearson.deployment.config.bitesize.Service
 
 class KubeEnvironmentManager {
   private Environment environment
@@ -16,33 +17,47 @@ class KubeEnvironmentManager {
     this.client = client
     this.project = project
     this.serviceManagers = new LinkedHashMap()
+    this.log = log
   }
 
   void manage() {
-    // KubeAPI client = getKubeAPI(environment.namespace)
-
-    environment.services?.each { service ->
-      service.project = project
-      service.namespace = environment.namespace
-
-      // Here we should have if namespace exist, otherwise log
-      // 
-
-      if (client.namespaceExist(service.namespace)) {
-
-        def kube = new KubeServiceManager(client, service, log)
-        serviceManagers[service.name] = kube
-
-        def ch = kube.manage()
-        changed = ch ?: changed
-      } else {
-        log.println "Namespace ${service.namespace} does not exist"
+    if (environment.deployment.isValid()) {
+      environment.services?.each { service ->
+        if (environment.deployment.isBlueGreen()) {
+          manageBlueGreenService(service)
+        } else {
+          manageService(service)
+        }
       }
+    } else {
+      log.println "Skipping ${environment.name}: deployment misconfigured"
     }
-    log.println "Changed: ${changed}"
   }
 
-  KubeServiceManager getService(String name) {
+  private void setServiceProperties(Service service) {
+    service.project = project
+    service.namespace = environment.namespace
+    if (environment.deployment.isBlueGreen()) {
+      service.backend = "${service.name}-${environment.deployment.active}"
+    }
+  }
+
+  private void manageService(Service svc) {
+    setServiceProperties(svc)
+
+    KubeServiceManager s = new KubeServiceManager(client, svc, log)
+    s.manage()
+    serviceManagers[svc.name] = s
+  }
+
+  private void manageBlueGreenService(Service svc) {
+    setServiceProperties(svc)
+    KubeBlueGreenServiceManager s = new KubeBlueGreenServiceManager(client, svc, log)
+    s.manage()
+    serviceManagers[svc.name] = s
+  }
+
+  AbstractKubeManager getService(String name) {
     serviceManagers[name]
   }
 

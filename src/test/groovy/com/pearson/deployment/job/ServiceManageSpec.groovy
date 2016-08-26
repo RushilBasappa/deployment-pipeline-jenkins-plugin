@@ -57,30 +57,31 @@ class ServiceManageSpec extends Specification {
 
     def "Service change settings" () {
       given: "port is changed in environments.bitesize"
-      def c = """
-        project: sample
-        environments:
-        - name: development
-          namespace: sample-app-dev
-          deployment:
-            method: rolling-rolling
-            timeout: 3000
-          services:
-            - name: myservice
-              ssl: false
-              external_url: www.google.co.uk
-              port: 81
-      """
-      manager.run()
-      manager.config = EnvironmentsBitesize.readConfigFromString(c)
+        def c = """
+          project: sample
+          environments:
+          - name: development
+            namespace: sample-app-dev
+            deployment:
+              method: rolling-upgrade
+              timeout: 3000
+            services:
+              - name: myservice
+                ssl: false
+                external_url: www.google.co.uk
+                port: 81
+        """
+        manager.run()
+        manager.config = EnvironmentsBitesize.readConfigFromString(c)
 
       when: "service-manage runs"
-      manager.run()
+        manager.run()
+        
       then: "service port is updated"
-      def environmentManager = manager.getEnvironmentManager('sample-app-dev')
-      KubeServiceManager m = environmentManager.getService('myservice')
-      def h = m.service.getHandler('myservice')
-      h.svc.port == 81
+        def environmentManager = manager.getEnvironmentManager('sample-app-dev')
+        AbstractKubeManager m = environmentManager.getService('myservice')
+        def h = m.service.getHandler('myservice')
+        h.svc.port == 81
     }
 
 }

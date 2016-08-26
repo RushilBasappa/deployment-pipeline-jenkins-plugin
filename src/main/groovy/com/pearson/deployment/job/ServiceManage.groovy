@@ -54,10 +54,14 @@ class ServiceManage implements Serializable {
     config?.environments?.each {
       log.println "Configuring environment ${it.name}"
       KubeAPI client = getKubeAPI(it.namespace)
-      KubeEnvironmentManager envManager = new KubeEnvironmentManager(client, config.project, it, log)
-      environmentManagers[it.namespace] = envManager
 
-      envManager.manage()
+      if (client.namespaceExist(it.namespace)) {
+        KubeEnvironmentManager envManager = new KubeEnvironmentManager(client, config.project, it, log)
+        environmentManagers[it.namespace] = envManager
+        envManager.manage()
+      } else {
+        log.println "Skipping environment ${it.name}: ${it.namespace} does not exist"
+      }
     }
   }
 

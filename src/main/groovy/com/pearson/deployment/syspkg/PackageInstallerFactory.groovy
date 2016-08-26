@@ -19,6 +19,8 @@ class PackageInstallerFactory {
         return new GemPackageInstaller(build, launcher, listener, dependency)
       case 'debian-package':
         return new DebianPackageInstaller(build, launcher, listener, dependency)
+      case 'pip-package':
+        return new PipPackageInstaller(build, launcher, listener, dependency)
       default:
         throw new Exception("Unknown build dependency")
         break
