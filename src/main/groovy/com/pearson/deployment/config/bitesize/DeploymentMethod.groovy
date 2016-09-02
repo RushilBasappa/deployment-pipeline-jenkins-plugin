@@ -17,4 +17,7 @@ class DeploymentMethod implements Serializable {
     true
   }
 
+  boolean isActive(String color) {
+    this.active == color
+  }
 }

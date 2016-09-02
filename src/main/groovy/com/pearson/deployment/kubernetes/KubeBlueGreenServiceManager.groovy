@@ -23,7 +23,8 @@ class KubeBlueGreenServiceManager extends AbstractKubeManager implements Seriali
       this.greenSvc.external_url = Helper.addHostPrefix(svc.external_url, "-green")
       this.greenSvc.backend = this.greenSvc.name
     }
-    this.client     = client    
+    this.client           = client
+    this.log              = log
     this.globalIngress    = new KubeIngressHandler(client, svc, log)
   }
 
@@ -39,6 +40,8 @@ class KubeBlueGreenServiceManager extends AbstractKubeManager implements Seriali
 
   private def manageSvc(Service svc) {
     boolean ch = false
+    log.println "BlueGreen manager: manage ${svc.name}"
+    
     if (svc.isThirdParty()) {
       def p = new KubeThirdpartyHandler(client, svc, log)
       ch = p.createOrUpdate()

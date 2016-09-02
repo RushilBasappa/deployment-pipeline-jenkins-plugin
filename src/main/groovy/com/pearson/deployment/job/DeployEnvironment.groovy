@@ -1,23 +1,16 @@
 package com.pearson.deployment.job
 
-// import hudson.FilePath
+import hudson.Launcher
+import hudson.FilePath
+
 import hudson.model.BuildListener
 import hudson.model.AbstractBuild
-// import hudson.remoting.VirtualChannel
-import hudson.Launcher
-
-import hudson.FilePath
-// import hudson.FilePath.FileCallable
-
-// import hudson.plugins.copyartifact.CopyArtifact
-// import hudson.plugins.copyartifact.WorkspaceSelector
 
 import com.pearson.deployment.*
 import com.pearson.deployment.kubernetes.*
 import com.pearson.deployment.config.*
 import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.helpers.*
-// import com.pearson.deployment.callable.WorkspaceReader
 
 
 class DeployEnvironment implements Serializable {
@@ -36,7 +29,13 @@ class DeployEnvironment implements Serializable {
   // need to move this to factory 
   private def cloudClientClass = KubeWrapper.class
 
-  DeployEnvironment(AbstractBuild build, Launcher launcher, BuildListener listener, String filename, String envname) {
+  DeployEnvironment(
+    AbstractBuild build,
+    Launcher launcher,
+    BuildListener listener,
+    String filename,
+    String envname) {
+
     this.build = build
     this.listener = listener
     this.launcher = launcher
@@ -49,19 +48,33 @@ class DeployEnvironment implements Serializable {
     this.environment = config?.getEnvironment(envname)
   }
 
-  def deploy() {
-    environment?.services.each { 
-      deployService(it)
+  boolean deploy() {
+    boolean changed
+
+    environment?.services.each {
+      if (environment.deployment?.isBlueGreen()) {
+        String active = environment.deployment.active
+        String other = (active == "blue") ? "green" : "blue"       
+      }
+      changed = deployService(it) ? true : changed      
     }
+
+    return changed
   }
 
-  private def deployService(Service svc) {
-
+  private boolean deployService(Service svc, String deployTo=null) {
     String version = getServiceVersion(svc.name)
+
     if (version == null) {
       return
     }
+    if (deployTo) {
+      svc.name = "${svc.name}-${deployTo}"
+    }
+    runDeploy(svc, version)
+  }
 
+  private boolean runDeploy(Service svc, String version) {
     svc.project   = config.project
     svc.namespace = environment.namespace
     svc.version   = version
@@ -74,11 +87,15 @@ class DeployEnvironment implements Serializable {
 
       if (existing.svc.version != deployment.svc.version) {
         updateDeployment(deployment)
+        return true
       }
     } catch (ResourceNotFoundException e) {
       createDeployment(deployment)
+      return true
     }
+    return false
   }
+
 
   private KubeAPI getKubeAPI(String namespace) {
     KubeAPI api = this.cloudClientClass.newInstance()
