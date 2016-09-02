@@ -26,7 +26,7 @@ class Dockerfile implements Serializable {
 
     def dependencies = ""
     application.dependencies?.each {
-      dependencies += it.version ? " ${it.name}=${it.version}-*" : "${it.name}"
+      dependencies += it.version ? " ${it.name}=${it.version}-* " : "${it.name} "
     }
 
     """\
