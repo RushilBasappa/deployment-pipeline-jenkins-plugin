@@ -21,16 +21,13 @@ class KubeEnvironmentManager {
   }
 
   void manage() {
-    if (environment.deployment.isValid()) {
-      environment.services?.each { service ->
-        if (environment.deployment.isBlueGreen()) {
-          manageBlueGreenService(service)
-        } else {
-          manageService(service)
-        }
-      }
-    } else {
+    if (!environment.deployment.isValid()) {
       log.println "Skipping ${environment.name}: deployment misconfigured"
+      return
+    }
+
+    environment.services?.each { service ->
+      manageService(service)
     }
   }
 
@@ -44,17 +41,16 @@ class KubeEnvironmentManager {
 
   private void manageService(Service svc) {
     setServiceProperties(svc)
-
-    KubeServiceManager s = new KubeServiceManager(client, svc, log)
-    s.manage()
-    serviceManagers[svc.name] = s
-  }
-
-  private void manageBlueGreenService(Service svc) {
-    setServiceProperties(svc)
-    KubeBlueGreenServiceManager s = new KubeBlueGreenServiceManager(client, svc, log)
-    s.manage()
-    serviceManagers[svc.name] = s
+    AbstractKubeManager.collectResources(environment.deployment, client, svc, log).each { rsc ->
+      rsc.createOrUpdate()
+      serviceManagers[svc.name] = rsc
+    }
+    // TODO: This should be rewritten as
+    // AbstractSomething.collectServices()
+    // services.each{ it.createOrUpdate() }
+    // AbstractKubeManager m = AbstractKubeManager.getManagerForDeployment(environment.deployment, client, svc, log)
+    // m.manage()
+    // serviceManagers[svc.name] = m
   }
 
   AbstractKubeManager getService(String name) {
