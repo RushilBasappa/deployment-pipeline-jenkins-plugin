@@ -8,6 +8,7 @@ import java.util.regex.*
 import java.util.Date
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import groovy.text.GStringTemplateEngine
 
 class Dockerfile implements Serializable {
   String filename
@@ -22,29 +23,49 @@ class Dockerfile implements Serializable {
   }
 
   def contents() {
-    def entrypoint = commandToEntrypoint(application.command)
+    String debianDependencyString = debianDependencies(application.dependencies)
 
-    def dependencies = ""
-    application.dependencies?.each {
-      dependencies += it.version ? " ${it.name}=${it.version}-*" : "${it.name}"
-    }
+    def tmpl = '''\
+                  FROM ${registry}/baseimages/${runtime}
+                  MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
+                  <% if (deb_packages != "") out.print apt_get_install %>
+                
+                  ENTRYPOINT [${entrypoint}]
+    '''.stripIndent()
 
-    """\
-       FROM ${this.dockerRegistry}/baseimages/${application.runtime}
-       MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
-       RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
-       RUN apt-get -q update && \
-           apt-get install -y --force-yes ${dependencies} && \
-           rm -rf /var/cache/apt           
-       ENTRYPOINT [${entrypoint}]
+    def installDeb = """\
+                        RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
+                        RUN apt-get -q update && apt-get install -y --force-yes ${debianDependencyString} && rm -rf /var/cache/apt
     """.stripIndent()
+
+    def template = new GStringTemplateEngine().createTemplate(tmpl)
+
+    def binding = [
+      registry:        this.dockerRegistry,
+      runtime:         application.runtime,
+      deb_packages:    debianDependencyString,
+      apt_get_install: installDeb,
+      entrypoint:      commandToEntrypoint(application.command)
+    ]
+
+    template.make(binding).toString()
   }
 
   String currentTimeTag() {
     new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
   }
 
-  private def commandToEntrypoint(String cmd) {
+  private String debianDependencies(def deps) {
+    String ret = ""
+    deps?.each {
+      if (it.type == "debian-package") {
+        ret +=  it.version ? " ${it.name}=${it.version}-* " : "${it.name} "
+      }
+    } 
+    ret
+  }
+
+  private String commandToEntrypoint(String cmd) {
     String regex = "\"([^\"]*)\"|(\\S+)"
     Matcher m = Pattern.compile(regex).matcher(cmd);
     def commands = []
