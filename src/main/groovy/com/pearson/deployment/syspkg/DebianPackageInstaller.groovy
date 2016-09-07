@@ -9,11 +9,17 @@ import hudson.model.BuildListener
 import hudson.model.AbstractBuild
 
 import com.pearson.deployment.config.bitesize.BuildDependency
+import com.pearson.deployment.config.bitesize.SystemPackage
 
 class DebianPackageInstaller extends AbstractPackageInstaller {
   DebianPackageInstaller(AbstractBuild build, Launcher launcher, BuildListener listener, BuildDependency dependency) {
     super(build, launcher, listener, dependency)
     pkg = new Package()
+  }
+
+  public static String installCmd(SystemPackage pkg) {
+    String query = pkg.version ? "${pkg.name}=${pkg.version}" : pkg.name
+    "apt-get install -q -y --force-yes ${query}"
   }
 
   void install() {
@@ -42,9 +48,9 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
         return
       } 
 
-      String query = version ? "${name}=${version}" : name  
+      String cmd = DebianPackageInstaller.installCmd(dependency)
       exe("sudo apt-get update -q")
-      exe("sudo apt-get install -q -y ${query}")
+      exe("sudo ${cmd}")
     }
 
     void installFromLocation(String location) {

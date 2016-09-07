@@ -2,6 +2,7 @@ package com.pearson.deployment
 
 import com.pearson.deployment.helpers.Helper
 import com.pearson.deployment.config.bitesize.*
+import com.pearson.deployment.syspkg.*
 
 import java.util.regex.*
 
@@ -64,29 +65,21 @@ class Dockerfile implements Serializable {
   }
 
   private String debianDependencies(def deps) {
-    ret = ["apt-get -q update"]
-    deps?.each {
-      if (it.type == "debian-package") {
-        if (it.version) {
-          ret.add "apt-get install -y --force-yes ${it.name}=${it.version}"
-        } else {
-          ret.add "apt-get install -y --force-yes ${it.name}"
-        }
-        ret.add "rm -rf /var/cache/apt/*"
+    def ret = ["apt-get -q update"]
+    deps?.each { pkg ->
+      if (pkg.type == "debian-package") {
+        ret.add DebianPackageInstaller.installCmd(pkg)
       }
-    } 
+    }
+    ret.add "rm -rf /var/cache/apt/*"     
     ret.join(" && \\\n  ")
   }
 
   private String gemDependencies(def deps) {
     def ret = []
-    deps?.each {
-      if (it.type == "gem-package") {
-        if (it.version) {
-          ret.add "gem install ${it.name} -v ${it.version}"
-        } else {
-          ret.add "gem install ${it.name}"
-        }        
+    deps?.each { pkg ->
+      if (pkg.type == "gem-package") {    
+        ret.add GemPackageInstaller.installCmd(pkg)
       }
     }
     ret.join(" && \\\n  ")

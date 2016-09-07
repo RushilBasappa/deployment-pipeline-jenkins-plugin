@@ -39,7 +39,7 @@ abstract class AbstractKubeManager {
           }
           retval.add(new KubeIngressHandler(client, svc, log))
       } else {
-        if (s.isThirdParty) {
+        if (svc.isThirdParty) {
           retval.add(new KubeThirdpartyHandler(client, svc, log))
         } else {
           retval.add(new KubeDeploymentHandler(client, svc, log))

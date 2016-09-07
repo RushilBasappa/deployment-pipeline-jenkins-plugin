@@ -8,6 +8,7 @@ import hudson.model.BuildListener
 import hudson.model.AbstractBuild
 
 import com.pearson.deployment.config.bitesize.BuildDependency
+import com.pearson.deployment.config.bitesize.SystemPackage
 
 class GemPackageInstaller extends AbstractPackageInstaller {
 
@@ -16,9 +17,14 @@ class GemPackageInstaller extends AbstractPackageInstaller {
     pkg = new Package()
   }
 
-  void install() {
+  void install() {    
+    String cmd = GemPackageInstaller.installCmd(dependency)
+    exe "sudo {cmd}"
+  }
+
+  static String installCmd(SystemPackage pkg) {  
     String  query = pkg.version ? "${pkg.name} -v ${pkg.version}" : pkg.name
-    exe "sudo gem install ${query}"
+    "gem install --no-ri --no-rdoc ${query}"  
   }
 
   class Package extends AbstractPackageInstaller.Package {

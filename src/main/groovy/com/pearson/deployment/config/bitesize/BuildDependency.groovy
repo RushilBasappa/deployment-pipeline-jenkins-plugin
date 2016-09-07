@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class BuildDependency implements Serializable {
+class BuildDependency extends SystemPackage implements Serializable {
   String pkg
   String type
   String version
@@ -10,6 +10,12 @@ class BuildDependency implements Serializable {
 
   void setPackage(String p) {
     this.pkg = p
+    this.name = p
+  }
+
+  void setName(String value) {
+    this.pkg = value
+    this.name = value
   }
   
   String getPackage() {
