@@ -23,28 +23,36 @@ class Dockerfile implements Serializable {
   }
 
   def contents() {
-    String debianDependencyString = debianDependencies(application.dependencies)
+    String debianInstallString = debianDependencies(application.dependencies)
+    String gemInstallString = gemDependencies(application.dependencies)
 
     def tmpl = '''\
                   FROM ${registry}/baseimages/${runtime}
                   MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
                   <% if (deb_packages != "") out.print apt_get_install %>
+                  <% if (gem_packages != "") out.print gem_install %>
                 
                   ENTRYPOINT [${entrypoint}]
     '''.stripIndent()
 
     def installDeb = """\
                         RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
-                        RUN apt-get -q update && apt-get install -y --force-yes ${debianDependencyString} && rm -rf /var/cache/apt
+                        RUN ${debianInstallString}
     """.stripIndent()
+
+    def installGem = """\
+                        RUN ${gemInstallString}
+    """
 
     def template = new GStringTemplateEngine().createTemplate(tmpl)
 
     def binding = [
       registry:        this.dockerRegistry,
       runtime:         application.runtime,
-      deb_packages:    debianDependencyString,
+      deb_packages:    debianInstallString,
       apt_get_install: installDeb,
+      gem_packages:    gemInstallString,
+      gem_install:     installGem,
       entrypoint:      commandToEntrypoint(application.command)
     ]
 
@@ -56,14 +64,33 @@ class Dockerfile implements Serializable {
   }
 
   private String debianDependencies(def deps) {
-    String ret = ""
+    ret = ["apt-get -q update"]
     deps?.each {
       if (it.type == "debian-package") {
-        ret +=  it.version ? " ${it.name}=${it.version}-* " : "${it.name} "
+        if (it.version) {
+          ret.add "apt-get install -y --force-yes ${it.name}=${it.version}"
+        } else {
+          ret.add "apt-get install -y --force-yes ${it.name}"
+        }
+        ret.add "rm -rf /var/cache/apt/*"
       }
     } 
-    ret
+    ret.join(" && \\\n  ")
   }
+
+  private String gemDependencies(def deps) {
+    def ret = []
+    deps?.each {
+      if (it.type == "gem-package") {
+        if (it.version) {
+          ret.add "gem install ${it.name} -v ${it.version}"
+        } else {
+          ret.add "gem install ${it.name}"
+        }        
+      }
+    }
+    ret.join(" && \\\n  ")
+  } 
 
   private String commandToEntrypoint(String cmd) {
     String regex = "\"([^\"]*)\"|(\\S+)"
