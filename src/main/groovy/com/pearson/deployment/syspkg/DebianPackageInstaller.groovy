@@ -43,6 +43,7 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
       } 
 
       String query = version ? "${name}=${version}" : name  
+      exe("sudo apt-get update -q")
       exe("sudo apt-get install -q -y ${query}")
     }
 
