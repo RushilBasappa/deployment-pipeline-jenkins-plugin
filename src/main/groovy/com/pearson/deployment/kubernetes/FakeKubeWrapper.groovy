@@ -44,6 +44,8 @@ class FakeKubeWrapper implements KubeAPI {
   }
 
   LinkedHashMap fetch(String kind, String name) {
+    // println "FETCHING ${kind} ${name}"
+    // println store
     def kindStore = store.get(kind)
     def resource = kindStore.get(name)
     if ( resource == null) {

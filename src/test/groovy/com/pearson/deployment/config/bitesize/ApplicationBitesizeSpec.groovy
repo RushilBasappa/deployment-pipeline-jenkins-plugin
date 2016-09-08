@@ -27,7 +27,7 @@ class ApplicationBitesizeSpec extends Specification {
         
         def firstApp = cfg.applications.first()
         firstApp.runtime == "nginx"
-        firstApp.dependencies.size() == 2
+        firstApp.dependencies.size() == 3
         firstApp.command == 'nginx -g "daemon off;"'
     }
 

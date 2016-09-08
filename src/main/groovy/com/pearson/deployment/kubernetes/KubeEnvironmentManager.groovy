@@ -53,7 +53,7 @@ class KubeEnvironmentManager {
     // serviceManagers[svc.name] = m
   }
 
-  AbstractKubeManager getService(String name) {
+  KubeResourceHandler getService(String name) {
     serviceManagers[name]
   }
 

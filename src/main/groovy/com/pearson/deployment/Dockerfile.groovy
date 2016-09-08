@@ -27,23 +27,19 @@ class Dockerfile implements Serializable {
     String debianInstallString = debianDependencies(application.dependencies)
     String gemInstallString = gemDependencies(application.dependencies)
 
-    def tmpl = '''\
-                  FROM ${registry}/baseimages/${runtime}
-                  MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
-                  <% if (deb_packages != "") out.print apt_get_install %>
-                  <% if (gem_packages != "") out.print gem_install %>
-                
-                  ENTRYPOINT [${entrypoint}]
-    '''.stripIndent()
+    def tmpl = ''' FROM ${registry}/baseimages/${runtime}
+                   | MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
+                   | <% if (deb_packages != "") out.print apt_get_install %>
+                   | <% if (gem_packages != "") out.print gem_install %>
+                   |
+                   | ENTRYPOINT [${entrypoint}]
+    '''.stripMargin().stripIndent()
 
-    def installDeb = """\
-                        RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
-                        RUN ${debianInstallString}
-    """.stripIndent()
+    def installDeb = """ RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
+                         | RUN ${debianInstallString}
+    """.stripMargin().stripIndent()
 
-    def installGem = """\
-                        RUN ${gemInstallString}
-    """
+    def installGem = "RUN ${gemInstallString}"
 
     def template = new GStringTemplateEngine().createTemplate(tmpl)
 
@@ -72,7 +68,7 @@ class Dockerfile implements Serializable {
       }
     }
     ret.add "rm -rf /var/cache/apt/*"     
-    ret.join(" && \\\n  ")
+    ret.join(" && \\\n     ")
   }
 
   private String gemDependencies(def deps) {

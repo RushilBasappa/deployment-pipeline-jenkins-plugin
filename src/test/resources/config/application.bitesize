@@ -13,6 +13,9 @@ applications:
         version: 1.1.1
         origin:
           build: static-content
+      - name: fpm
+        type: gem-package
+        version: 0.0.1
     command: 'nginx -g "daemon off;"'
   - name: another-app
     runtime: nginx
