@@ -7,6 +7,16 @@ class KubeIngressHandler extends KubeResourceHandler {
   KubeIngressHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
     super(client, svc, log)
     this.kind = 'ingress'
+
+    this.resource = new KubeIngress(
+      name: svc.name,
+      namespace: svc.namespace,
+      externalUrl: svc.external_url,
+      httpsOnly: svc.httpsOnly,
+      httpsBackend: svc.httpsBackend,
+      ssl: svc.ssl,
+      port: svc.port
+    )
   }
 
   KubeIngressHandler(KubeAPI client, LinkedHashMap spec, OutputStream log=System.out) {

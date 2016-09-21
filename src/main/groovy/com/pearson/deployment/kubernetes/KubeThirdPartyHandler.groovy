@@ -15,7 +15,6 @@ class KubeThirdpartyHandler extends KubeResourceHandler {
     this.kind = 'thirdpartyresource'
 
     svc.name = resource.metadata.name
-    // svc.namespace = resource.metadata.namespace
     svc.template_filename = resource.metadata.labels?.template_filename
     svc.parameter_filename = resource.metadata.labels?.parameter_filename
     svc.stack_name = resource.metadata.labels?.stack_name

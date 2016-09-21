@@ -13,6 +13,8 @@ class KubeResourceHandler {
   KubeAPI client
   protected String kind = "pod"
   protected OutputStream log
+  // KubeIngress rsc
+  AbstractKubeResource resource
 
   KubeResourceHandler(KubeAPI client, Service svc, OutputStream log=System.out) {
     this.svc = svc

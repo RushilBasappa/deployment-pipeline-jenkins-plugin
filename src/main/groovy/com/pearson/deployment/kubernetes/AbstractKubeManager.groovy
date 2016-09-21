@@ -32,6 +32,11 @@ abstract class AbstractKubeManager {
               s.external_url = Helper.addHostPrefix(s.external_url, "-${color}")
             }
 
+            // ingress = new KubeIngress(svc)
+            // resources.add ingress
+            // deployment = new KubeDeployment(svc)
+            // resources.add deployment
+
             if (s.isThirdParty()) {
               retval.add(new KubeThirdpartyHandler(client, s, log))
             } else {

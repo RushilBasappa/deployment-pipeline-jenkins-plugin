@@ -127,9 +127,11 @@ class KubeDeploymentHandler extends KubeResourceHandler {
               "name": svc.name,
               "image": image,
               "ports": [ [ "containerPort": svc.port ] ],
-              "env": env()
+              "env": env(),
+              "volumeMounts": volumeMounts(svc.volumes)
               ]
             ],
+            "volumes": volumes(svc.volumes),
             "nodeSelector": [
               "role": "minion"
             ]
@@ -137,5 +139,22 @@ class KubeDeploymentHandler extends KubeResourceHandler {
         ]
       ]
     ] 
+  }
+
+  def volumeMounts(List<PersistentVolume> vols) {
+    ret = []
+    vols.each { v ->
+      ret.add v.podMountResource()
+    }
+    ret
+
+  }
+
+  def volumes(List<PersistentVolume> vols) {
+    ret = []
+    vols.each { v -> 
+      ret.add v.podVolumeResource()
+    }
+    ret
   }
 }

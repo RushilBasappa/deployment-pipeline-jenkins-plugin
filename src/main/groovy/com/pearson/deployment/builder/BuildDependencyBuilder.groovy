@@ -12,7 +12,6 @@ import org.kohsuke.stapler.DataBoundSetter
 import java.util.logging.Logger
 
 import hudson.util.ListBoxModel
-import hudson.util.ListBoxModel.Option
 
 import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.syspkg.*

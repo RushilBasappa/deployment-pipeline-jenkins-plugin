@@ -1,8 +1,5 @@
 package com.pearson.deployment.config.bitesize
 
-import java.lang.Cloneable
-import java.lang.CloneNotSupportedException
-
 class Service implements Serializable, Cloneable {
   String name
   String application
@@ -12,6 +9,7 @@ class Service implements Serializable, Cloneable {
   String external_url
   int port = 80
   List<EnvVar> env = []
+  List<PersistentVolume> volumes
   String namespace = "default"
   String project
   String image

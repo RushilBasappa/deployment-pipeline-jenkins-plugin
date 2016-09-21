@@ -18,7 +18,7 @@ applications:
         version: 0.0.1
     command: 'nginx -g "daemon off;"'
   - name: another-app
-    runtime: nginx
+    runtime: ngx
     dependencies:
       - name: another-artifact
         type: debian-package

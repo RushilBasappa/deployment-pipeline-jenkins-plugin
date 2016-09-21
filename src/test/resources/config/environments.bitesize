@@ -12,6 +12,11 @@ environments:
         external_url: test-service-dev.pearson.com
         ssl: true
         port: 80
+        volumes:
+          - name: nfs
+            path: /nfs
+            mode: ReadWriteMany
+            size: 100G
         env:
           - name: NODE_ENV
             value: production

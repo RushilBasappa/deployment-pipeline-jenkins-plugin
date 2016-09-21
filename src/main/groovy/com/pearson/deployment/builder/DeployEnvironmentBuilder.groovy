@@ -4,7 +4,6 @@ import java.util.logging.Logger
 
 import hudson.FilePath
 import hudson.tasks.Builder
-import hudson.tasks.BuildStepDescriptor
 
 import org.kohsuke.stapler.DataBoundConstructor
 

@@ -6,8 +6,6 @@ import com.pearson.deployment.syspkg.*
 
 import java.util.regex.*
 
-import java.util.Date
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import groovy.text.GStringTemplateEngine
 

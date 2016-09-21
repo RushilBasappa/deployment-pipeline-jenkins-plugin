@@ -2,7 +2,6 @@ package com.pearson.deployment.jobdsl
 
 import hudson.Extension
 import javaposse.jobdsl.dsl.helpers.step.StepContext
-import javaposse.jobdsl.dsl.helpers.publisher.PublisherContext
 import javaposse.jobdsl.plugin.DslExtensionMethod
 import javaposse.jobdsl.plugin.ContextExtensionPoint
 

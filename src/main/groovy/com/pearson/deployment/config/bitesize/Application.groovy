@@ -11,10 +11,14 @@ import com.pearson.deployment.helpers.*
 
 // import com.pearson.deployment.callable.WorkspaceReader
 
+import com.pearson.deployment.validation.*
 
-class Application implements Serializable {
+class Application extends Validator implements Serializable {
   String name
+
+  @ValidString(regexp='[a-z:\\.\\d]*', message='field "runtime" has invalid value')
   String runtime
+
   String command
   String version = null
   String project
@@ -38,5 +42,10 @@ class Application implements Serializable {
       return ""
     }
     Helper.normalizeName(name)
+  }
+
+  void setRuntime(String value) {
+    validateField('runtime', value)
+    this.runtime = value
   }
 } 
