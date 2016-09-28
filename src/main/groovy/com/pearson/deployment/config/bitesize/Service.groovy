@@ -1,7 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class Service implements Serializable, Cloneable {
-  String name
+class Service implements Serializable, Cloneable extends ManagedResource {
   String application
   String backend
   String type = null
@@ -105,6 +104,10 @@ class Service implements Serializable, Cloneable {
   public String getHttpsBackendString() {
     String.valueOf httpsBackend
   }
+
+  // public String getVersion() {
+  //   version
+  // }
 
   void setEnvVariables(List<Map> e) {
     def vars = []

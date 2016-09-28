@@ -20,4 +20,8 @@ class EnvVar implements Serializable {
     }
     return false
   }
+
+  LinkedHashMap asMap() {
+    [ name: name, value: value ]
+  }
 }

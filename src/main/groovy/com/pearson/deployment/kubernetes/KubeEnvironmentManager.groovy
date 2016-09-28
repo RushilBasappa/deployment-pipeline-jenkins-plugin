@@ -10,13 +10,13 @@ class KubeEnvironmentManager {
 
   private def changed
   private String project
-  private Map<String, KubeServiceManager> serviceManagers
+  // private Map<String, KubeServiceManager> serviceManagers
 
   KubeEnvironmentManager(KubeAPI client, String project, Environment environment, OutputStream log=System.out) {
     this.environment = environment
     this.client = client
     this.project = project
-    this.serviceManagers = new LinkedHashMap()
+    // this.serviceManagers = new LinkedHashMap()
     this.log = log
   }
 
@@ -42,19 +42,12 @@ class KubeEnvironmentManager {
   private void manageService(Service svc) {
     setServiceProperties(svc)
     AbstractKubeManager.collectResources(environment.deployment, client, svc, log).each { rsc ->
-      rsc.createOrUpdate()
-      serviceManagers[svc.name] = rsc
+      client.apply rsc
     }
-    // TODO: This should be rewritten as
-    // AbstractSomething.collectServices()
-    // services.each{ it.createOrUpdate() }
-    // AbstractKubeManager m = AbstractKubeManager.getManagerForDeployment(environment.deployment, client, svc, log)
-    // m.manage()
-    // serviceManagers[svc.name] = m
   }
 
-  KubeResourceHandler getService(String name) {
-    serviceManagers[name]
-  }
+  // KubeResourceHandler getService(String name) {
+  //   serviceManagers[name]
+  // }
 
 }

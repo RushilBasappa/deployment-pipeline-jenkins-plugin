@@ -1,6 +1,9 @@
 package com.pearson.deployment.kubernetes
 
 import org.yaml.snakeyaml.Yaml
+import groovy.json.*
+
+import com.pearson.deployment.config.kubernetes.*
 
 class KubeWrapper implements KubeAPI {
   String namespace
@@ -25,6 +28,17 @@ class KubeWrapper implements KubeAPI {
     }
   }
 
+  AbstractKubeResource get(Class klass, String name) {
+    try {
+      String result = exe("kubectl get ${klass.kind} ${name} --namespace=${namespace} -o yaml")
+      Yaml yaml = new Yaml()
+      return klass.newInstance(yaml.load(result))
+    } catch (all) {
+      throw new ResourceNotFoundException("Cannot find ${klass.kind} ${name}")
+    }
+  }
+
+
   void create(String kind, LinkedHashMap resource) {
     String filename = writeSpecFile(resource)
     exe("kubectl create -f ${filename} --namespace=${namespace} --validate=false")
@@ -33,6 +47,16 @@ class KubeWrapper implements KubeAPI {
   void apply(String kind, LinkedHashMap resource) {
     String filename = writeSpecFile(resource)
     exe("kubectl apply -f ${filename} --namespace=${namespace} --validate=false")
+  }
+
+  void apply(AbstractKubeResource resource) {
+    File f = File.createTempFile(resource.class.kind, 'json', null)
+    f.write JsonOutput.toJson(resource.asMap())
+    exe("kubectl apply -f ${f.path} --validate=false")    
+  }
+
+  void apply(AbstractKubeResourceWrapper wrapper) {
+    apply wrapper.resource
   }
 
   void setNamespace(String namespace) {

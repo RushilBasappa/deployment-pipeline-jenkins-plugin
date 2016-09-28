@@ -7,7 +7,7 @@ class Validator {
   protected void validateField(String fieldName, Object value) {    
     Field field = this.class.getDeclaredField(fieldName)
     if (field.isAnnotationPresent(ValidString.class)) {
-      checkValidString()
+      checkValidString(field, value)
     }    
   }
 

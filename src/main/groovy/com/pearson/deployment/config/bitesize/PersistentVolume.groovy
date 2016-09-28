@@ -6,47 +6,46 @@ package com.pearson.deployment.config.bitesize
 //     mode: ReadWriteOnce (ReadOnlyMany,ReadWriteMany)
 //     size: 100G
 
-class PersistentVolume implements Serializable {
-  String name
+class PersistentVolume implements Serializable extends ManagedResource {
   String namespace
   String path
   String mode
   String size
 
 
-  def podMountResource() {
-    [
-      "mountPath": path,
-      "name": name
-    ]
+  // def podMountResource() {
+  //   [
+  //     "mountPath": path,
+  //     "name": name
+  //   ]
 
-  }
+  // }
 
-  def podVolumeResource() {
-    [
-      "name": name,
-      "persistentVolumeClaim": [
-        "claimName": name
-      ]
-    ]
-  }
+  // def podVolumeResource() {
+  //   [
+  //     "name": name,
+  //     "persistentVolumeClaim": [
+  //       "claimName": name
+  //     ]
+  //   ]
+  // }
 
-  def volumeClaimResource() {
-    [
-      "kind": "PersistentVolumeClaim",
-      "apiVersion": "v1",
-      "metadata": [
-        "name": name,
-        "namespace": namespace
-      ],
-      "spec": [
-        "accessModes": mode.split(','),
-        "resources": [
-          "requests": [
-            "storage": size
-          ]
-        ]
-      ]
-    ]
-  }
+  // def volumeClaimResource() {
+  //   [
+  //     "kind": "PersistentVolumeClaim",
+  //     "apiVersion": "v1",
+  //     "metadata": [
+  //       "name": name,
+  //       "namespace": namespace
+  //     ],
+  //     "spec": [
+  //       "accessModes": mode.split(','),
+  //       "resources": [
+  //         "requests": [
+  //           "storage": size
+  //         ]
+  //       ]
+  //     ]
+  //   ]
+  // }
 }

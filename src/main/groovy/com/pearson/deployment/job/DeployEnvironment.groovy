@@ -14,7 +14,7 @@ import com.pearson.deployment.helpers.*
 
 
 class DeployEnvironment implements Serializable {
-  private static def DEFAULT_TIMEOUT = 300
+  private static Integer defaultTimeout = 300
 
   EnvironmentsBitesize config
   Environment environment
@@ -80,19 +80,34 @@ class DeployEnvironment implements Serializable {
     svc.version   = version
 
     KubeAPI client = getKubeAPI(svc.namespace)
-    
-    try {
-      def deployment = new KubeDeploymentHandler(client, svc, log)
-      def existing   = deployment.getHandler(svc.name)
 
-      if (existing.svc.version != deployment.svc.version) {
-        updateDeployment(deployment)
+    try {
+      def deployment = new KubeDeploymentWrapper(client, svc)
+
+      if (deployment.mustUpdate()) {
+        deployment.update()
+        deployment.watch()        
         return true
       }
+
     } catch (ResourceNotFoundException e) {
-      createDeployment(deployment)
+      deployment.create()
+      deployment.watch()
       return true
     }
+    
+    // try {
+    //   def deployment = new KubeDeploymentHandler(client, svc, log)
+    //   def existing   = deployment.getHandler(svc.name)
+
+    //   if (existing.svc.version != deployment.svc.version) {
+    //     updateDeployment(deployment)
+    //     return true
+    //   }
+    // } catch (ResourceNotFoundException e) {
+    //   createDeployment(deployment)
+    //   return true
+    // }
     return false
   }
 
@@ -127,7 +142,7 @@ class DeployEnvironment implements Serializable {
     watchDeploy(deployment)
   }
 
-  private def watchDeploy(KubeDeploymentHandler deploy) {
+  private def watchDeploy(KubeDeploymentWrapper deploy) {
     def timer = 0
 
     while (true) {
@@ -150,7 +165,7 @@ class DeployEnvironment implements Serializable {
 
   private void checkTimeout(KubeDeploymentHandler deploy, int timer) {
     // def timeout = deploy.svc.deployment?.timeout ?: DEFAULT_TIMEOUT
-    def timeout = DEFAULT_TIMEOUT
+    def timeout = defaultTimeout
     if (timer >= timeout) {
       throw new hudson.AbortException("Timeout reached, deployment failed")
     }
