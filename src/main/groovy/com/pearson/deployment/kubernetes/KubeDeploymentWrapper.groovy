@@ -103,7 +103,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
 
   String getRemoteVersion() {
     try {
-      def res = client.get KubeDeployment, name
+      def res = client.get KubeDeployment, resource.name
       return res.labels['version']
     } catch (e) {
       return null
