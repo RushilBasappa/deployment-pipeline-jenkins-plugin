@@ -1,6 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
-class Service implements Serializable, Cloneable extends ManagedResource {
+class Service extends ManagedResource implements Serializable, Cloneable {
   String application
   String backend
   String type = null

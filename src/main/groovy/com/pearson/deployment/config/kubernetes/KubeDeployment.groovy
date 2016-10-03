@@ -60,6 +60,10 @@ class KubeDeployment extends AbstractKubeResource {
     (labelSelector == obj.labelSelector)
   }
 
+  boolean allReplicasOnline() {
+    (replicas == updatedReplicas) && (replicas == availableReplicas)
+  }
+
   LinkedHashMap asMap() {
     [
       "apiVersion": "extensions/v1beta1",

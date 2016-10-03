@@ -4,6 +4,7 @@ import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.config.kubernetes.KubeIngress
 
 class KubeIngressWrapper extends AbstractKubeWrapper {
+  static Class resourceClass = KubeIngress
 
     KubeIngressWrapper(KubeAPI client, Service svc) {
         this.client = client
@@ -17,19 +18,19 @@ class KubeIngressWrapper extends AbstractKubeWrapper {
               httpsOnly: svc.httpsOnly,
               creator: "pipeline",
               name: svc.name
-            ],
-            spec: [
-              rules: [
-                [
-                  host: svc.external_url,
-                  http: [
-                    paths: [
-                      [
-                        path: "/",
-                        backend: [
-                          serviceName: svc.backend,
-                          servicePort: svc.port
-                        ]
+            ]
+          ],
+          spec: [
+            rules: [
+              [
+                host: svc.external_url,
+                http: [
+                  paths: [
+                    [
+                      path: "/",
+                      backend: [
+                        serviceName: svc.backend,
+                        servicePort: svc.port
                       ]
                     ]
                   ]

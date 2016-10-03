@@ -4,6 +4,7 @@ import com.pearson.deployment.config.bitesize.PersistentVolume
 import com.pearson.deployment.config.kubernetes.KubePersistentVolumeClaim
 
 class KubePersistentVolumeClaimWrapper extends AbstractKubeWrapper {
+  static Class resourceClass = KubePersistentVolumeClaim.class
 
   KubePersistentVolumeClaimWrapper(KubeAPI client, PersistentVolume volume) {
     this.client = client

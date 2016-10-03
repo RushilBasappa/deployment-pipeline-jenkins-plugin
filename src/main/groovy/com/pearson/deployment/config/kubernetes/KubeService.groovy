@@ -45,7 +45,8 @@ class KubeService extends AbstractKubeResource {
         "labels":    labels,
       ],
       "spec": [
-        "ports": ports.collect { p -> p.asMap() }
+        "ports": ports.collect { p -> p.asMap() },
+        "selector": selector
       ]
     ]
   }

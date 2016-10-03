@@ -51,11 +51,16 @@ class KubeWrapper implements KubeAPI {
 
   void apply(AbstractKubeResource resource) {
     File f = File.createTempFile(resource.class.kind, 'json', null)
-    f.write JsonOutput.toJson(resource.asMap())
-    exe("kubectl apply -f ${f.path} --validate=false")    
+    def output = JsonOutput.toJson(resource.asMap())
+    f.write output
+    try {
+      exe("kubectl apply -f ${f.path} --validate=false")
+    } catch (all) {
+      println "Exception occured applying output: ${output}"
+    }    
   }
 
-  void apply(AbstractKubeResourceWrapper wrapper) {
+  void apply(AbstractKubeWrapper wrapper) {
     apply wrapper.resource
   }
 

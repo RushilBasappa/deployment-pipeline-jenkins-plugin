@@ -4,6 +4,7 @@ import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.config.kubernetes.KubeService
 
 class KubeServiceWrapper extends AbstractKubeWrapper {
+  static Class resourceClass = KubeService
 
   KubeServiceWrapper(KubeAPI client, Service svc) {
     this.client = client

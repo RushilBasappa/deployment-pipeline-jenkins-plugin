@@ -73,9 +73,10 @@ public class ServiceManageBuilder extends Builder {
       }
       
     } catch (Exception e) {
-      return false;
+      e.printStackTrace()
+      return false
     }
-    return true;
+    true
   }
 
 

@@ -130,13 +130,13 @@ class DeployEnvironment implements Serializable {
     return version
   }
 
-  private void createDeployment(KubeDeploymentHandler deployment) {
+  private void createDeployment(KubeDeploymentWrapper deployment) {
     log.println "MUST CREATE DEPLOYMENT FOR ${svc.name}:${version}"
     deployment.create()
     watchDeploy(deployment)
   }
 
-  private void updateDeployment(KubeDeploymentHandler deployment) {
+  private void updateDeployment(KubeDeploymentWrapper deployment) {
     log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.svc.name}:${deployment.svc.version}"
     deployment.update()
     watchDeploy(deployment)
@@ -147,7 +147,7 @@ class DeployEnvironment implements Serializable {
 
     while (true) {
       if (deploy.watch() == 'success') {
-        printOut("Deployment for ${deploy.svc.name} finished")
+        printOut("Deployment for ${deploy.name} finished")
         break
       }
       timer = tick(timer)
@@ -163,10 +163,8 @@ class DeployEnvironment implements Serializable {
     return timer
   }
 
-  private void checkTimeout(KubeDeploymentHandler deploy, int timer) {
-    // def timeout = deploy.svc.deployment?.timeout ?: DEFAULT_TIMEOUT
-    def timeout = defaultTimeout
-    if (timer >= timeout) {
+  private void checkTimeout(KubeDeploymentWrapper deploy, int timer) {
+    if (timer >= deploy.deployTimeout) {
       throw new hudson.AbortException("Timeout reached, deployment failed")
     }
   }

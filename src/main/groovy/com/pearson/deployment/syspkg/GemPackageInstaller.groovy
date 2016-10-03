@@ -19,7 +19,7 @@ class GemPackageInstaller extends AbstractPackageInstaller {
 
   void install() {    
     String cmd = GemPackageInstaller.installCmd(dependency)
-    exe "sudo {cmd}"
+    exe "sudo ${cmd}"
   }
 
   static String installCmd(SystemPackage pkg) {  

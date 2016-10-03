@@ -5,6 +5,8 @@ import com.pearson.deployment.config.kubernetes.*
 import com.pearson.deployment.helpers.*
 
 class KubeDeploymentWrapper extends AbstractKubeWrapper {
+  Integer deployTimeout = 300
+  static Class resourceClass = KubeDeployment 
 
   KubeDeploymentWrapper(KubeAPI client, Service svc) {
     this.client = client
@@ -21,7 +23,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
         ]
       ],
       spec: [
-        replicas: replicas,
+        replicas: svc.replicas,
         template: [
           metadata: [
               labels: [
@@ -33,13 +35,15 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
           ],
           spec: [
             containers: [
-              name: svc.name,
-              image: image(svc),
-              volumes: svc.volumes,
-              ports: [
-                [ containerPort: svc.port ]
-              ],
-              env: svc.env
+              [
+                name: svc.name,
+                image: image(svc),
+                volumes: svc.volumes,
+                ports: [
+                  [ containerPort: svc.port ]
+                ],
+                env: svc.env
+              ]
             ]
           ]
         ]
@@ -57,8 +61,12 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     this.resource = r
   }
 
-  def watch() {
-
+  String watch() {
+    def deployment = client.get KubeDeployment, resource.name
+    if (deployment.allReplicasOnline()) {
+      return 'success'
+    }
+    return 'running'
   }
   
   @Override
@@ -79,24 +87,31 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     "${Helper.dockerRegistry()}/${svc.project}/${name}:version(svc)"
   }
 
+  boolean mustUpdate() {
+    getVersion() != getRemoteVersion()
+  }
+
   String version(Service svc) {
     if (svc.version) {
       return svc.version
     } else {
-      try {
-        // we need to retrieve client from somewhere
-        def res = client.fetch 'deployment', svc.name
-        svc.version = result.metadata.labels.version
-        return svc.version
-      } catch (e) {
-
-      }      
+      getRemoteVersion()
     }
     // we should not be there
     return null
   }
 
-  def getVersion() {
+  String getRemoteVersion() {
+    try {
+      def res = client.get KubeDeployment, name
+      return res.labels['version']
+    } catch (e) {
+      return null
+    }
+
+  }
+
+  String getVersion() {
     resource.labels['version']
   }
 

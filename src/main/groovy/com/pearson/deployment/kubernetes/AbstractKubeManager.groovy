@@ -3,6 +3,7 @@ package com.pearson.deployment.kubernetes
 import com.pearson.deployment.config.bitesize.DeploymentMethod
 import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.config.kubernetes.*
+import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.helpers.*
 
 abstract class AbstractKubeManager {
@@ -36,9 +37,18 @@ abstract class AbstractKubeManager {
       retval
   }
 
-  AbstractKubeWrapper getHandler(KubeAPI client, ManagedResource rsc, Class klass) {
-    def e = client.get klass.resource.class, rsc.name
-    def existing = klass.newInstance(client, e)
+  static AbstractKubeWrapper getHandler(KubeAPI client, ManagedResource rsc, Class klass) {
+    def existing
+    try {
+      def e = client.get klass.resourceClass, rsc.name
+      existing = klass.newInstance(client, e)
+    } catch (ResourceNotFoundException e) {
+      // We don't create deployments with service-manage
+      // if they don't exist
+      if (klass == KubeDeploymentWrapper) {
+        return null
+      }
+    }
     def nevv = klass.newInstance(client, rsc)
     if (nevv != existing) {
       return nevv
@@ -46,10 +56,12 @@ abstract class AbstractKubeManager {
     return null
   }
 
-  List<AbstractKubeWrapper> serviceHandlers(KubeAPI client, Service svc) {
+  static List<AbstractKubeWrapper> serviceHandlers(KubeAPI client, Service svc) {
     def retval = []
+    def handler
+
     if (svc.isThirdParty()) {
-      handler = getHandler(client, svc, KubeThirdPartyResourceWrapper)
+      handler = getHandler(client, svc, KubeThirdPartyWrapper)
       handler && retval << handler          
     } else {
       svc.volumes.each {

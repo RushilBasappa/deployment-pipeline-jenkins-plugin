@@ -55,7 +55,7 @@ class FakeKubeWrapper implements KubeAPI {
     kindStore[resource.name] = resource.asMap()
   }
 
-  void apply(AbstractKubeResourceWrapper wrapper) {
+  void apply(AbstractKubeWrapper wrapper) {
     apply wrapper.resource
   }
 

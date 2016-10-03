@@ -39,10 +39,11 @@ class KubeIngress extends AbstractKubeResource {
   LinkedHashMap asMap() {
     [
       "apiVersion": "extensions/v1beta1",
+      "kind": "Ingress",
       "metadata": [
         "name": name,
         "namespace": namespace,
-        "labels": labels                
+        "labels": labels.collect{ k,v -> [ "${k}" : "${v}" ] }               
       ],
       "spec": [
         "rules":  rules.collect{ r -> r.asMap() }

@@ -6,7 +6,7 @@ package com.pearson.deployment.config.bitesize
 //     mode: ReadWriteOnce (ReadOnlyMany,ReadWriteMany)
 //     size: 100G
 
-class PersistentVolume implements Serializable extends ManagedResource {
+class PersistentVolume extends ManagedResource implements Serializable {
   String namespace
   String path
   String mode

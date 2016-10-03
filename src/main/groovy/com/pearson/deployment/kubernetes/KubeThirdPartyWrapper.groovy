@@ -4,11 +4,12 @@ import com.pearson.deployment.config.kubernetes.*
 import com.pearson.deployment.config.bitesize.*
 
 class KubeThirdPartyWrapper extends AbstractKubeWrapper {
+  static Class resourceClass = KubeThirdPartyResource
 
   KubeThirdPartyWrapper(KubeAPI client, Service svc) {
     this.client = client
     this.resource = new KubeThirdPartyResource(
-      description: description,
+      description: "Resource for ${svc.type}",
 			metadata: [
 				name: svc.name,
 				namespace: svc.namespace,

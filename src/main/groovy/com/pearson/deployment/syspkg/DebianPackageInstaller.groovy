@@ -18,7 +18,7 @@ class DebianPackageInstaller extends AbstractPackageInstaller {
   }
 
   public static String installCmd(SystemPackage pkg) {
-    String query = pkg.version ? "${pkg.name}=${pkg.version}" : pkg.name
+    String query = pkg.version ? "${pkg.name}=${pkg.version}*" : pkg.name
     "apt-get install -q -y --force-yes ${query}"
   }
 
