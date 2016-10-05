@@ -65,6 +65,7 @@ abstract class AbstractKubeManager {
       handler && retval << handler          
     } else {
       svc.volumes.each {
+        it.namespace = svc.namespace
         handler = getHandler(client, it, KubePersistentVolumeClaimWrapper)
         handler && retval << handler
       }

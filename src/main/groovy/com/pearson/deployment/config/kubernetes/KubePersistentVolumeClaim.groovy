@@ -15,7 +15,7 @@ class KubePersistentVolumeClaim extends AbstractKubeResource {
   KubePersistentVolumeClaim(LinkedHashMap o) {
     name = o.metadata.name
     namespace = o.metadata.namespace
-    modes = o.spec.accessModes
+    accessModes = o.spec.accessModes
     labels = o.metadata.labels
     matchLabels = o.spec.selector?.matchLabels      
   }

@@ -10,10 +10,14 @@ class KubePersistentVolumeClaimWrapper extends AbstractKubeWrapper {
     this.client = client
     this.resource = new KubePersistentVolumeClaim(
       metadata: [
-        name: volume.name
+        name: volume.name,
+        namespace: volume.namespace,
+        labels: [
+          name: volume.name
+        ]
       ],
       spec: [
-        accessModes: volume.modes,
+        accessModes: volume.modes.split(','),
         resources: [
           requests: [
             storage: volume.size
