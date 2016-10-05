@@ -51,15 +51,17 @@ class DeployEnvironment implements Serializable {
   boolean deploy() {
     boolean changed
 
-    environment?.services.each {
+    environment?.services.each {      
       if (environment.deployment?.isBlueGreen()) {
         String active = environment.deployment.active
         String other = (active == "blue") ? "green" : "blue"       
       }
-      changed = deployService(it) ? true : changed      
+      if (! it.isThirdParty() ) {
+        changed = deployService(it) ? true : changed
+      }      
     }
 
-    return changed
+    return true
   }
 
   private boolean deployService(Service svc, String deployTo=null) {
@@ -80,10 +82,9 @@ class DeployEnvironment implements Serializable {
     svc.version   = version
 
     KubeAPI client = getKubeAPI(svc.namespace)
+    KubeDeploymentWrapper deployment = new KubeDeploymentWrapper(client, svc)
 
     try {
-      def deployment = new KubeDeploymentWrapper(client, svc)
-
       if (deployment.mustUpdate()) {
         deployment.update()
         deployment.watch()        
@@ -95,19 +96,6 @@ class DeployEnvironment implements Serializable {
       deployment.watch()
       return true
     }
-    
-    // try {
-    //   def deployment = new KubeDeploymentHandler(client, svc, log)
-    //   def existing   = deployment.getHandler(svc.name)
-
-    //   if (existing.svc.version != deployment.svc.version) {
-    //     updateDeployment(deployment)
-    //     return true
-    //   }
-    // } catch (ResourceNotFoundException e) {
-    //   createDeployment(deployment)
-    //   return true
-    // }
     return false
   }
 

@@ -43,7 +43,7 @@ class KubeIngress extends AbstractKubeResource {
       "metadata": [
         "name": name,
         "namespace": namespace,
-        "labels": labels.collect{ k,v -> [ "${k}" : "${v}" ] }               
+        "labels": labels   
       ],
       "spec": [
         "rules":  rules.collect{ r -> r.asMap() }

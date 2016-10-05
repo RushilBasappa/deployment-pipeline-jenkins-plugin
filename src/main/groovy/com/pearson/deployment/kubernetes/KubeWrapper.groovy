@@ -4,6 +4,7 @@ import org.yaml.snakeyaml.Yaml
 import groovy.json.*
 
 import com.pearson.deployment.config.kubernetes.*
+import com.pearson.deployment.helpers.*
 
 class KubeWrapper implements KubeAPI {
   String namespace
@@ -44,6 +45,10 @@ class KubeWrapper implements KubeAPI {
     exe("kubectl create -f ${filename} --namespace=${namespace} --validate=false")
   }
 
+  void create(AbstractKubeResource resource) {
+    apply resource
+  }
+
   void apply(String kind, LinkedHashMap resource) {
     String filename = writeSpecFile(resource)
     exe("kubectl apply -f ${filename} --namespace=${namespace} --validate=false")
@@ -51,7 +56,8 @@ class KubeWrapper implements KubeAPI {
 
   void apply(AbstractKubeResource resource) {
     File f = File.createTempFile(resource.class.kind, 'json', null)
-    def output = JsonOutput.toJson(resource.asMap())
+    def compact = Helper.denull(resource.asMap())
+    def output = JsonOutput.toJson(compact)
     f.write output
     try {
       exe("kubectl apply -f ${f.path} --validate=false")

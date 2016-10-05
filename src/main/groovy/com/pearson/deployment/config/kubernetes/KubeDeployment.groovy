@@ -76,7 +76,7 @@ class KubeDeployment extends AbstractKubeResource {
       "spec": [
         "replicas" : replicas,
         "selector": [
-          "matchLabels" :labelSelector
+          "matchLabels" : labelSelector
         ],
         "template": [
           "metadata": [

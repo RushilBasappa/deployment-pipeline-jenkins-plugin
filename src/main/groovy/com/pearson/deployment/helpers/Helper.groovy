@@ -15,4 +15,16 @@ class Helper implements Serializable {
     splitted[0] = splitted[0] + prefix
     splitted.join(".")
   }
+
+  public static def denull(obj) {
+    if(obj instanceof Map) {
+      obj.collectEntries{ k, v ->
+        if(v) [(k): denull(v)] else [:]
+      }
+    } else if(obj instanceof List) {
+      obj.collect { denull(it) }.findAll { it != null }
+    } else {
+      obj
+    }
+  }
 }

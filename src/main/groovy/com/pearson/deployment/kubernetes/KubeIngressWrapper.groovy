@@ -13,9 +13,9 @@ class KubeIngressWrapper extends AbstractKubeWrapper {
             name: svc.name,
             namespace: svc.namespace,
             labels: [
-              ssl: svc.ssl,
-              httpsBackend: svc.httpsBackend,
-              httpsOnly: svc.httpsOnly,
+              ssl: svc.ssl.toString(),
+              httpsBackend: svc.httpsBackend.toString(),
+              httpsOnly: svc.httpsOnly.toString(),
               creator: "pipeline",
               name: svc.name
             ]

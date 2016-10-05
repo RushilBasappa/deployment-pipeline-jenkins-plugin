@@ -16,6 +16,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
         name: svc.name,
         namespace: svc.namespace,
         labels: [
+          name: svc.name,
           application: svc.application,
           project: svc.project,
           version: version(svc),
@@ -24,9 +25,15 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
       ],
       spec: [
         replicas: svc.replicas,
+        selector: [
+          matchLabels: [
+            name: svc.name
+          ]
+        ],
         template: [
           metadata: [
               labels: [
+                name: svc.name,
                 application: svc.application,
                 project: svc.project,
                 version: version(svc),
@@ -84,28 +91,29 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
 
   String image(Service svc) {
     def name = svc.application ?: svc.name
-    "${Helper.dockerRegistry()}/${svc.project}/${name}:version(svc)"
+    "${Helper.dockerRegistry()}/${svc.project}/${name}:${version(svc)}"
   }
 
   boolean mustUpdate() {
-    getVersion() != getRemoteVersion()
+    getVersion() != getRemoteVersion(resource.name)
   }
 
   String version(Service svc) {
     if (svc.version) {
       return svc.version
     } else {
-      getRemoteVersion()
+      return getRemoteVersion(svc.name)
     }
     // we should not be there
     return null
   }
 
-  String getRemoteVersion() {
+  String getRemoteVersion(String name) {
     try {
-      def res = client.get KubeDeployment, resource.name
+      def res = client.get KubeDeployment, name
       return res.labels['version']
     } catch (e) {
+      e.printStackTrace()
       return null
     }
 
