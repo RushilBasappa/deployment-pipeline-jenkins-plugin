@@ -2,6 +2,9 @@ package com.pearson.deployment.config.kubernetes
 
 import groovy.json.*
 
+// This thirdpartyresource represents <1.4 kubernetes object.
+// In 1.4 and above, we will use KubeGenericObject
+// which can set arbitrary fields and "kind"
 class KubeThirdPartyResource extends AbstractKubeResource {
 
 	String name
