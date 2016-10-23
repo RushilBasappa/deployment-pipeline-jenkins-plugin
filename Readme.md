@@ -2,7 +2,9 @@
 
 A custom Jenkins pipeline tool built for Kubernetes.
 
-Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process. First, let’s define some terms to understand what exactly they mean in our context:
+Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
+
+First, let’s define some terms to understand what exactly they mean in our context:
 
 | Term | Definition |
 | --- | :--- |
@@ -15,22 +17,3 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
 | *Build Dependency* | An tool or utility necessary to create a Component Artifact. |
 | *Service* | Instance (or multiple grouped instances in HA mode) of  running application. |
 | *Environment* | Collection of services, grouped together to represent a fully working application stack. |
-
-
-
-|  Term 	|   Definition	|
-|---	|---	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
-|   	|   	|
