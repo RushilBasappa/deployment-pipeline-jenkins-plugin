@@ -13,6 +13,10 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     against your applications and the method to deploy applications.
     Builds out the whole CI/CD pipeline
 
+
+Your project will store these files in a git repository. It can be either your source repository, or (more commonly) a repository dedicated just to managing these three files. This git repository will be used as an input to the pipeline generation process.
+
+
 <br>
 First, let’s define some terms to understand what exactly they mean in our context:
 
