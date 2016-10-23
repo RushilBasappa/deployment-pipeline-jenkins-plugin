@@ -18,7 +18,14 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 #### Create a Repo
 Create a git repo where you will store the bitesize files. This can be pretty much anywhere. You will need to provide as ssh key for access to the repo from Jenkins. Read-Only access is acceptable.
 
+
 #### Deploy Jenkins
+
+requirements:
+**git repo link** ex. "git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git"
+**ssh private key**
+
+
 
 
 #### Configure Bitesize files
