@@ -21,9 +21,9 @@ Create a git repo where you will store the bitesize files. This can be pretty mu
 
 #### Deploy Jenkins
 
-requirements:
-**git repo link** ex. "git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git"
-**ssh private key**
+requirements:<br>
+**git repo link** ex. "git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git"<br>
+**ssh private key**<br>
 
 
 
