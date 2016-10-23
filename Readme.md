@@ -8,24 +8,24 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
 
 <a id="quickstart"></a>
-### Quickstart
+## Quickstart
 
   * Create Repo
   * Deploy Jenkins
   * Configure Bitesize files
 
-
-#### Create a Repo
+<br><br>
+### Create a Repo
 Create a git repo where you will store the configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
+<br><br>
 
-
-#### Deploy Jenkins
+### Deploy Jenkins
 
 precursors:<br>
 **git repo link**  - like 'git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git'<br>
 **ssh private key**<br><br>
 
-##### Jenkins Kubernetes Config Template
+#### Jenkins Kubernetes Config Template
 
 **%%NAMESPACE%%** - Namespace you want to deploy Jenkins into<br>
 **%%JENKINS_ADMIN_USER%%** - Jenkins Admin user name<br>
@@ -138,7 +138,7 @@ spec:
 
 
 <a id="details"></a>
-### Details of the project
+## Details of the project
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
