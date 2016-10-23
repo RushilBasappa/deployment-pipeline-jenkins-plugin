@@ -1,6 +1,30 @@
-# Kubernetes CI/CD Pipeline
+# Kubernetes Continuous Deployment Pipeline
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
+
+* [Quickstart](#quickstart)
+* [Details](#details)
+
+
+
+<a id="quickstart"></a>
+### Quickstart
+
+  * Create Repo
+  * Deploy Jenkins
+  * Configure Bitesize files
+
+
+
+
+
+
+
+
+
+
+<a id="details"></a>
+### Details of the project
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
@@ -14,9 +38,7 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     Builds out the whole CI/CD pipeline
 
 
-Your project will store these files in a git repository. It can be either your source repository, or (more commonly) a repository dedicated just to managing these three files. This git repository will be used as an input to the pipeline generation process.
-
-
+Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.
 <br>
 First, let’s define some terms to understand what exactly they mean in our context:
 
