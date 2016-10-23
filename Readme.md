@@ -16,16 +16,117 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
 
 #### Create a Repo
-Create a git repo where you will store the bitesize files. This can be pretty much anywhere. You will need to provide as ssh key for access to the repo from Jenkins. Read-Only access is acceptable.
+Create a git repo where you will store the configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
 
 
 #### Deploy Jenkins
 
-requirements:<br>
-**git repo link** ex. "git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git"<br>
-**ssh private key**<br>
+precursors:<br>
+**git repo link**  - like 'git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git'<br>
+**ssh private key**<br><br>
+
+##### Jenkins Kubernetes Config Template
+
+**%%NAMESPACE%%** - Namespace you want to deploy Jenkins into
+**%%JENKINS_ADMIN_USER%%** - Jenkins Admin user name
+**%%JENKINS_ADMIN_PASSWORD%%** - Jenkins Admin password
+**%%SEED_JOBS_REPO%%** - location of git repo where config files will exist
+**%%GIT_PRIVATE_KEY%%** - Private SSH key used to access the git repo
+**%%JENKINS_IMAGE%%** - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
 
 
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: jenkins
+  name: jenkins
+  namespace: %%NAMESPACE%%
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: jenkins
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: jenkins
+      name: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        env:
+        - name: JAVA_OPTS
+          value: -Djava.awt.headless=true -Xms512m -Xmx2g -XX:MaxPermSize=1048M -Dorg.apache.commons.jelly.tags.fmt.timeZone=America/New_York
+            -Dcom.sun.management.jmxremote.local.only=false
+        - name: JENKINS_ADMIN_USER
+          value: %%JENKINS_ADMIN_USER%%
+        - name: JENKINS_ADMIN_PASSWORD
+          value: %%JENKINS_ADMIN_PASSWORD%%
+        - name: SEED_JOBS_REPO
+          value: %%SEED_JOBS_REPO%%
+        - name: GIT_PRIVATE_KEY
+          value: |
+                 %%GIT_PRIVATE_KEY%%
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: %%JENKINS_IMAGE%%
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 1000
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 50000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkins-data
+        - mountPath: /var/jenkins_home/repository
+          name: aptly-repository
+      - image: geribatai/aptly:1.0.0
+        imagePullPolicy: Always
+        name: aptly
+        ports:
+        - containerPort: 9797
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /aptly
+          name: aptly-repository
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: jenkins-data
+      - emptyDir: {}
+        name: aptly-repository
+```
 
 
 #### Configure Bitesize files
