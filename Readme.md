@@ -13,7 +13,7 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     against your applications and the method to deploy applications.
     Builds out the whole CI/CD pipeline
 
-
+<br>
 First, let’s define some terms to understand what exactly they mean in our context:
 
 | Term | Definition |
