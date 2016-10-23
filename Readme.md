@@ -3,7 +3,7 @@
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
 * [Quickstart](#quickstart)
-* [Details](#details)
+* [Project Details](#details)
 
 
 
@@ -14,7 +14,7 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
   * Deploy Jenkins
   * Configure Bitesize files
 
-<br><br>
+<br>
 ### Create a Repo
 Create a git repo where you will store the configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
 <br><br>
@@ -127,9 +127,13 @@ spec:
       - emptyDir: {}
         name: aptly-repository
 ```
-
+<br>
 
 #### Configure Bitesize files
+Now lets setup the config files. These files are called bitesize files because that's how they originally came about. Thus all the files end with .bitesize.<br>
+
+These config files will help you get a sample app up and running. Refer "Project Details" for additional information on the various capabilities.
+
 
 
 
@@ -138,7 +142,7 @@ spec:
 
 
 <a id="details"></a>
-## Details of the project
+## Project Details
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
