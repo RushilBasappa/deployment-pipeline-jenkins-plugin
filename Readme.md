@@ -132,7 +132,7 @@ spec:
 #### Configure Bitesize files
 Now lets setup the config files. These files are called bitesize files because that's how they originally came about. Thus all the files end with .bitesize.<br>
 
-These config files will help you get a sample app up and running. Refer "Project Details" for additional information on the various capabilities.
+These config files will help you get a sample app up and running. Refer "Project Details" for additional information on Build and Job definitions.
 
 
 
