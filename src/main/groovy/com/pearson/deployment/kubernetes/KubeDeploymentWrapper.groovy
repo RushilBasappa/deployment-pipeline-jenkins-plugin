@@ -41,6 +41,9 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
               ]
           ],
           spec: [
+            nodeSelector: [
+              role: "minion"
+            ],
             containers: [
               [
                 name: svc.name,
@@ -49,7 +52,8 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
                 ports: [
                   [ containerPort: svc.port ]
                 ],
-                env: svc.env
+                env: svc.env,
+                livenessProbe: svc.health_check
               ]
             ]
           ]

@@ -5,6 +5,7 @@ class BuildComponent implements Serializable {
   String version
   String os
   String type = "debian-package"
+  String runtime
   List<BuildDependency> dependencies
   BuildRepository repository
   List<EnvVar> env = []

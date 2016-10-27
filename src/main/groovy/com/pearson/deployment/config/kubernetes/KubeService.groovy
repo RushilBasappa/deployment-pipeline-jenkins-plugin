@@ -16,8 +16,8 @@ class KubeService extends AbstractKubeResource {
     name      = map.metadata.name
     namespace = map.metadata.namespace
     ports     = map.spec.ports.collect{ p -> new KubeServicePort(p)}
-    selector  = map.metadata.labels
-    labels    = map.spec.selector
+    labels    = map.metadata.labels
+    selector  = map.spec.selector
   }
 
   boolean equals(Object o) {

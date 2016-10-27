@@ -15,7 +15,7 @@ environments:
         volumes:
           - name: nfs
             path: /nfs
-            mode: ReadWriteMany
+            modes: ReadWriteMany
             size: 100G
         env:
           - name: NODE_ENV

@@ -25,6 +25,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   String httpsOnlyString
   boolean httpsBackend = false
   String httpsBackendString
+  HealthCheck health_check
 
   Service() {
     this.application = this.application ?: this.name

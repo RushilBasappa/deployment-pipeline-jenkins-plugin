@@ -79,8 +79,11 @@ class ServiceManageSpec extends Specification {
         
       then: "service port is updated"
         def environmentManager = manager.getEnvironmentManager('sample-app-dev')
-        KubeResourceHandler m = environmentManager.getService('myservice')
-        m.svc.port == 81
+        // KubeResourceHandler m = environmentManager.getService('myservice')
+        environmentManager.resources.size() == 2
+        def rsc = environmentManager.resources.first()
+        rsc.project == 'sample'
+        rsc.application == 'myservice'
     }
 
 }
