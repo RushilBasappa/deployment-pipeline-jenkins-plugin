@@ -6,6 +6,13 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 * [Project Details](#details)
 
 
+## Requirements:
+Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
+
+```
+role=minion
+```
+
 
 <a id="quickstart"></a>
 ## Quickstart
