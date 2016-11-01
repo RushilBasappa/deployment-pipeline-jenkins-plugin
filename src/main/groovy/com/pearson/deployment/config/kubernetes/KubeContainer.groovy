@@ -9,10 +9,12 @@ class KubeContainer {
   List<KubePort> ports
   List<KubeVolumeMount>volumeMounts
   List<EnvVar> env
+  LinkedHashMap livenessProbe
 
   KubeContainer(LinkedHashMap o) {
     name  = o.name
     image = o.image
+    livenessProbe = o.livenessProbe
     ports = o.ports.collect{ p ->
       new KubePort(containerPort: p.containerPort)
     }
@@ -42,6 +44,7 @@ class KubeContainer {
     (this.image == obj.image) &&
     (this.ports == obj.ports) &&
     (this.volumeMounts == obj.volumeMounts) &&
+    (this.livenessProbe == o.livenessProbe)
     (this.env == obj.env)
   }
 
@@ -51,7 +54,8 @@ class KubeContainer {
       "image": image,
       "ports": ports.collect { p -> p.asMap() },
       "volumeMounts": volumeMounts.collect { v -> v.asMap() },
-      "env": env.collect { e -> e.asMap() }
+      "env": env.collect { e -> e.asMap() },
+      "livenessProbe": livenessProbe
     ]
   }
 }

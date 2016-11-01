@@ -58,6 +58,10 @@ environments:
         external_url: test-service-stg.pearson.com
         replicas: 2
         port: 80
+        health_check:
+          command:
+            - /bin/cat
+            - /tmp/health.txt
         env:
           - name: NODE_ENV
             value: staging

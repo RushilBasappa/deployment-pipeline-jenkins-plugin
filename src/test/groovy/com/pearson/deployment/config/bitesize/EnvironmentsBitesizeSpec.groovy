@@ -27,8 +27,9 @@ class EnvironmentsBitesizeSpec extends Specification {
         cfg.environments.size() == 2
         cfg.environments[0].services[0].port == 80
         cfg.environments[0].services[0].application == 'sample-app'
-        cfg.environments[0].services[0].ssl == true
+        cfg.environments[0].services[0].ssl == true        
         cfg.environments[1] == stagingEnvironment
+        cfg.environments[1].services[2].health_check.command[0] == "/bin/cat"
     }
 
     def "invalid config" () {

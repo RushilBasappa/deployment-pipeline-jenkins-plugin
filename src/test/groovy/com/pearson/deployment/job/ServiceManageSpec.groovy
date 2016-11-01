@@ -83,8 +83,7 @@ class ServiceManageSpec extends Specification {
         environmentManager.resources.size() == 2
         def rsc = environmentManager.resources.first()
         rsc.project == 'sample'
-        rsc.application == 'myservice'
+        rsc.application == 'myservice'        
     }
-
 }
 
