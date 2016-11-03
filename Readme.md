@@ -26,25 +26,107 @@ kubectl label nodes <node_name> role=minion
 
 <br>
 ### Create a Repo
-Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
+Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
 <br><br>
+
+### Configure Bitesize files
+Now lets setup the config files. These files are called bitesize files because that's how they originally came about. Thus all the files end with .bitesize.<br>
+
+These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
+
+
+##### environments.bitesize
+```
+project: docs-dev
+environments:
+  - name: production
+    namespace: docs-dev
+    deployment:
+      method: rolling-upgrade
+    services:
+      - name: docs-app
+        external_url: kubecon.dev-bite.io
+        port: 80 # this is the port number the application responds on in each container/instance/pod
+        ssl: "true"  # must be in double quotes - interpolated as a string
+        replicas: 2
+```
+
+##### build.bitesize
+```
+project: docs-dev
+components:
+  - name: docs-app
+    os: linux
+    dependencies:
+      - type: debian-package
+        package: php5
+        repository: ppa:ondrej/php
+      - type: debian-package
+        package: libapache2-mod-php5
+      - type: debian-package
+        package: python2.7
+      - type: debian-package
+        package: python-pip
+      - type: pip-package
+        package: PyGithub
+      - type: pip-package
+        package: pyyaml
+      - type: debian-package
+        package: couscous
+        location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
+    repository:
+      git: git@github.com:pearsontechnology/kubecon_docs.git
+      branch: master
+    env:
+      - name: GIT_USERNAME
+        value: kubecondemos@gmail.com   # demo git user
+      - name: GIT_PASSWORD
+        value: 21874b392e38ded25c91a3ecfba57ba384126087    # demo git user token
+    build:
+      - shell: cat /dev/null > couscous.yml
+      - shell: python docsgen.py
+      - shell: couscous generate
+      - shell: mkdir -p var/www/html
+      - shell: cp run.sh var/
+      - shell: cp -a .couscous/generated/* var/www/html
+      - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
+    artifacts:
+      - location: "*.deb"
+```
+
+##### application.bitesize
+```
+project: docs-dev # aka namespace
+applications:
+  - name: docs-app
+    runtime: ubuntu-httpdfcgi:1.3
+    version: "0.8.35"
+    dependencies:
+      - name: docswebsite
+        type: debian-package
+        origin:
+          build: docs-app
+        version: 1.0
+    command: "/var/run.sh"
+```
 
 ### Deploy Jenkins
 
 precursors:<br>
-**git repo**  - like 'git@github.com:pearsontechnology/deployment-pipeline-jenkins-plugin.git'<br>
-**ssh private key**<br><br>
+**git repo url**  - ex.'git@github.com:...........'<br>
+**ssh private key**<br><br> - for access to github repo
 
 #### Jenkins Kubernetes Config Template
-
+Substitute the following vars into the Jenkins Template
 ${NAMESPACE} - Namespace you want to deploy Jenkins into<br>
 ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
 ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
 ${SEED_JOBS_REPO} - location of git repo where config files will exist<br>
 ${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo<br>
 ${JENKINS_IMAGE} - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28<br><br>
+${JENKINS_HOST} - URL to reach Jenkins interface
 
-
+Jenkins Template
 ```
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -136,90 +218,54 @@ spec:
         name: jenkins-data
       - emptyDir: {}
         name: aptly-repository
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins
+  namespace: ${NAMESPACE}
+  ssl: true
+spec:
+  rules:
+  - host: ${JENKINS_HOST}
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 80
+        path: /
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: jenkins
+  name: jenkins
+  namespace: ${NAMESPACE}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: jenkins
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: apt
+  name: apt
+  namespace: ${NAMESPACE}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    name: jenkins
 ```
 <br><br>
-
-### Configure Bitesize files
-Now lets setup the config files. These files are called bitesize files because that's how they originally came about. Thus all the files end with .bitesize.<br>
-
-These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
-
-
-##### environments.bitesize
-```
-project: docs-dev
-environments:
-  - name: production
-    namespace: docs-dev
-    deployment:
-      method: rolling-upgrade
-    services:
-      - name: docs-app
-        external_url: kubecon.dev-bite.io
-        port: 80 # this is the port number the application responds on in each container/instance/pod
-        ssl: "true"  # must be in double quotes - interpolated as a string
-        replicas: 2
-```
-
-##### build.bitesize
-```
-project: docs-dev
-components:
-  - name: docs-app
-    os: linux
-    dependencies:
-      - type: debian-package
-        package: php5
-        repository: ppa:ondrej/php
-      - type: debian-package
-        package: libapache2-mod-php5
-      - type: debian-package
-        package: python2.7
-      - type: debian-package
-        package: python-pip
-      - type: pip-package
-        package: PyGithub
-      - type: pip-package
-        package: pyyaml
-      - type: debian-package
-        package: couscous
-        location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
-    repository:
-      git: git@github.com:pearsontechnology/kubecon_docs.git
-      branch: master
-    env:
-      - name: GIT_USERNAME
-        value: kubecondemos@gmail.com   # demo git user
-      - name: GIT_PASSWORD
-        value: 21874b392e38ded25c91a3ecfba57ba384126087    # demo git user token
-    build:
-      - shell: cat /dev/null > couscous.yml
-      - shell: python docsgen.py
-      - shell: couscous generate
-      - shell: mkdir -p var/www/html
-      - shell: cp run.sh var/
-      - shell: cp -a .couscous/generated/* var/www/html
-      - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
-    artifacts:
-      - location: "*.deb"
-```
-
-##### application.bitesize
-```
-project: docs-dev # aka namespace
-applications:
-  - name: docs-app
-    runtime: ubuntu-httpdfcgi:1.3
-    version: "0.8.35"
-    dependencies:
-      - name: docswebsite
-        type: debian-package
-        origin:
-          build: docs-app
-        version: 1.0
-    command: "/var/run.sh"
-```
-
 
 
 <a id="details"></a>
