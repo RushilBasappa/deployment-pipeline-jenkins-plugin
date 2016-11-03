@@ -307,3 +307,13 @@ spec:
   selector:
     name: jenkins
 ```
+
+
+Check if Jenkins is up:
+`kubectl get pods --namespace=default`
+
+`jenkins-2316707662-jl0by    2/2       Running   0          23h`
+
+
+Once jenkins is 'running' access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort.
+<img src="../images/jenkins.png" alt="jenkins" style="width: 300px;"/>
