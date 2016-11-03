@@ -111,6 +111,12 @@ ${SEED_JOBS_REPO}  - location of git repo where bitesize config files exist. Ex.
 ${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo.
 
 
+With [Nginx-Controller](#nginxcontroller)
+or
+Exposed via [Kubernetes Service](#kubernetesservice)
+
+<a id="nginxcontroller"></a>
+Nginx Controller Example:
 ```
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -202,34 +208,102 @@ spec:
         name: jenkins-data
       - emptyDir: {}
         name: aptly-repository
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          labels:
-            name: jenkins
-          name: jenkins
-          namespace: default
-        spec:
-          ports:
-          - port: 80
-            protocol: TCP
-            targetPort: 8080
-          selector:
-            name: jenkins
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          labels:
-            name: apt
-          name: apt
-          namespace: default
-        spec:
-          ports:
-          - port: 80
-            protocol: TCP
-            targetPort: 80
-          selector:
-            name: jenkins
+```
+
+
+### Expose Jenkins externally
+
+[Using Nginx Controller](#nginxcontroller) OR via [Kubernetes Service](#kubernetesservice)
+
+
+<a id="nginxcontroller"></a>
+<br>
+#### Nginx Controller Example:
+${JENKINS_HOST} - URL to reach Jenkins interface<br>
+
+```
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:s
+  name: jenkins
+  namespace: default
+spec:
+  rules:
+  - host: ${JENKINS_HOST}
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 80
+        path: /
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: jenkins
+  name: jenkins
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: jenkins
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: apt
+  name: apt
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    name: jenkins
+```
+
+
+
+
+<a id="kubernetesservice"></a>
+#### Kubernetes Service Example:
+```
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    name: jenkins
+  name: jenkins
+  namespace: default
+spec:
+  selector:
+    name: jenkins
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      nodePort: 9376
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: apt
+  name: apt
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    name: jenkins
 ```
