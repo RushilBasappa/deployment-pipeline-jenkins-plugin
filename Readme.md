@@ -17,10 +17,6 @@ This can be added to your workers/minions with
 kubectl label nodes <node_name> role=minion
 ```
 
-
-<br><br>
-
-
 <a id="details"></a>
 ## Project Details
 

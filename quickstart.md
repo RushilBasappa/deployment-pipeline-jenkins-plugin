@@ -1,16 +1,26 @@
 ## Sample App
 
   * Create Repo
-  * Deploy Jenkins
   * Configure Bitesize files
+  * Deploy Jenkins
 
 <br>
+
+## Requirements:
+  * Existing Kubernetes Cluster
+  * Kubernetes minions have `role=minion` as node label.
+
+This can be added to your workers/minions with
+```
+kubectl label nodes <node_name> role=minion
+
+
 ### Create a Repo
 Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
 <br><br>
 
 ### Configure Bitesize files
-Now lets setup the config files.
+Now lets setup the config files. We'll add the following files to the repository you just created.
 
 These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
 
