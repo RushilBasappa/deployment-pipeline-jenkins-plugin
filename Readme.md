@@ -78,8 +78,12 @@ environments:
       timeout: 60 # Time in seconds to wait before health check script times out
 ```
 
-**environments:**
+**environments:**<br>
+Every environment starts with a name.<br>
+Ex. `- name: production`
 
+Within each environment we much specify the namespace in which the environment deploys to.<br>
+`namespace: docs-dev`
 
 ## application.bitesize
 
