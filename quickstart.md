@@ -17,8 +17,9 @@ kubectl label nodes <node_name> role=minion
 
 <a id="createrepo"></a>
 ### Create a Repo
-Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
+Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. We'll call this the `SEED_JOBS_REPO` You will need to provide a `GIT_PRIVATE_KEY` for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
 <br><br>
+
 
 <a id="configurefiles"></a>
 ### Configure Bitesize files
@@ -106,7 +107,7 @@ applications:
 ### Deploy Jenkins
 
 precursors:<br>
-**git repo url**  - ex.'git@github.com:...'<br>
+**SEED_JOBS_REPO**  - ex.'git@github.com:...'<br>
 **ssh private key** - access to github repo
 
 #### Kubernetes Config for Jenkins
