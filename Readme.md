@@ -117,7 +117,7 @@ precursors:<br>
 **ssh private key** - access to github repo
 
 #### Jenkins Kubernetes Config Template
-Substitute the following vars into the Jenkins Template
+Substitute the following vars into the Jenkins Template<br><br>
 ${NAMESPACE} - Namespace you want to deploy Jenkins into<br>
 ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
 ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
