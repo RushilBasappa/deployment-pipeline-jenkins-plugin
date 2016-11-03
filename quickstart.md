@@ -316,4 +316,4 @@ Check if Jenkins is up:
 
 
 Once jenkins is 'running' access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort.
-<img src="../images/jenkins.png" alt="jenkins" style="width: 300px;"/>
+<img src="images/jenkins.png" alt="jenkins" style="width: 300px;"/>
