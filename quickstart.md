@@ -117,7 +117,6 @@ ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
 ${SEED_JOBS_REPO} - location of git repo where config files will exist<br>
 ${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo<br>
 ${JENKINS_IMAGE} - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
-${JENKINS_HOST} - URL to reach Jenkins interface<br><br>
 
 
 ```
@@ -211,13 +210,24 @@ spec:
         name: jenkins-data
       - emptyDir: {}
         name: aptly-repository
+```
+
+
+
+
+If you are running [nginx-controller](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx-alpha) you can use something like the following kubernetes config to reach the Jenkins interface.
+
+${NAMESPACE} - Namespace you want to deploy Jenkins into<br>
+${JENKINS_HOST} - URL to reach Jenkins interface<br><br>
+
+
+```
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: jenkins
   namespace: ${NAMESPACE}
-  ssl: true
 spec:
   rules:
   - host: ${JENKINS_HOST}
