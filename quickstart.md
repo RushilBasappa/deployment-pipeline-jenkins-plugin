@@ -13,7 +13,7 @@
 This can be added to your workers/minions with
 ```
 kubectl label nodes <node_name> role=minion
-
+```
 
 ### Create a Repo
 Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
