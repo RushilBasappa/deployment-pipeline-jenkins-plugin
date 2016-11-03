@@ -27,7 +27,7 @@ Now lets setup the config files. We'll add the following files to the repository
 
 These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
 
-${EXTERNAL_URL} - URL you with to hit the sample app with.
+${EXTERNAL_URL} - URL for sample app.
 
 ##### environments.bitesize
 ```
