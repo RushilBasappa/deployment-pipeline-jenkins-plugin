@@ -157,7 +157,7 @@ environments:
       - name: docs-app
         external_url: kubecon.dev-bite.io
         port: 80 # this is the port number the application responds on in each container/instance/pod
-        ssl: true
+        ssl: "true"  # must be in double quotes - interpolated as a string
         replicas: 2
 ```
 
