@@ -32,7 +32,41 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     Builds out the whole CI/CD pipeline
 
 
-Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.
+Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.<br><br>
+
+Global definition:
+`project:` - every .bitesize must specify the project name<br>
+
+Ex. `project: docs`
+
+## environments.bitesize
+
+environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes Namespaces are required.
+
+naming convention:<br>
+`<project_name>-<three_letter_env_name>`<br>
+Ex. example-dev<br>
+Ex. example-tst<br>
+Ex. example-prd<br>
+<br>
+
+
+
+
+
+
+
+## application.bitesize
+
+
+
+## build.bitesize
+
+
+
+
+
+
 <br>
 First, let’s define some terms to understand what exactly they mean in our context:
 
