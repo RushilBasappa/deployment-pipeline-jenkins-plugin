@@ -47,6 +47,3 @@ First, let’s define some terms to understand what exactly they mean in our con
 | *Build Dependency* | A tool or utility necessary to create a Component Artifact. |
 | *Service* | Instance (or multiple grouped instances in HA mode) of a running application. |
 | *Environment* | Collection of services, grouped together to represent a fully working application stack. |
-
-
-`external_url` [nginx-controller](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx-alpha) and/or don't need [Ingress](http://kubernetes.io/docs/user-guide/ingress/).

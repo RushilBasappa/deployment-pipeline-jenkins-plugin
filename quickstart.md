@@ -25,7 +25,7 @@ Create a git repo where you will store .bitesize configuration files. This can b
 ### Configure Bitesize files
 Now lets setup the config files. We'll add the following files to the repository you just created.
 
-These files are yaml based and will help you get a sample app up and running. Refer [Project Details](readme.md#details) for additional information on Build and Job definitions.
+These files are yaml based and will help you get a sample app up and running.
 
 ##### environments.bitesize
 ```
