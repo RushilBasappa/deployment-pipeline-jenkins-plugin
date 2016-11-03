@@ -207,28 +207,8 @@ spec:
 
 
 
-If you are running [nginx-controller](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx-alpha) you can use something like the following kubernetes config to reach the Jenkins interface.
-
-Replace the vars in the config below:<br>
-${JENKINS_HOST} - URL to reach Jenkins interface<br><br>
-
 
 ```
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: jenkins
-  namespace: default
-spec:
-  rules:
-  - host: ${JENKINS_HOST}
-    http:
-      paths:
-      - backend:
-          serviceName: jenkins
-          servicePort: 80
-        path: /
 ---
 apiVersion: v1
 kind: Service
