@@ -1,8 +1,8 @@
 ## Sample App
 
-  * Create Repo
-  * Configure Bitesize files
-  * Deploy Jenkins
+  * [Create Repo](#createrepo)
+  * [Configure Bitesize files](#configurefiles)
+  * [Deploy Jenkins](#deployjenkins)
 
 <br>
 
@@ -15,10 +15,12 @@ This can be added to your workers/minions with
 kubectl label nodes <node_name> role=minion
 ```
 
+<a id="createrepo"></a>
 ### Create a Repo
 Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access from Jenkins is recommended.
 <br><br>
 
+<a id="configurefiles"></a>
 ### Configure Bitesize files
 Now lets setup the config files. We'll add the following files to the repository you just created.
 
@@ -100,6 +102,7 @@ applications:
     command: "/var/run.sh"
 ```
 
+<a id="deployjenkins"></a>
 ### Deploy Jenkins
 
 precursors:<br>
