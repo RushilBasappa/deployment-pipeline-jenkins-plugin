@@ -145,9 +145,81 @@ Now lets setup the config files. These files are called bitesize files because t
 These config files will help you get a sample app up and running. Refer "Project Details" for additional information on Build and Job definitions.
 
 
+##### environments.bitesize
+```
+project: docs-dev
+environments:
+  - name: production
+    namespace: docs-dev
+    deployment:
+      method: rolling-upgrade
+    services:
+      - name: docs-app
+        external_url: kubecon.dev-bite.io
+        port: 80 # this is the port number the application responds on in each container/instance/pod
+        ssl: true
+        replicas: 2
+```
 
+##### build.bitesize
+```
+# see https://mycloud.atlassian.net/wiki/display/BITE/Jenkins
+project: docs-dev
+components:
+  - name: docs-app
+    os: linux
+    dependencies:
+      - type: debian-package
+        package: php5
+        repository: ppa:ondrej/php
+      - type: debian-package
+        package: libapache2-mod-php5
+      - type: debian-package
+        package: python2.7
+      - type: debian-package
+        package: python-pip
+      - type: pip-package
+        package: PyGithub
+      - type: pip-package
+        package: pyyaml
+      - type: debian-package
+        package: couscous
+        location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
+    repository:
+      git: git@github.com:pearsontechnology/kubecon_docs.git
+      branch: master
+    env:
+      - name: GIT_USERNAME
+        value: kubecondemos@gmail.com
+      - name: GIT_PASSWORD
+        value: 21874b392e38ded25c91a3ecfba57ba384126087
+    build:
+      - shell: cat /dev/null > couscous.yml
+      - shell: python docsgen.py
+      - shell: couscous generate
+      - shell: mkdir -p var/www/html
+      - shell: cp run.sh var/
+      - shell: cp -a .couscous/generated/* var/www/html
+      - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
+    artifacts:
+      - location: "*.deb"
+```
 
-
+##### application.bitesize
+```
+project: docs-dev # aka namespace
+applications:
+  - name: docs-app
+    runtime: ubuntu-httpdfcgi:1.3
+    version: "0.8.35"
+    dependencies:
+      - name: docswebsite
+        type: debian-package
+        origin:
+          build: docs-app
+        version: 1.0
+    command: "/var/run.sh"
+```
 
 
 
