@@ -315,5 +315,5 @@ Check if Jenkins is up:
 `jenkins-2316707662-jl0by    2/2       Running   0          23h`
 
 
-Once jenkins is 'running' access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort with `${JENKINS_ADMIN_USER}` and `${JENKINS_ADMIN_PASSWORD}` and you should see Jenkins working.<br>
+Once jenkins is 'running' access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort with `${JENKINS_ADMIN_USER}` and `${JENKINS_ADMIN_PASSWORD}` and you should see Jenkins working.<br><br>
 <img src="images/jenkins.png" alt="jenkins" style="width: 300px;"/>
