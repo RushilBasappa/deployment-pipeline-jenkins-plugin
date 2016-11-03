@@ -2,7 +2,7 @@
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
-* [Quickstart](#quickstart)
+* [Quickstart](quickstart.md)
 * [Project Details](#details)
 
 
@@ -113,7 +113,7 @@ applications:
 ### Deploy Jenkins
 
 precursors:<br>
-**git repo url**  - ex.'git@github.com:...........'<br>
+**git repo url**  - ex.'git@github.com:...'<br>
 **ssh private key** - access to github repo
 
 #### Jenkins Kubernetes Config Template
