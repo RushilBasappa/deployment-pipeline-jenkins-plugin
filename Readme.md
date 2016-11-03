@@ -12,7 +12,10 @@ Our Jenkins plugin deploys all containers to Kubernetes minions that have a labe
 ```
 role=minion
 ```
-
+This can be added to your workers/minions with
+```
+kubectl label nodes <node_name> role=minion
+```
 
 <a id="quickstart"></a>
 ## Quickstart
