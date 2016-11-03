@@ -50,10 +50,35 @@ Ex. example-tst<br>
 Ex. example-prd<br>
 <br>
 
+Breaking down the environments file
 
+```
+project: docs-dev
+environments:
+  - name: production
+    namespace: docs-dev
+    deployment:
+      method: rolling-upgrade
+    services:
+      - name: docs-app
+        external_url: kubecon.dev-bite.io
+        port: 80 # this is the port number the application responds on in each container/instance/pod
+        ssl: "true"
+        replicas: 2
+    tests:
+      - name: docs site tests
+        repository: git@github.com:pearsontechnology/kubecon_docs_tests.git
+        branch: master
+        commands:
+          - shell: echo serviceBaseUrl=http://escrow.reg.svc.cluster.local:3004 > integration/test.properties
+    health_check:
+      command:
+        - /bin/health_script.sh # Path to your script. Exit code 0 means success
+      initial_delay: 30 # Time in seconds to wait for a fresh instance
+      timeout: 60 # Time in seconds to wait before health check script times out
+```
 
-
-
+**environments:**
 
 
 ## application.bitesize
