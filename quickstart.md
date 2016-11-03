@@ -103,18 +103,15 @@ applications:
 <br><br>
 <a id="deployjenkins"></a>
 ### Deploy Jenkins
-
-precursors:<br>
-**SEED_JOBS_REPO**  - ex.'git@github.com:...'<br>
-**ssh private key** - access to github repo
+<br>
 
 #### Kubernetes Config for Jenkins
 
 Substitute the following vars into the config below:<br><br>
 ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
 ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
-${SEED_JOBS_REPO} - location of git repo where config files will exist<br>
-${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo<br>
+**${SEED_JOBS_REPO}**  - location of git repo where config files will exist. Ex.'git@github.com:...'<br>
+**${GIT_PRIVATE_KEY}** - Private SSH key used to access the git repo.
 
 
 ```
