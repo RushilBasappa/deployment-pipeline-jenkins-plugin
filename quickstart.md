@@ -315,5 +315,15 @@ Check if Jenkins is up:
 `jenkins-2316707662-jl0by    2/2       Running   0          23h`
 
 
-Once jenkins is 'running' access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort with `${JENKINS_ADMIN_USER}` and `${JENKINS_ADMIN_PASSWORD}` and you should see Jenkins working.<br><br>
-<img src="images/jenkins.png" alt="jenkins" style="width: 300px;"/>
+Once jenkins is 'running', access the Jenkins UI through the ${JENKINS_HOST} url or the Kubernetes external service on nodePort with `${JENKINS_ADMIN_USER}` and `${JENKINS_ADMIN_PASSWORD}` and you should see Jenkins working.<br><br>
+
+<img src="images/jenkins.png" alt="jenkins" style="width: 300px;"/><br><br>
+
+
+You shouldn't have to do anything else. Jenkins will build the sample app for you with two replicas.
+Once complete you can run - `kubect get pods --namespace=default`
+
+```
+docs-app-1004779489-8smwb   1/1       Running   0          2h
+docs-app-1004779489-tn4ht   1/1       Running   0          2h
+```
