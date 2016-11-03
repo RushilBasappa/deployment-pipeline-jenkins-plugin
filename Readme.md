@@ -34,7 +34,7 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
 
 Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.<br><br>
 
-**Global Definition** - 
+**Global Definition** - <br>
 `project` - every .bitesize config file must specify the project name. This allows Jenkins to tie the various config files as one complete Jenkins workflow.<br>
 
 Ex. `project: docs`
