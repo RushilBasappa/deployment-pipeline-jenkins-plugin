@@ -7,7 +7,7 @@
 <br>
 
 ## Requirements:
-  * Existing Kubernetes Cluster
+  * Existing Kubernetes Cluster with "default" namespace
   * Kubernetes minions have `role=minion` as node label.
 
 This can be added to your workers/minions with
@@ -110,13 +110,12 @@ precursors:<br>
 **ssh private key** - access to github repo
 
 #### Kubernetes Config for Jenkins
-Substitute the following vars into the Jenkins Template<br><br>
-${NAMESPACE} - Namespace you want to deploy Jenkins into<br>
+
+Substitute the following vars into the config below:<br><br>
 ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
 ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
 ${SEED_JOBS_REPO} - location of git repo where config files will exist<br>
 ${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo<br>
-${JENKINS_IMAGE} - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
 
 
 ```
@@ -126,7 +125,7 @@ metadata:
   labels:
     name: jenkins
   name: jenkins
-  namespace: ${NAMESPACE}
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -173,7 +172,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: ${JENKINS_IMAGE}
+        image: bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1000
@@ -217,7 +216,7 @@ spec:
 
 If you are running [nginx-controller](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx-alpha) you can use something like the following kubernetes config to reach the Jenkins interface.
 
-${NAMESPACE} - Namespace you want to deploy Jenkins into<br>
+default - Namespace you want to deploy Jenkins into<br>
 ${JENKINS_HOST} - URL to reach Jenkins interface<br><br>
 
 
@@ -227,7 +226,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: jenkins
-  namespace: ${NAMESPACE}
+  namespace: default
 spec:
   rules:
   - host: ${JENKINS_HOST}
@@ -244,7 +243,7 @@ metadata:
   labels:
     name: jenkins
   name: jenkins
-  namespace: ${NAMESPACE}
+  namespace: default
 spec:
   ports:
   - port: 80
@@ -259,7 +258,7 @@ metadata:
   labels:
     name: apt
   name: apt
-  namespace: ${NAMESPACE}
+  namespace: default
 spec:
   ports:
   - port: 80
