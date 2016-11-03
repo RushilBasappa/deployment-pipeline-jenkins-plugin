@@ -103,7 +103,6 @@ applications:
 <br><br>
 <a id="deployjenkins"></a>
 ### Deploy Jenkins
-<br>
 
 Substitute the following vars into the config below:<br><br>
 ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
