@@ -30,7 +30,7 @@ Create a git repo where you will store .bitesize configuration files. This can b
 <br><br>
 
 ### Configure Bitesize files
-Now lets setup the config files. These files are called bitesize files because that's how they originally came about. Thus all the files end with .bitesize.<br>
+Now lets setup the config files. 
 
 These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
 
