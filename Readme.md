@@ -163,7 +163,6 @@ environments:
 
 ##### build.bitesize
 ```
-# see https://mycloud.atlassian.net/wiki/display/BITE/Jenkins
 project: docs-dev
 components:
   - name: docs-app
@@ -190,9 +189,9 @@ components:
       branch: master
     env:
       - name: GIT_USERNAME
-        value: kubecondemos@gmail.com
+        value: kubecondemos@gmail.com   # demo git user
       - name: GIT_PASSWORD
-        value: 21874b392e38ded25c91a3ecfba57ba384126087
+        value: 21874b392e38ded25c91a3ecfba57ba384126087    # demo git user token
     build:
       - shell: cat /dev/null > couscous.yml
       - shell: python docsgen.py
