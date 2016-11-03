@@ -123,7 +123,7 @@ ${JENKINS_ADMIN_USER} - Jenkins Admin user name<br>
 ${JENKINS_ADMIN_PASSWORD} - Jenkins Admin password<br>
 ${SEED_JOBS_REPO} - location of git repo where config files will exist<br>
 ${GIT_PRIVATE_KEY} - Private SSH key used to access the git repo<br>
-${JENKINS_IMAGE} - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28<br><br>
+${JENKINS_IMAGE} - as of this writing - bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
 ${JENKINS_HOST} - URL to reach Jenkins interface
 
 Jenkins Template
