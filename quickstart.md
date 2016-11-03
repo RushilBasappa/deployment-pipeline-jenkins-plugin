@@ -202,41 +202,34 @@ spec:
         name: jenkins-data
       - emptyDir: {}
         name: aptly-repository
-```
-
-
-
-
-
-```
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    name: jenkins
-  name: jenkins
-  namespace: default
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8080
-  selector:
-    name: jenkins
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    name: apt
-  name: apt
-  namespace: default
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    name: jenkins
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            name: jenkins
+          name: jenkins
+          namespace: default
+        spec:
+          ports:
+          - port: 80
+            protocol: TCP
+            targetPort: 8080
+          selector:
+            name: jenkins
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            name: apt
+          name: apt
+          namespace: default
+        spec:
+          ports:
+          - port: 80
+            protocol: TCP
+            targetPort: 80
+          selector:
+            name: jenkins
 ```
