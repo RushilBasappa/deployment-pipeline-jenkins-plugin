@@ -27,6 +27,7 @@ Now lets setup the config files. We'll add the following files to the repository
 
 These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
 
+${EXTERNAL_URL} - URL you with to hit the sample app with.
 
 ##### environments.bitesize
 ```
@@ -38,11 +39,10 @@ environments:
       method: rolling-upgrade
     services:
       - name: docs-app
-        external_url: kubecon.dev-bite.io
         port: 80 # this is the port number the application responds on in each container/instance/pod
-        ssl: "true"  # must be in double quotes - interpolated as a string
         replicas: 2
 ```
+
 
 ##### build.bitesize
 ```
@@ -217,7 +217,7 @@ spec:
 
 If you are running [nginx-controller](https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx-alpha) you can use something like the following kubernetes config to reach the Jenkins interface.
 
-default - Namespace you want to deploy Jenkins into<br>
+Replace the vars in the config below:<br>
 ${JENKINS_HOST} - URL to reach Jenkins interface<br><br>
 
 
