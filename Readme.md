@@ -26,7 +26,7 @@ kubectl label nodes <node_name> role=minion
 
 <br>
 ### Create a Repo
-Create a git repo where you will store the configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
+Create a git repo where you will store .bitesize configuration files. This can be pretty much anywhere. You will need to provide an ssh key for access to the repo from Jenkins. Read-Only access is recommended.
 <br><br>
 
 ### Deploy Jenkins
