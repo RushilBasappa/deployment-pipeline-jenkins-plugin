@@ -30,7 +30,7 @@ Create a git repo where you will store .bitesize configuration files. This can b
 <br><br>
 
 ### Configure Bitesize files
-Now lets setup the config files. 
+Now lets setup the config files.
 
 These files are yaml based and will help you get a sample app up and running. Refer [Project Details](#details) for additional information on Build and Job definitions.
 
@@ -114,7 +114,7 @@ applications:
 
 precursors:<br>
 **git repo url**  - ex.'git@github.com:...........'<br>
-**ssh private key**<br><br> - for access to github repo
+**ssh private key** - access to github repo
 
 #### Jenkins Kubernetes Config Template
 Substitute the following vars into the Jenkins Template
