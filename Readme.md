@@ -373,7 +373,7 @@ build:
   - shell: cp -a .couscous/generated/* var/www/html
   - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
 ```
-
+<br>
 ### `artifacts`
 <br>
 Currently all build artifacts are debian packages. These artifacts will be added to the base image and then a docker image will be created and versioned with a datetimestamp.
