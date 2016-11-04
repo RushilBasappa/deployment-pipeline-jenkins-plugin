@@ -44,6 +44,7 @@ Ex. `project: docs`
 Consists of:<br>
   * [project name](#projectname)<br>
   * [environments](#environments)<br>
+    * [name](#environmentname)
     * [deployment method](#deploymentmethod)<br>
     * [services](#services)<br>
     * [tests]<br>
@@ -90,6 +91,7 @@ environments:
 Breaking down the environments.bitesize config.<br>
 
 <a id="environments"></a>
+<a id="environmentname"></a>
 Every environment starts with a `name`.<br>
 Ex. `- name: production`
 
@@ -129,7 +131,30 @@ services:
 
 <a id="tests"></a>
 ### `tests`
+Tests assume a repository will be required to pull in the tests to run.<br>
+These tests can be anything so long as the correct dependencies for Jenkins to execute the tests have been installed.<br>
+There is no limit on the number of tests that can be created so long as they have a unique name.<br>
 
+```
+tests:
+  - name: docs site tests
+    repository: git@github.com:pearsontechnology/kubecon_docs_tests.git
+    branch: master
+    commands:
+      - shell: echo serviceBaseUrl=http://docs.default.svc.cluster.local:80 > integration/test.properties
+```
+
+### `health_check`
+are directly associated to liveness probes in Kubernetes.<br>
+Notice how `initial_delay` and `timeout` set by seconds.<br>
+
+```
+health_check:
+  command:
+    - /bin/health_script.sh # Path to your script. Exit code 0 means success
+  initial_delay: 30 # Time in seconds to wait for a fresh instance
+  timeout: 60 # Time in seconds to wait before health check script times out
+```
 
 ## application.bitesize
 
