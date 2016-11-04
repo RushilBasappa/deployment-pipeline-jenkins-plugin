@@ -41,13 +41,13 @@ Ex. `project: docs`
 
 ## environments.bitesize
 
-Consists of:
-[project name](#projectname)
-[environments](#environments)
-  [deployment method](#deploymentmethod)
-  [services](#services)
-  [tests]
-  [health checks]
+Consists of:<br>
+[project name](#projectname)<br>
+[environments](#environments)<br>
+  [deployment method](#deploymentmethod)<br>
+  [services](#services)<br>
+  [tests]<br>
+  [health checks]<br>
 
 
 environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes Namespaces are required.
