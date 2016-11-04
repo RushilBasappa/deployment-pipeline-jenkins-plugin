@@ -95,9 +95,9 @@ Within each environment we must specify the namespace in which the environment d
 `namespace: docs-dev`<br>
 <br>
 <a id="deploymentmethod"></a>
-### `method`
-of deployment is then specified.<br>
-A `mode` can also be specified with the deployment method. This is generally used if a manual deployment is desired.
+### `deployment method`
+<br>
+A `mode` (optional) can also be specified with the deployment method. This is generally used if a manual deployment is desired.
 ```
 deployment:
   method: rolling-upgrade
