@@ -308,6 +308,7 @@ There are three package types currently supported.<br>
 <br>
 Notice the first dependency is install from an alternate ppa `repository`.<br>
 And the last line has a `location` called out for a package that exists in an S3 repository.<br>
+If nothing is specified Jenkins will get packages from default repos.<br>
 
 ```
 dependencies:
