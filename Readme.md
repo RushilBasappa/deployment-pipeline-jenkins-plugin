@@ -233,6 +233,11 @@ Consists of:
   * [build sequence](#buildcommands)
   * [artifacts](#artifact)
 
+Components are the basic building block of the build.bitesize manifest.<br>
+Each component describes how to build a given application.<br>
+There will be as many components in build.bitesize as there are applications in application.bitesize.<br><br>
+
+Here is an example of a complete build.bitesize manifest for a single application.<br>
 
 ```
 project: docs-dev
@@ -275,7 +280,21 @@ components:
     artifacts:
       - location: "*.deb"
 ```
+<br>
 
+Breaking down the environments.bitesize manifest.<br>
+
+<a id="components"></a>
+### Components
+
+As with everything we specify a name for each component which correlates directly to the application name in application.bitesize. <br>
+But we also specify an `os`. Currently the only available `os` is linux but we intend to allow for the MicroContainer Framework by MicroSoft when supported.<br>
+
+```
+components:
+  - name: docs-app
+    os: linux
+```
 
 
 
