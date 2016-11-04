@@ -50,16 +50,16 @@ Consists of:<br>
     * [health checks]<br>
 
 
-environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes namespaces are required.
+environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes namespaces are required.<br><br>
 <a id="projectname"></a>
 naming convention:<br>
-`<project_name>-<three_letter_env_name>`<br>
+`<project_name>-<three_letter_env_name>`<br><br>
 Ex. example-dev<br>
 Ex. example-tst<br>
 Ex. example-prd<br>
 <br>
 
-Breaking down the environments file
+Here is an example of a complete environments.bitesize config.<br>
 
 ```
 project: docs-dev
@@ -86,6 +86,8 @@ environments:
       initial_delay: 30 # Time in seconds to wait for a fresh instance
       timeout: 60 # Time in seconds to wait before health check script times out
 ```
+<br>
+Breaking down the environments.bitesize config.<br>
 
 <a id="environments"></a>
 Every environment starts with a `name`.<br>
