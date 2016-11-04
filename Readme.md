@@ -88,14 +88,15 @@ environments:
 ```
 
 <a id="environments"></a>
-Every environment starts with a name.<br>
+Every environment starts with a `name`.<br>
 Ex. `- name: production`
 
-Within each environment we much specify the namespace in which the environment deploys to.<br>
-`namespace: docs-dev`
+Within each environment we must specify the namespace in which the environment deploys to. <br>
+`namespace: docs-dev`<br>
 
 <a id="deploymentmethod"></a>
-Then specify a deployment `method`.
+### Deployment `method`.
+is then specified.
 ```
 deployment:
   method: rolling-upgrade
