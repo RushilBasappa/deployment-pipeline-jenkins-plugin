@@ -121,7 +121,9 @@ in the pipeline make up multiple Kubernetes Resources.
 The name for each service must match the application name for the given app in applications.bitesize.<br>
 Notice we also need to specify what port(s) the containers will use for each service.<br>
 Not specifying an `external_url` will result in a Kubernetes Ingress not being created.<br>
-And lastly, while we recommend using alternate methods, environment vars can be specified here with `env`.<br>
+Environment vars can be specified here with `env`.<br>
+
+**Note** : `env` is not recommended because it requires a redeploy of the app to modify the environment variable specified.
 
 ```
 services:
