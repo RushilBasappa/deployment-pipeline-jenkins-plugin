@@ -143,6 +143,7 @@ tests:
     commands:
       - shell: echo serviceBaseUrl=http://docs.default.svc.cluster.local:80 > integration/test.properties
 ```
+<br>
 
 <a id="healthcheck"></a>
 ### `health_check`
