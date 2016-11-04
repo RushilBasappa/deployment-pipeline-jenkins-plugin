@@ -282,7 +282,7 @@ components:
 ```
 <br>
 
-Breaking down the environments.bitesize manifest.<br>
+Breaking down the build.bitesize manifest.<br>
 
 <a id="components"></a>
 ### Components
@@ -295,6 +295,40 @@ components:
   - name: docs-app
     os: linux
 ```
+<br>
+<a id="builddependencies"></a>
+### dependencies
+
+For each component we need to specify the build dependencies. This ensures Jenkins has the necessary packages installed in order to build the properly.
+<br>
+There are three package types currently supported.<br>
+  * debian-package
+  * pip-package
+  * gem-package
+<br>
+Notice the first dependency is install from an alternate ppa repository.<br>
+And the last line has a `location` called out for a package that exists in an S3 repository.<br>
+
+```
+dependencies:
+  - type: debian-package
+    package: php5
+    repository: ppa:ondrej/php
+  - type: debian-package
+    package: libapache2-mod-php5
+  - type: debian-package
+    package: python2.7
+  - type: debian-package
+    package: python-pip
+  - type: pip-package
+    package: PyGithub
+  - type: pip-package
+    package: pyyaml
+  - type: debian-package
+    package: couscous
+    location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
+```
+
 
 
 
