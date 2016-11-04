@@ -93,15 +93,10 @@ Ex. `- name: production`
 
 Within each environment we must specify the namespace in which the environment deploys to. <br>
 `namespace: docs-dev`<br>
-
+<br>
 <a id="deploymentmethod"></a>
 ### `method`
-of deployment is then specified.
-```
-deployment:
-  method: rolling-upgrade
-```
-
+of deployment is then specified.<br>
 A `mode` can also be specified with the deployment method. This is generally used if a manual deployment is desired.
 ```
 deployment:
@@ -130,7 +125,8 @@ services:
       value: escrow
 ```
 
-
+<a id="tests"></a>
+### `tests`
 
 
 ## application.bitesize
