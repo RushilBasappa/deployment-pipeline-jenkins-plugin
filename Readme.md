@@ -40,7 +40,7 @@ Your project will store these files in a git repository. It can be either your s
 - every .bitesize manifest file must specify the project name. This allows Jenkins to tie the various manifest files together as one complete Jenkins workflow.<br>
 
 Ex. `project: docs`
-
+<br><br>
 ## environments.bitesize
 
 Consists of:<br>
