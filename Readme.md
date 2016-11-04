@@ -174,13 +174,13 @@ health_check:
 defines how to build one or more applications using required components and external dependencies.
 
 Consists of:<br>
-  * [project name](#projectname)<br>
-  * [applications](#applications)<br>
-    * [name](#applicationname)
-    * [runtime](#runtime)<br>
-    * [version](#applicationversion)<br>
-    * [dependencies](#applicationdependencies)<br>
-    * [command](#command)<br>
+  * project namebr>
+  * applications<br>
+    * name
+    * runtime<br>
+    * version<br>
+    * dependencies<br>
+    * command<br>
 
 All in all, application.bitesize is relatively simple.
 
