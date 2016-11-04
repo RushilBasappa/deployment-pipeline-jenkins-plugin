@@ -107,6 +107,7 @@ deployment:
   method: rolling-upgrade
   mode: manual
 ```
+<br>
 <a id="services"></a>
 ### `services`
 in the pipeline make up multiple Kubernetes Resources.
