@@ -47,8 +47,8 @@ Consists of:<br>
     * [name](#environmentname)
     * [deployment method](#deploymentmethod)<br>
     * [services](#services)<br>
-    * [tests]<br>
-    * [health checks]<br>
+    * [tests](#tests)<br>
+    * [health checks](#healthchecks)<br>
 
 
 environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes namespaces are required.<br><br>
@@ -144,6 +144,7 @@ tests:
       - shell: echo serviceBaseUrl=http://docs.default.svc.cluster.local:80 > integration/test.properties
 ```
 
+<a id="healthcheck"></a>
 ### `health_check`
 are directly associated to liveness probes in Kubernetes.<br>
 Notice how `initial_delay` and `timeout` set by seconds.<br>
