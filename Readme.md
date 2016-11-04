@@ -37,7 +37,7 @@ Your project will store these files in a git repository. It can be either your s
 **Global Definition** - <br>
 <a id="projectname"></a>
 ### `project`
-- every .bitesize config file must specify the project name. This allows Jenkins to tie the various config files together as one complete Jenkins workflow.<br>
+- every .bitesize manifest file must specify the project name. This allows Jenkins to tie the various manifest files together as one complete Jenkins workflow.<br>
 
 Ex. `project: docs`
 
@@ -62,7 +62,7 @@ Ex. example-tst<br>
 Ex. example-prd<br>
 <br>
 
-Here is an example of a complete environments.bitesize config.<br>
+Here is an example of a complete environments.bitesize manifest.<br>
 
 ```
 project: docs-dev
@@ -90,7 +90,7 @@ environments:
       timeout: 60 # Time in seconds to wait before health check script times out
 ```
 <br>
-Breaking down the environments.bitesize config.<br>
+Breaking down the environments.bitesize manifest.<br>
 
 <a id="environments"></a>
 <a id="environmentname"></a>
@@ -198,7 +198,7 @@ origin:
 ```
 which correlates to the component within build.bitesize.<br><br>
 
-Here is an example of a complete application.bitesize config.<br>
+Here is an example of a complete application.bitesize manifest.<br>
 
 ```
 project: docs-dev
