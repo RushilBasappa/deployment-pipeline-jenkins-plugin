@@ -263,6 +263,7 @@ version: "0.8.35"
 ```
 
 <a id="applicationdependencies"></a>
+### `dependencies`
 Notice -<br>
 ```
 dependencies:
