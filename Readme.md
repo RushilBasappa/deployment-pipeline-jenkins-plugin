@@ -153,7 +153,7 @@ tests:
 ```
 <br>
 
-<a id="healthcheck"></a>
+<a id="healthchecks"></a>
 ### `health_check`
 are directly associated to liveness probes in Kubernetes.<br>
 Notice how `initial_delay` and `timeout` set by seconds.<br>
