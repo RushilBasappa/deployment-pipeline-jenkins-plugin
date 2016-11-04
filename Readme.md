@@ -141,6 +141,7 @@ services:
 Tests assume a repository will be required to pull in the tests to run.<br>
 These tests can be anything so long as the correct dependencies for Jenkins to execute the tests have been installed.<br>
 There is no limit on the number of tests that can be created so long as they have a unique name.<br>
+As you can see below, a different `branch` can be specified for flexibility.<br>
 
 ```
 tests:
