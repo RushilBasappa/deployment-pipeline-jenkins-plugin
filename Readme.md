@@ -41,11 +41,11 @@ First, let’s define some terms to understand what exactly they mean in context
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
--   **build.bitesize** - defines how to build one or more components
--   **application.bitesize** - defines how to build one or more
+-   **[build.bitesize](#buildbitesize)** - defines how to build one or more components
+-   **[application.bitesize](#applicationbitesize)** - defines how to build one or more
     applications using required components and
     external dependencies
--   **environments.bitesize** - defines how to layout environments,
+-   **[environments.bitesize](#environmentsbitesize)** - defines how to layout environments,
     which applications (services) to run in them, what tests to run
     against your applications and the method to deploy applications.
     Builds out the whole CI/CD pipeline
@@ -60,6 +60,7 @@ Your project will store these files in a git repository. It can be either your s
 
 Ex. `project: docs`
 <br><br>
+<a id="environmentsbitesize"></a>
 # environments.bitesize
 
 Consists of:<br>
@@ -187,7 +188,7 @@ health_check:
   timeout: 60 # Time in seconds to wait before health check script times out
 ```
 <br><br>
-
+<a id="applicationbitesize"></a>
 # application.bitesize
 <br>
 defines how to build one or more applications using required components and external dependencies.
@@ -238,7 +239,7 @@ applications:
 
 
 
-
+<a id="buildbitesize"></a>
 # build.bitesize
 
 Consists of:
