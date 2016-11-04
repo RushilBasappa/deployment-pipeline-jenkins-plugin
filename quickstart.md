@@ -171,7 +171,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.28
+        image: pearsontechnology/deployment-pipeline-jenkins-plugin:3.4.30
         imagePullPolicy: Always
         securityContext:
           runAsUser: 1000
