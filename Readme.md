@@ -268,7 +268,7 @@ components:
       - name: GIT_USERNAME
         value: kubecondemos@gmail.com
       - name: GIT_PASSWORD
-        value: 21874b392e38ded25c91a3ecfba57ba384126087
+        value: 27438ded25cfba57ba87
     build:
       - shell: cat /dev/null > couscous.yml
       - shell: python docsgen.py
@@ -354,7 +354,7 @@ env:
   - name: GIT_USERNAME
     value: kubecondemos@gmail.com
   - name: GIT_PASSWORD
-    value: 21874b392e38ded25c91a3ecfba57ba384126087
+    value: 218ba57a341687
 ```
 
 
