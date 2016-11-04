@@ -5,6 +5,34 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 * [Quickstart Sample App](quickstart.md)
 * [Project Details](#details)
 
+[environments.bitesize](#environmentsbitesize)
+* [project name](#projectname)<br>
+* [environments](#environments)<br>
+  * [name](#environmentname)
+  * [deployment method](#deploymentmethod)<br>
+  * [services](#services)<br>
+  * [tests](#tests)<br>
+  * [health checks](#healthchecks)<br>
+
+[application.bitesize](#applicationbitesize)
+* [project name](#projectname)<br>
+* [applications](#applicationbitesize)<br>
+  * [name](#applicationbitesize)<br>
+  * [runtime](#applicationbitesize)<br>
+  * [version](#applicationbitesize)<br>
+  * [dependencies](#applicationdependencies)<br>
+  * [command](#applicationcmd)<br>
+
+[build.bitesize](#buildbitesize)
+* [project name](#projectname)<br>
+* [components](#components)<br>
+  * [name](#componentname)
+  * [os](#os)<br>
+  * [build dependencies](#builddependencies)<br>
+  * [repository](#buildrepo)<br>
+  * [environment vars for build](#envvars)<br>
+  * [build commands](#buildcommands)
+  * [artifacts](#artifact)
 
 ## Requirements:
 Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
@@ -19,33 +47,6 @@ kubectl label nodes <node_name> role=minion
 
 <a id="details"></a>
 ## Project Details
-
-[environments.bitesize](#environmentsbitesize)
-* [project name](#projectname)<br>
-* [environments](#environments)<br>
-  * [name](#environmentname)
-  * [deployment method](#deploymentmethod)<br>
-  * [services](#services)<br>
-  * [tests](#tests)<br>
-  * [health checks](#healthchecks)<br>
-[application.bitesize](#applicationbitesize)
-* [project name](#projectname)<br>
-* [applications](#applicationbitesize)<br>
-  * [name](#applicationbitesize)<br>
-  * [runtime](#applicationbitesize)<br>
-  * [version](#applicationbitesize)<br>
-  * [dependencies](#applicationdependencies)<br>
-  * [command](#applicationcmd)<br>
-[build.bitesize](#buildbitesize)
-* [project name](#projectname)<br>
-* [components](#components)<br>
-  * [name](#componentname)
-  * [os](#os)<br>
-  * [build dependencies](#builddependencies)<br>
-  * [repository](#buildrepo)<br>
-  * [environment vars for build](#envvars)<br>
-  * [build commands](#buildcommands)
-  * [artifacts](#artifact)
 
 <br>
 <br>
@@ -75,7 +76,6 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     which applications (services) to run in them, what tests to run
     against your applications and the method to deploy applications.
     Builds out the whole CI/CD pipeline
-
 
 Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.<br><br>
 
