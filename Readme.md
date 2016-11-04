@@ -108,7 +108,8 @@ deployment:
   mode: manual
 ```
 <a id="services"></a>
-### `services` in the pipeline make up multiple Kubernetes Resources.
+### `services`
+in the pipeline make up multiple Kubernetes Resources.
   * Kubernetes Service
   * Ingress (Optional)
   * Number of replicas in the replica set.<br>
