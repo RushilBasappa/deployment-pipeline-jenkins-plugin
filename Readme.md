@@ -222,6 +222,59 @@ applications:
 
 ## build.bitesize
 
+Consists of:
+* [project name](#projectname)<br>
+* [components](#components)<br>
+  * [name](#componentname)
+  * [os](#os)<br>
+  * [build dependencies](#builddependencies)<br>
+  * [repository](#tests)<br>
+  * [environment vars for build](#envvars)<br>
+  * [build sequence](#buildcommands)
+  * [artifacts](#artifact)
+
+
+```
+project: docs-dev
+components:
+  - name: docs-app
+    os: linux
+    dependencies:
+      - type: debian-package
+        package: php5
+        repository: ppa:ondrej/php
+      - type: debian-package
+        package: libapache2-mod-php5
+      - type: debian-package
+        package: python2.7
+      - type: debian-package
+        package: python-pip
+      - type: pip-package
+        package: PyGithub
+      - type: pip-package
+        package: pyyaml
+      - type: debian-package
+        package: couscous
+        location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
+    repository:
+      git: git@github.com:pearsontechnology/kubecon_docs.git
+      branch: master
+    env:
+      - name: GIT_USERNAME
+        value: kubecondemos@gmail.com
+      - name: GIT_PASSWORD
+        value: 21874b392e38ded25c91a3ecfba57ba384126087
+    build:
+      - shell: cat /dev/null > couscous.yml
+      - shell: python docsgen.py
+      - shell: couscous generate
+      - shell: mkdir -p var/www/html
+      - shell: cp run.sh var/
+      - shell: cp -a .couscous/generated/* var/www/html
+      - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
+    artifacts:
+      - location: "*.deb"
+```
 
 
 
