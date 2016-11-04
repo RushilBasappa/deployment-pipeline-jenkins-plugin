@@ -95,8 +95,10 @@ Breaking down the environments.bitesize config.<br>
 ### `name`
 Every environment starts with a `name`.<br>
 Within each environment we must specify the namespace in which the environment deploys to. <br>
-```- name: production
-     namespace: docs-dev```
+```
+- name: production
+  namespace: docs-dev
+```
 <br>
 <a id="deploymentmethod"></a>
 ### `deployment method`
