@@ -220,13 +220,13 @@ health_check:
 defines how to build one or more applications using required components and external dependencies.
 
 Consists of:<br>
-  * project name<br>
-  * applications<br>
-    * name<br>
-    * runtime<br>
-    * version<br>
-    * dependencies<br>
-    * command<br>
+  * [project name](#projectname)<br>
+  * [applications]<br>
+    * [name](#applicationname)<br>
+    * [runtime](#applicationruntime)<br>
+    * [version](#applicationversion)<br>
+    * [dependencies](#applicatondependencies)<br>
+    * [command]<br>
 
 All in all, application.bitesize is relatively simple.
 
@@ -262,20 +262,26 @@ A `version` of the application can be specified. Make sure doublequotes ("") are
 version: "0.8.35"
 ```
 
+<a id="applicationdependencies"></a>
+Notice -<br>
+```
+dependencies:
+  - name: docswebsite
+    type: debian-package
+    origin:
+      build: docs-app
+    version: 1.0
+```
+<br>
+which correlates to the component within build.bitesize.<br><br>
+
 <a id="applicationcommand"></a>
 ### `command`
 A `command` of the application can be specified. Much like `cmd` within a kubernetes config. Make sure doublequotes ("") are used as this is interpolated as a string. <br>
 ```
 command: "/var/run.sh"
 ```
-
-
-Notice -
-```
-origin:
-  build: docs-app
-```
-which correlates to the component within build.bitesize.<br><br>
+<br>
 
 Here is an example of a complete application.bitesize manifest.<br>
 
