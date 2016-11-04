@@ -174,9 +174,9 @@ health_check:
 defines how to build one or more applications using required components and external dependencies.
 
 Consists of:<br>
-  * project namebr>
+  * project name<br>
   * applications<br>
-    * name
+    * name<br>
     * runtime<br>
     * version<br>
     * dependencies<br>
