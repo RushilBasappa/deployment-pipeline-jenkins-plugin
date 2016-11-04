@@ -230,7 +230,7 @@ Consists of:
   * [build dependencies](#builddependencies)<br>
   * [repository](#buildrepo)<br>
   * [environment vars for build](#envvars)<br>
-  * [build sequence](#buildcommands)
+  * [build commands](#buildcommands)
   * [artifacts](#artifact)
 
 Components are the basic building block of the build.bitesize manifest.<br>
@@ -343,7 +343,7 @@ repository:
   branch: master
 ```
 <br>
-
+<a id="envvars"></a>
 ### `environment variables`
 
 environment variables can be specified for Jenkins and its slaves to take advantage of. One example is below.
@@ -356,7 +356,33 @@ env:
   - name: GIT_PASSWORD
     value: 218ba57a341687
 ```
+<br>
+<a id="buildcommands"></a>
+### `build commands`
+<br>
 
+These are commands for each component that are executed as though in a linux shell. This sequence of commands will result in one or more build artifacts.
+
+```
+build:
+  - shell: cat /dev/null > couscous.yml
+  - shell: python docsgen.py
+  - shell: couscous generate
+  - shell: mkdir -p var/www/html
+  - shell: cp run.sh var/
+  - shell: cp -a .couscous/generated/* var/www/html
+  - shell: fpm -s dir -n docswebsite --iteration $(date "+%Y%m%d%H%M%S") -t deb var
+```
+
+### `artifacts`
+<br>
+Currently all build artifacts are debian packages. These artifacts will be added to the base image and then a docker image will be created and versioned with a datetimestamp.
+
+```
+artifacts:
+  - location: "*.deb"
+```
+<br>
 
 <br>
 First, let’s define some terms to understand what exactly they mean in our context:
