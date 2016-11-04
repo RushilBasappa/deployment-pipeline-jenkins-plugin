@@ -238,6 +238,38 @@ All in all, application.bitesize is relatively simple.
 <a id="applicationdependencies"></a>
 Within each application we specify dependencies which is key. In the example below we specify the docswebsite deb package be built before and then added on top of the `runtime` base image.<br>
 
+
+<a id="applicationname"></a>
+### `name`
+Every environment starts with a `name`.<br>
+Within each environment we must specify the namespace in which the environment deploys to. <br>
+```
+- name: production
+  namespace: docs-dev
+```
+
+<a id="applicationruntime"></a>
+### `runtime`
+`runtime` is the base image we will build a new docker image from. Often this is a specific java, nodejs or web-proxy.<br>
+```
+runtime: ubuntu-httpdfcgi:1.3
+```
+
+<a id="applicationversion"></a>
+### `version`
+A `version` of the application can be specified. Make sure doublequotes ("") are used as this is interpolated as a string. <br>
+```
+version: "0.8.35"
+```
+
+<a id="applicationcommand"></a>
+### `command`
+A `command` of the application can be specified. Much like `cmd` within a kubernetes config. Make sure doublequotes ("") are used as this is interpolated as a string. <br>
+```
+command: "/var/run.sh"
+```
+
+
 Notice -
 ```
 origin:
