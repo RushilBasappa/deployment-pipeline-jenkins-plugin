@@ -60,7 +60,7 @@ Your project will store these files in a git repository. It can be either your s
 
 Ex. `project: docs`
 <br><br>
-## environments.bitesize
+# environments.bitesize
 
 Consists of:<br>
   * [project name](#projectname)<br>
