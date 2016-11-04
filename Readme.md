@@ -184,10 +184,10 @@ Consists of:<br>
 
 All in all, application.bitesize is relatively simple.
 
-`name` - name of the application
-`runtime` - is the base image. In this example we are using ubuntu with httpd installed.
-`version` - the version of the application.
-`command` - the command to run the container. Correlates directly to kubernetes `cmd`.
+`name` - name of the application<br>
+`runtime` - is the base image. In this example we are using ubuntu with httpd installed.<br>
+`version` - the version of the application.<br>
+`command` - the command to run the container. Correlates directly to kubernetes `cmd`.<br><br>
 
 Within each application we specify dependencies which is key. In the example below we specify the docswebsite deb package be built before and then added on top of the `runtime` base image.<br>
 
