@@ -35,7 +35,9 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
 Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.<br><br>
 
 **Global Definition** - <br>
-`project` - every .bitesize config file must specify the project name. This allows Jenkins to tie the various config files together as one complete Jenkins workflow.<br>
+<a id="projectname"></a>
+### `project`
+- every .bitesize config file must specify the project name. This allows Jenkins to tie the various config files together as one complete Jenkins workflow.<br>
 
 Ex. `project: docs`
 
@@ -165,8 +167,56 @@ health_check:
   initial_delay: 30 # Time in seconds to wait for a fresh instance
   timeout: 60 # Time in seconds to wait before health check script times out
 ```
+<br><br>
 
 ## application.bitesize
+<br>
+defines how to build one or more applications using required components and external dependencies.
+
+Consists of:<br>
+  * [project name](#projectname)<br>
+  * [applications](#applications)<br>
+    * [name](#applicationname)
+    * [runtime](#runtime)<br>
+    * [version](#applicationversion)<br>
+    * [dependencies](#applicationdependencies)<br>
+    * [command](#command)<br>
+
+All in all, application.bitesize is relatively simple.
+
+`name` - name of the application
+`runtime` - is the base image. In this example we are using ubuntu with httpd installed.
+`version` - the version of the application.
+`command` - the command to run the container. Correlates directly to kubernetes `cmd`.
+
+Within each application we specify dependencies which is key. In the example below we specify the docswebsite deb package be built before and then added on top of the `runtime` base image.<br>
+
+Notice -
+```
+origin:
+  build: docs-app
+```
+which correlates to the component within build.bitesize.<br><br>
+
+Here is an example of a complete application.bitesize config.<br>
+
+```
+project: docs-dev
+applications:
+  - name: docs-app
+    runtime: ubuntu-httpdfcgi:1.3
+    version: "0.8.35"
+    dependencies:
+      - name: docswebsite
+        type: debian-package
+        origin:
+          build: docs-app
+        version: 1.0
+    command: "/var/run.sh"
+```
+
+
+
 
 
 
