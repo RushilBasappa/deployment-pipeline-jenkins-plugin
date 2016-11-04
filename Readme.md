@@ -92,11 +92,11 @@ Breaking down the environments.bitesize config.<br>
 
 <a id="environments"></a>
 <a id="environmentname"></a>
+### `name`
 Every environment starts with a `name`.<br>
-Ex. `- name: production`
-
 Within each environment we must specify the namespace in which the environment deploys to. <br>
-`namespace: docs-dev`<br>
+```- name: production
+     namespace: docs-dev```
 <br>
 <a id="deploymentmethod"></a>
 ### `deployment method`
