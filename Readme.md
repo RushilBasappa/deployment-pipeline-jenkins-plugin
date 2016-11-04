@@ -41,11 +41,17 @@ Ex. `project: docs`
 
 ## environments.bitesize
 
-[project name]()
+Consists of:
+[project name](#projectname)
+[environments](#environments)
+  [deployment method](#deploymentmethod)
+  [services](#services)
+  [tests]
+  [health checks]
 
 
 environments.bitesize contains building blocks for each environment you intend to deploy/manage. In order for Jenkins to manage multiple environments from a single Jenkins container, a standard naming convention for Kubernetes Namespaces are required.
-
+<a id="projectname"></a>
 naming convention:<br>
 `<project_name>-<three_letter_env_name>`<br>
 Ex. example-dev<br>
@@ -81,13 +87,14 @@ environments:
       timeout: 60 # Time in seconds to wait before health check script times out
 ```
 
-
+<a id="environments"></a>
 Every environment starts with a name.<br>
 Ex. `- name: production`
 
 Within each environment we much specify the namespace in which the environment deploys to.<br>
 `namespace: docs-dev`
 
+<a id="deploymentmethod"></a>
 Then specify a deployment `method`.
 ```
 deployment:
@@ -100,8 +107,8 @@ deployment:
   method: rolling-upgrade
   mode: manual
 ```
-
-`services` in the pipeline make up multiple Kubernetes Resources.
+<a id="services"></a>
+### `services` in the pipeline make up multiple Kubernetes Resources.
   * Kubernetes Service
   * Ingress (Optional)
   * Number of replicas in the replica set.<br>
@@ -115,6 +122,9 @@ services:
     external_url: kubecon.dev-bite.io
     port: 80 # this is the port number the application responds on in each container/instance/pod
     replicas: 2
+    env:
+    - name: MONGO_DB_1
+      value: escrow
 ```
 
 
