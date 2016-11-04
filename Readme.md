@@ -188,7 +188,7 @@ health_check:
 ```
 <br><br>
 
-## application.bitesize
+# application.bitesize
 <br>
 defines how to build one or more applications using required components and external dependencies.
 
@@ -239,7 +239,7 @@ applications:
 
 
 
-## build.bitesize
+# build.bitesize
 
 Consists of:
 * [project name](#projectname)<br>
