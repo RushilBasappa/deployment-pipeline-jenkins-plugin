@@ -103,6 +103,7 @@ Within each environment we must specify the namespace in which the environment d
 <a id="deploymentmethod"></a>
 ### `deployment method`
 <br>
+Currently the only available deployment method is `rolling-update`.
 A `mode` (optional) can also be specified with the deployment method. This is generally used if a manual deployment is desired.
 ```
 deployment:
