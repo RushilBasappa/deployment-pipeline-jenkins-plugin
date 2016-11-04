@@ -16,12 +16,12 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
 [application.bitesize](#applicationbitesize)
 * [project name](#projectname)<br>
-* [applications](#applicationbitesize)<br>
-  * [name](#applicationbitesize)<br>
-  * [runtime](#applicationbitesize)<br>
-  * [version](#applicationbitesize)<br>
-  * [dependencies](#applicationdependencies)<br>
-  * [command](#applicationcmd)<br>
+* [applications](#applications)<br>
+  * [name](#applicationname)<br>
+  * [runtime](#applicationruntime)<br>
+  * [version](#applicationversion)<br>
+  * [dependencies](#applicatondependencies)<br>
+  * [command](#applicationcommand)<br>
 
 [build.bitesize](#buildbitesize)
 * [project name](#projectname)<br>
@@ -221,15 +221,15 @@ defines how to build one or more applications using required components and exte
 
 Consists of:<br>
   * [project name](#projectname)<br>
-  * [applications]<br>
+  * [applications](#applications)<br>
     * [name](#applicationname)<br>
     * [runtime](#applicationruntime)<br>
     * [version](#applicationversion)<br>
     * [dependencies](#applicatondependencies)<br>
-    * [command]<br>
+    * [command](#applicationcommand)<br>
 
 All in all, application.bitesize is relatively simple.
-
+<a id="applications"></a>
 `name` - name of the application<br>
 `runtime` - is the base image. In this example we are using ubuntu with httpd installed.<br>
 `version` - the version of the application.<br>
