@@ -228,7 +228,7 @@ Consists of:
   * [name](#componentname)
   * [os](#os)<br>
   * [build dependencies](#builddependencies)<br>
-  * [repository](#tests)<br>
+  * [repository](#buildrepo)<br>
   * [environment vars for build](#envvars)<br>
   * [build sequence](#buildcommands)
   * [artifacts](#artifact)
@@ -285,7 +285,7 @@ components:
 Breaking down the build.bitesize manifest.<br>
 
 <a id="components"></a>
-### Components
+### `components`
 
 As with everything we specify a name for each component which correlates directly to the application name in application.bitesize. <br>
 But we also specify an `os`. Currently the only available `os` is linux but we intend to allow for the MicroContainer Framework by MicroSoft when supported.<br>
@@ -297,7 +297,7 @@ components:
 ```
 <br>
 <a id="builddependencies"></a>
-### dependencies
+### `dependencies`
 
 For each component we need to specify the build dependencies. This ensures Jenkins has the necessary packages installed in order to build the properly.
 <br>
@@ -330,8 +330,32 @@ dependencies:
     location: https://s3.amazonaws.com/bitesize-sandbox-files/couscous.deb_1.0_amd64.deb
 ```
 
+<br>
+<a id="buildrepo"></a>
+### `repository`
 
+The repository block tells Jenkins where to pull all application code from.<br>
+Notice a specific branch can be specified.<br>
 
+```
+repository:
+  git: git@github.com:pearsontechnology/kubecon_docs.git
+  branch: master
+```
+<br>
+
+### `environment variables`
+
+environment variables can be specified for Jenkins and its slaves to take advantage of. One example is below.
+Again its not best practice to use these but for demo purposes this is what it looks like below.<br>
+
+```
+env:
+  - name: GIT_USERNAME
+    value: kubecondemos@gmail.com
+  - name: GIT_PASSWORD
+    value: 21874b392e38ded25c91a3ecfba57ba384126087
+```
 
 
 <br>
