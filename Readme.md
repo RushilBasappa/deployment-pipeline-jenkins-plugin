@@ -95,8 +95,8 @@ Within each environment we must specify the namespace in which the environment d
 `namespace: docs-dev`<br>
 
 <a id="deploymentmethod"></a>
-### Deployment `method`.
-is then specified.
+### `method`
+of deployment is then specified.
 ```
 deployment:
   method: rolling-upgrade
