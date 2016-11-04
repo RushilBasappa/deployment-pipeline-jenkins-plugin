@@ -27,8 +27,10 @@ First, let’s define some terms to understand what exactly they mean in context
 
 | Term | Definition |
 | --- | :--- |
-| *Component* | Individual code repository necessary to create an Application. Your application will have one or more internal components. |
-| *Application*      | Artifacts as a single Artifact necessary to create a running instance (a collection of components). Application includes the full stack required to run an instance. |
+| *Component* | Individual code repository necessary to create an Application. 
+Your application will have one or more internal components. |
+| *Application*      | Artifacts as a single Artifact necessary to create a 
+running instance (a collection of components). Application includes the full stack required to run an instance. |
 | *Build* | Process that outputs artifacts (Debian Package, Docker Image, etc…) |
 | *Job* | An instance (success or fail) of a Build |
 | *Build Definition* | What actions need to be executed to generate the output artifact. |
