@@ -20,6 +20,32 @@ kubectl label nodes <node_name> role=minion
 <a id="details"></a>
 ## Project Details
 
+[environments.bitesize](#environmentsbitesize)
+* [project name](#projectname)<br>
+* [environments](#environments)<br>
+  * [name](#environmentname)
+  * [deployment method](#deploymentmethod)<br>
+  * [services](#services)<br>
+  * [tests](#tests)<br>
+  * [health checks](#healthchecks)<br>
+[application.bitesize](#applicationbitesize)
+* [project name](#projectname)<br>
+* [applications](#applicationbitesize)<br>
+  * [name](#applicationbitesize)<br>
+  * [runtime](#applicationbitesize)<br>
+  * [version](#applicationbitesize)<br>
+  * [dependencies](#applicationdependencies)<br>
+  * [command](#applicationcmd)<br>
+[build.bitesize](#buildbitesize)
+* [project name](#projectname)<br>
+* [components](#components)<br>
+  * [name](#componentname)
+  * [os](#os)<br>
+  * [build dependencies](#builddependencies)<br>
+  * [repository](#buildrepo)<br>
+  * [environment vars for build](#envvars)<br>
+  * [build commands](#buildcommands)
+  * [artifacts](#artifact)
 
 <br>
 <br>
@@ -207,8 +233,9 @@ All in all, application.bitesize is relatively simple.
 `name` - name of the application<br>
 `runtime` - is the base image. In this example we are using ubuntu with httpd installed.<br>
 `version` - the version of the application.<br>
+<a id="applicationcmd"></a>
 `command` - the command to run the container. Correlates directly to kubernetes `cmd`.<br><br>
-
+<a id="applicationdependencies"></a>
 Within each application we specify dependencies which is key. In the example below we specify the docswebsite deb package be built before and then added on top of the `runtime` base image.<br>
 
 Notice -
