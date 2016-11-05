@@ -96,7 +96,7 @@ Your project will store these files in a git repository. It can be either your s
 
 <a id="requirements"></a>
 ## Requirements:
-This deployment plugin will deploy containers to Kubernetes minions that have the label shown below. This allows for minions without this label to serve other purposes. For example, if all minions with this label where in a specific networking segment not exposed to the internet.
+This deployment plugin will deploy containers to Kubernetes minions that have the label shown below. This allows for minions without this label to serve other purposes. For example, if all minions with this label where in a specific networking segment not directly exposed to the internet.
 
 ```
 role=minion
