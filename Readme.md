@@ -6,7 +6,7 @@ Our latest images can be found [here](https://hub.docker.com/r/pearsontechnology
 
 Get started with the [Quickstart Sample App](quickstart.md)
 
-Or get into the weeds with [Project Details](#details
+Or get into the weeds with [Project Details](#details)
 <br>
 
 
