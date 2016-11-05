@@ -9,16 +9,14 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 | Common build tools are a dependency |
 | Build Once, Run anywhere |
 | Blue/Green deploys |
-
-
-Jenkins as Cattle
-Pipeline as code
-Continuous or Manual
-Versioning
-Branching
-Dependency management
-Docker Image management
-Mount Persistent Volumes
+| Jenkins as Cattle |
+| Pipeline as code |
+| Continuous or Manual |
+| Versioning |
+| Branching |
+| Dependency management |
+| Docker Image management |
+| Mount Persistent Volumes |
 
 
 
