@@ -15,7 +15,7 @@ Or get into the weeds with [Project Details](#details)
 | Features | |
 | :--- | :--- |
 | Well known config format | Blue/Green deploys  |
-| Common build tools are a dependency | Jenkins as Cattle |
+| No limit on build tools | Jenkins as Cattle |
 | Build Once, Run anywhere | Continuous or Manual |
 | Pipeline as code | Versioning |
 | Branching | Dependency management |
