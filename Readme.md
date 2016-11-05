@@ -56,17 +56,7 @@ Or get into the weeds with [Project Details](#details)
   * [artifacts](#artifact)
 
 <br>
-## Requirements:
-Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
 
-```
-role=minion
-```
-This can be added to your workers/minions with
-```
-kubectl label nodes <node_name> role=minion
-```
-<br>
 <a id="details"></a>
 ## Project Details
 
@@ -87,6 +77,18 @@ First, let’s define some terms to understand what exactly they mean in context
 | *Environment* | Collection of services, grouped together to represent a fully working application stack. |
 
 <br><br>
+<a id="requirements"></a>
+## Requirements:
+Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
+
+```
+role=minion
+```
+This can be added to your workers/minions with
+```
+kubectl label nodes <node_name> role=minion
+```
+<br>
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
