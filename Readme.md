@@ -14,7 +14,7 @@ Or get into the weeds with [Project Details](#details)
 
 | Features | |
 | :--- | :--- |
-| YAML config | Blue/Green deploys  |
+| Well known config format | Blue/Green deploys  |
 | Common build tools are a dependency | Jenkins as Cattle |
 | Build Once, Run anywhere | Continuous or Manual |
 | Pipeline as code | Versioning |
