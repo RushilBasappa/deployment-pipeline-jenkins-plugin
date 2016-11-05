@@ -14,10 +14,10 @@ Or get into the weeds with [Project Details](#details)
 
 | Features | |
 | :--- | :--- |
-| YAML config | Pipeline as code |
+| YAML config | Blue/Green deploys  |
 | Common build tools are a dependency | Jenkins as Cattle |
 | Build Once, Run anywhere | Continuous or Manual |
-| Blue/Green deploys | Versioning |
+| Pipeline as code | Versioning |
 | Branching | Dependency management |
 | Docker Image management ||
 
