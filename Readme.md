@@ -2,6 +2,8 @@
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
+Please read the minimal [requirements](#requirements) before getting started.
+
 Our latest images can be found [here](https://hub.docker.com/r/pearsontechnology/deployment-pipeline-jenkins-plugin/)
 
 Get started with the [Quickstart Sample App](quickstart.md)
