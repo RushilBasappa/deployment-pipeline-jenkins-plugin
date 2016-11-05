@@ -13,13 +13,13 @@ Or get into the weeds with [Project Details](#details)
 
 
 | Features |
-| :--- |
-| YAML config |
-| Common build tools are a dependency |
+| :--- | :--- |
+| YAML config | Pipeline as code |
+| Common build tools are a dependency | Jenkins as Cattle |
 | Build Once, Run anywhere |
 | Blue/Green deploys |
-| Jenkins as Cattle |
-| Pipeline as code |
+
+
 | Continuous or Manual |
 | Versioning |
 | Branching |
