@@ -96,7 +96,7 @@ Your project will store these files in a git repository. It can be either your s
 
 <a id="requirements"></a>
 ## Requirements:
-Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
+Our Jenkins plugin will deploy all containers to Kubernetes minions that have the label shown below. This allows for minions without this label to serve other purposes. For example, it allows for 
 
 ```
 role=minion
