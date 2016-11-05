@@ -63,7 +63,6 @@ Or get into the weeds with [Project Details](#details)
 ## Project Details
 
 <br>
-<br>
 First, let’s define some terms to understand what exactly they mean in context:
 
 | Term | Definition |
