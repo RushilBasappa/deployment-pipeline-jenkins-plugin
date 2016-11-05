@@ -12,7 +12,7 @@ Or get into the weeds with [Project Details](#details)
 <br>
 
 
-| Features |
+| Features | |
 | :--- | :--- |
 | YAML config | Pipeline as code |
 | Common build tools are a dependency | Jenkins as Cattle |
