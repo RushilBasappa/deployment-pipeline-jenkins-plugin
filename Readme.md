@@ -18,10 +18,10 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 | Docker Image management |
 | Mount Persistent Volumes |
 
+<br> <br>
 
-
-* [Quickstart Sample App](quickstart.md)
-* [Project Details](#details)
+Dive right in with our [Quickstart Sample App](quickstart.md).<br>
+Or get into the weeds with [Project Details](#details).<br>
 
 [environments.bitesize](#environmentsbitesize)
 * [project name](#projectname)<br>
