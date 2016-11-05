@@ -2,6 +2,22 @@
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
+## Features
+  * YAML config
+  * Common build tools are a dependency
+  * Build Once, Run anywhere
+  * Blue/Green deploys
+  * Jenkins as Cattle
+  * Pipeline as code
+  * Continuous or Manual
+  * Versioning
+  * Branching
+  * Dependency management
+  * Docker Image management
+  * Mount Persistent Volumes
+
+
+
 * [Quickstart Sample App](quickstart.md)
 * [Project Details](#details)
 
