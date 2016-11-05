@@ -51,7 +51,7 @@ Or get into the weeds with [Project Details](#details).<br>
   * [environment vars for build](#envvars)<br>
   * [build commands](#buildcommands)
   * [artifacts](#artifact)
-
+<br>
 ## Requirements:
 Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
 
@@ -62,7 +62,7 @@ This can be added to your workers/minions with
 ```
 kubectl label nodes <node_name> role=minion
 ```
-
+<br>
 <a id="details"></a>
 ## Project Details
 
