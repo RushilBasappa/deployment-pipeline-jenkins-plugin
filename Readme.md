@@ -16,15 +16,10 @@ Or get into the weeds with [Project Details](#details)
 | :--- | :--- |
 | YAML config | Pipeline as code |
 | Common build tools are a dependency | Jenkins as Cattle |
-| Build Once, Run anywhere |
-| Blue/Green deploys |
-
-
-| Continuous or Manual |
-| Versioning |
-| Branching |
-| Dependency management |
-| Docker Image management |
+| Build Once, Run anywhere | Continuous or Manual |
+| Blue/Green deploys | Versioning |
+| Branching | Dependency management |
+| Docker Image management ||
 
 <br>
 
