@@ -79,18 +79,6 @@ First, let’s define some terms to understand what exactly they mean in context
 | *Environment* | Collection of services, grouped together to represent a fully working application stack. |
 
 <br><br>
-<a id="requirements"></a>
-## Requirements:
-Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
-
-```
-role=minion
-```
-This can be added to your workers/minions with
-```
-kubectl label nodes <node_name> role=minion
-```
-<br>
 
 Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD pipeline is built using just three manifest files, which have very distinctive roles in the build process.
 
@@ -104,6 +92,21 @@ Jenkins uses a custom workflow to build and deploy applications. The whole CI/CD
     Builds out the whole CI/CD pipeline
 
 Your project will store these files in a git repository. It can be either your source repository, or a repository dedicated just to managing these three files. At Pearson we've found our dev teams prefer to manage these files separately from their code repositories.<br><br>
+
+
+<a id="requirements"></a>
+## Requirements:
+Our Jenkins plugin deploys all containers to Kubernetes minions that have a label of
+
+```
+role=minion
+```
+This can be added to your workers/minions with
+```
+kubectl label nodes <node_name> role=minion
+```
+<br>
+
 
 **Global Definition** - <br>
 <a id="projectname"></a>
