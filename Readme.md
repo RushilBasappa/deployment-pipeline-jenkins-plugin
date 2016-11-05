@@ -3,10 +3,12 @@
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
 ## Features
-| | |
-| --- | --- |
-| YAML config | Common build tools are a dependency |
-| Build Once, Run anywhere | Blue/Green deploys |
+| Features |
+| :--- |
+| YAML config |
+| Common build tools are a dependency |
+| Build Once, Run anywhere |
+| Blue/Green deploys |
 
 
 Jenkins as Cattle
