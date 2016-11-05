@@ -2,8 +2,8 @@
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
-## Features
-| Features |
+
+| ## Features |
 | :--- |
 | YAML config |
 | Common build tools are a dependency |
