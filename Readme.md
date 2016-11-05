@@ -2,6 +2,7 @@
 
 An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 
+Our latest images can be found [here](https://hub.docker.com/r/pearsontechnology/deployment-pipeline-jenkins-plugin/)
 
 | Features |
 | :--- |
@@ -16,7 +17,6 @@ An open source Jenkins pipeline tool purpose built for Kubernetes containers.
 | Branching |
 | Dependency management |
 | Docker Image management |
-| Mount Persistent Volumes |
 
 <br>
 
