@@ -14,8 +14,10 @@ class KubeService extends AbstractKubeResource {
 
   KubeService(LinkedHashMap map) { 
     name      = map.metadata.name
-    namespace =  map.metadata.namespace
-    ports     =  map.spec.ports.collect{ p -> new KubeServicePort(p)}
+    namespace = map.metadata.namespace
+    ports     = map.spec.ports.collect{ p -> new KubeServicePort(p)}
+    labels    = map.metadata.labels
+    selector  = map.spec.selector
   }
 
   boolean equals(Object o) {

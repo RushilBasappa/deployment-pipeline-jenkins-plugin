@@ -11,6 +11,35 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
   KubeDeploymentWrapper(KubeAPI client, Service svc) {
     this.client = client
 
+    def probe = []
+    def volumeMounts = []
+    def volumeClaims = []
+
+    if (svc.health_check) {
+      probe = [
+        exec: [
+          cmd: svc.health_check?.command
+        ],
+        initialDelaySeconds: svc.health_check.initial_delay,
+        timeoutSeconds: svc.health_check.timeout
+      ]
+    }
+
+    if (svc.volumes) {
+      volumeMounts = svc.volumes.collect{ v ->
+        [ name: v.name, mountPath: v.path ]
+      }
+
+      volumeClaims = svc.volumes.collect{ v ->
+        [
+          name: v.name,
+          persistentVolumeClaim: [
+            claimName: v.name
+          ]
+        ]
+      }
+    }
+
     this.resource = new KubeDeployment(
       metadata: [
         name: svc.name,
@@ -41,15 +70,20 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
               ]
           ],
           spec: [
+            nodeSelector: [
+              role: "minion"
+            ],
+            volumes: volumeClaims,
             containers: [
               [
                 name: svc.name,
                 image: image(svc),
-                volumes: svc.volumes,
+                volumeMounts: volumeMounts,
                 ports: [
                   [ containerPort: svc.port ]
                 ],
-                env: svc.env
+                env: svc.env,
+                livenessProbe: probe
               ]
             ]
           ]

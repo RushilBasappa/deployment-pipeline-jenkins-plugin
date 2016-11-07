@@ -1,13 +1,16 @@
 package com.pearson.deployment.config.kubernetes
 
-import groovy.json.*
 
+// This thirdpartyresource represents <1.4 kubernetes object.
+// In 1.4 and above, we will use KubeGenericObject
+// which can set arbitrary fields and "kind"
 class KubeThirdPartyResource extends AbstractKubeResource {
 
 	String name
 	String namespace
   String description
   Map<String,String> labels
+	Map<String,LinkedHashMap> spec
 
 	public static final String kind = "thirdpartyresource"
 
@@ -16,6 +19,7 @@ class KubeThirdPartyResource extends AbstractKubeResource {
     namespace = o.metadata.namespace
 		description = o.description
     labels = o.metadata.labels
+		spec = o.spec
 	
   }
 
@@ -38,7 +42,7 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 	}
 
   LinkedHashMap asMap() {
-		[
+		def r = [
 			"apiVersion":  "extensions/v1beta1",
 			"kind":        "ThirdPartyResource",
 			"description": description,
@@ -48,5 +52,6 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 				"labels": labels
 			]
 		]
+		r
   }
 }

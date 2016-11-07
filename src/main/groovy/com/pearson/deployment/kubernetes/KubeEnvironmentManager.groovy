@@ -10,6 +10,7 @@ class KubeEnvironmentManager {
 
   private def changed
   private String project
+  List resources
   // private Map<String, KubeServiceManager> serviceManagers
 
   KubeEnvironmentManager(KubeAPI client, String project, Environment environment, OutputStream log=System.out) {
@@ -41,7 +42,8 @@ class KubeEnvironmentManager {
 
   private void manageService(Service svc) {
     setServiceProperties(svc)
-    AbstractKubeManager.collectResources(environment.deployment, client, svc, log).each { rsc ->
+    resources = AbstractKubeManager.collectResources(environment.deployment, client, svc, log)
+    resources.each { rsc ->
       client.apply rsc
     }
   }
