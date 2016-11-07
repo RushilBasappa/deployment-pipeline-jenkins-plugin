@@ -3,7 +3,7 @@ package com.pearson.deployment.helpers
 class Helper implements Serializable {
   public static String dockerRegistry() {
     Map<String, String> env = System.getenv()
-    env.get('DOCKER_REGISTRY') ?: "bitesize-registry.default.svc.cluster.local:5000"
+    env.get('DOCKER_REGISTRY') ?: "custom-registry"
   }
 
   public static String normalizeName(String name) {

@@ -1,4 +1,4 @@
-FROM bitesize-registry.default.svc.cluster.local:5000/baseimages/nginx
+FROM custom-registry/baseimages/nginx
 MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
 RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
 RUN apt-get -q update && \
