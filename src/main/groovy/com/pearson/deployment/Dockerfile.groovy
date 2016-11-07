@@ -26,7 +26,7 @@ class Dockerfile implements Serializable {
     String gemInstallString = gemDependencies(application.dependencies)
 
     def tmpl = ''' FROM ${registry}/baseimages/${runtime}
-                   | MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
+                   | MAINTAINER Deployment Pipeline <pipeline>
                    | <% if (deb_packages != "") out.print apt_get_install %>
                    | <% if (gem_packages != "") out.print gem_install %>
                    |
