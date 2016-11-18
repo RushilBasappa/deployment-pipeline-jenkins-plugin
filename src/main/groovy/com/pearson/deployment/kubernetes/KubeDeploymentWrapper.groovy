@@ -103,9 +103,12 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
   }
 
   String watch() {
-    def deployment = client.get KubeDeployment, resource.name
-    if (deployment.allReplicasOnline()) {
-      return 'success'
+    try {
+      def deployment = client.get KubeDeployment, resource.name
+      if (deployment.allReplicasOnline()) {
+        return 'success'
+      }
+    } catch (ResourceNotFoundException e) {
     }
     return 'running'
   }
@@ -155,6 +158,14 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
 
   String getVersion() {
     resource.labels['version']
+  }
+
+  String getApplication() {
+    resource.labels['application']
+  }
+
+  String getName() {
+    resource.labels['name']
   }
 
   def setVersion(String value) {

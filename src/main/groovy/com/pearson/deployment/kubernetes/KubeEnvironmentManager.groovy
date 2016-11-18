@@ -48,8 +48,4 @@ class KubeEnvironmentManager {
     }
   }
 
-  // KubeResourceHandler getService(String name) {
-  //   serviceManagers[name]
-  // }
-
 }

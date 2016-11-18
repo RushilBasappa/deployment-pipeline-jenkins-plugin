@@ -51,13 +51,14 @@ class DeployEnvironment implements Serializable {
   boolean deploy() {
     boolean changed
 
-    environment?.services.each {      
+    environment?.services.each {
+      String deployTo       
       if (environment.deployment?.isBlueGreen()) {
         String active = environment.deployment.active
-        String other = (active == "blue") ? "green" : "blue"       
+        deployTo = (active == "blue") ? "green" : "blue"       
       }
       if (! it.isThirdParty() ) {
-        changed = deployService(it) ? true : changed
+        changed = deployService(it, deployTo) ? true : changed
       }      
     }
 
@@ -86,14 +87,16 @@ class DeployEnvironment implements Serializable {
 
     try {
       if (deployment.mustUpdate()) {
+        log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.name}:${deployment.version}"
         deployment.update()
-        deployment.watch()        
+        watchDeploy(deployment)     
         return true
       }
 
     } catch (ResourceNotFoundException e) {
+      log.println "MUST CREATE DEPLOYMENT FOR ${deployment.name}:${deployment.version}"
       deployment.create()
-      deployment.watch()
+      watchDeploy(deployment)
       return true
     }
     return false
@@ -116,18 +119,6 @@ class DeployEnvironment implements Serializable {
     }
     log.println "${serviceName} deploy: got version ${version}"
     return version
-  }
-
-  private void createDeployment(KubeDeploymentWrapper deployment) {
-    log.println "MUST CREATE DEPLOYMENT FOR ${svc.name}:${version}"
-    deployment.create()
-    watchDeploy(deployment)
-  }
-
-  private void updateDeployment(KubeDeploymentWrapper deployment) {
-    log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.svc.name}:${deployment.svc.version}"
-    deployment.update()
-    watchDeploy(deployment)
   }
 
   private def watchDeploy(KubeDeploymentWrapper deploy) {
