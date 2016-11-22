@@ -49,20 +49,20 @@ class DeployEnvironment implements Serializable {
   }
 
   boolean deploy() {
-    boolean changed
+    boolean changed = false
 
     environment?.services.each {
-      String deployTo       
+      String deployTo
       if (environment.deployment?.isBlueGreen()) {
         String active = environment.deployment.active
-        deployTo = (active == "blue") ? "green" : "blue"       
+        deployTo = (active == "blue") ? "green" : "blue"
       }
       if (! it.isThirdParty() ) {
         changed = deployService(it, deployTo) ? true : changed
       }      
     }
 
-    return true
+    return changed
   }
 
   private boolean deployService(Service svc, String deployTo=null) {
@@ -72,6 +72,7 @@ class DeployEnvironment implements Serializable {
       return
     }
     if (deployTo) {
+      svc.application = svc.name
       svc.name = "${svc.name}-${deployTo}"
     }
     runDeploy(svc, version)
