@@ -19,6 +19,7 @@ abstract class AbstractKubeManager {
       if (deployment.isBlueGreen()) {
           ["blue", "green"].each { color ->
             def s = svc.clone()
+            s.application = s.application ?: s.name
             s.name = "${s.name}-${color}"
             s.backend = "${s.name}"
 
