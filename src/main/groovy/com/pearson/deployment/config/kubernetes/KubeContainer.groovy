@@ -24,11 +24,7 @@ class KubeContainer {
     }
 
     env = o.env.collect { var ->
-      if (var.secret) {
-        new EnvVar(secret: var.secret, value: var.value)
-      } else {
-        new EnvVar(name: var.name, value: var.value)
-      }
+      new EnvVar(name: var.name, secret: var.secret, value: var.value)
     }
   }
 

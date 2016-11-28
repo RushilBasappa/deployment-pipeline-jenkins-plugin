@@ -16,7 +16,7 @@ class EnvVar implements Serializable {
     }
 
     EnvVar other = (EnvVar)obj
-    if (name == other.name && value == other.value) {
+    if (name == other.name && value == other.value && secret == other.secret) {
       return true
     }
     return false
