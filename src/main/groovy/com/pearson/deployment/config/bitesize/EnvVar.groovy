@@ -3,6 +3,7 @@ package com.pearson.deployment.config.bitesize
 class EnvVar implements Serializable {
   String name
   String value
+  String secret
 
   boolean equals(Object obj) {
 
@@ -22,6 +23,10 @@ class EnvVar implements Serializable {
   }
 
   LinkedHashMap asMap() {
-    [ name: name, value: value ]
+    if ( secret != null ) {
+      [ name: secret, valueFrom: [secretKeyRef: [name: value, key: value]]]
+    } else {
+      [ name: name, value: value ]
+    }
   }
 }
