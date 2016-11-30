@@ -24,7 +24,7 @@ class KubeContainer {
     }
 
     env = o.env.collect { var ->
-      new EnvVar(name: var.name, value: var.value)
+      new EnvVar(name: var.name, secret: var.secret, value: var.value)
     }
   }
 
@@ -39,7 +39,7 @@ class KubeContainer {
     }
 
     def obj = (KubeContainer)o
-    
+
     (this.name == obj.name) &&
     (this.image == obj.image) &&
     (this.ports == obj.ports) &&
@@ -48,7 +48,7 @@ class KubeContainer {
     (this.env == obj.env)
   }
 
-  LinkedHashMap asMap() { 
+  LinkedHashMap asMap() {
     [
       "name": name,
       "image": image,
