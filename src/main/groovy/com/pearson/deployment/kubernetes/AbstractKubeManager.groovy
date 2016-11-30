@@ -22,6 +22,7 @@ abstract class AbstractKubeManager {
             s.application = s.application ?: s.name
             s.name = "${s.name}-${color}"
             s.backend = "${s.name}"
+            s.deploymentMethod = "bluegreen"
 
             if (s.external_url) {
               s.external_url = Helper.addHostPrefix(s.external_url, "-${color}")

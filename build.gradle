@@ -19,7 +19,7 @@ apply plugin: 'jacoco'
 apply plugin: 'codenarc'
 
 group = "org.jenkins-ci.plugins"
-version = "3.4.32-SNAPSHOT"    // Or whatever your version is.
+version = "3.4.33-SNAPSHOT"    // Or whatever your version is.
 description = "Pearson Deployment pipeline plugin"
 
 sourceCompatibility = 1.6
