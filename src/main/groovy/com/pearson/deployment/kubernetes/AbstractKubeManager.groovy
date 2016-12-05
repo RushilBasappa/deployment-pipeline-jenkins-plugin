@@ -65,7 +65,24 @@ abstract class AbstractKubeManager {
 
     if (svc.isThirdParty()) {
       handler = getHandler(client, svc, KubeThirdPartyWrapper)
-      handler && retval << handler          
+      handler && retval << handler
+      //kubeVersion = client.getVersion()
+      // We will need to take out this when kubernetes 1.5 will mature as
+      // currently it's an ugly hack
+      /*
+      if (kubeVersion !~ /v1.2/ ) {
+        handler = getHandler(client, svc, KubeThirdPartyWrapper)
+        handler && retval << handler
+      } else {
+        switch(svc.type) {
+          case "mongo":
+              break
+          case "mysql":
+              break
+          default:
+              break
+        }
+      }*/
     } else {
       svc.volumes.each {
         it.namespace = svc.namespace

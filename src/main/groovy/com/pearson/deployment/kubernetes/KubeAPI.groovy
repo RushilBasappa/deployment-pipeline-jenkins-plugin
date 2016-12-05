@@ -8,4 +8,6 @@ interface KubeAPI {
     void setNamespace(String namespace)
 
     boolean namespaceExist(String namespace)
+
+    String getVersion()
 }

@@ -67,12 +67,13 @@ class DeployEnvironment implements Serializable {
 
   private boolean deployService(Service svc, String deployTo=null) {
     String version = getServiceVersion(svc.name)
+    log.println "Got service version ${version}\n"
 
     if (version == null) {
       return
     }
     if (deployTo) {
-      svc.application = svc.name
+      svc.application = svc.application ?: svc.name
       svc.name = "${svc.name}-${deployTo}"
     }
     runDeploy(svc, version)

@@ -29,10 +29,6 @@ class Service extends ManagedResource implements Serializable, Cloneable {
 
   String deploymentMethod = "rolling-upgrade"
 
-  Service() {
-    this.application = this.application ?: this.name
-  }
-
   public Object clone() throws CloneNotSupportedException {
     return super.clone()
   }
@@ -72,8 +68,8 @@ class Service extends ManagedResource implements Serializable, Cloneable {
     this.type != null
   }
 
-  public void setApplication(String app) {
-    this.application = app ? app : this.name
+  public void setApplication(String value) {
+    this.application = value
   }
   
   public String getApplication() {

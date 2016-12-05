@@ -18,7 +18,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     if (svc.health_check) {
       probe = [
         exec: [
-          cmd: svc.health_check?.command
+          command: svc.health_check?.command
         ],
         initialDelaySeconds: svc.health_check.initial_delay,
         timeoutSeconds: svc.health_check.timeout
@@ -127,8 +127,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
   }
 
   String image(Service svc) {
-    def name = svc.application ?: svc.name
-    "${Helper.dockerRegistry()}/${svc.project}/${name}:${version(svc)}"
+    "${Helper.dockerRegistry()}/${svc.project}/${svc.application}:${version(svc)}"
   }
 
   boolean mustUpdate() {
@@ -146,14 +145,8 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
   }
 
   String getRemoteVersion(String name) {
-    try {
-      def res = client.get KubeDeployment, name
-      return res.labels['version']
-    } catch (e) {
-      e.printStackTrace()
-      return null
-    }
-
+    def res = client.get KubeDeployment, name
+    return res.labels['version']
   }
 
   String getVersion() {

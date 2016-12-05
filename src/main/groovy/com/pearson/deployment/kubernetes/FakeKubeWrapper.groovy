@@ -67,6 +67,10 @@ class FakeKubeWrapper implements KubeAPI {
     namespace == this.namespace
   }
 
+  String getVersion() {
+    "v1.5.0"
+  }
+
   AbstractKubeResource get(Class klass, String name) {
     def kindStore = store.get(klass.kind)
     def map = kindStore.get(name)

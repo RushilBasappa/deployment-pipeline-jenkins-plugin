@@ -71,6 +71,11 @@ class KubeWrapper implements KubeAPI {
     apply wrapper.resource
   }
 
+  String getVersion() {
+    // def res = exe("""kubectl version | tail -1 | awk -F, '{print $3}' | awk -F: '{print $NF}' | tr '"' ''""")
+    "v1.2.2"
+  }
+
   void setNamespace(String namespace) {
     this.namespace = namespace
   }

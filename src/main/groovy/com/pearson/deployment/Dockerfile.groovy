@@ -3,6 +3,7 @@ package com.pearson.deployment
 import com.pearson.deployment.helpers.Helper
 import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.syspkg.*
+import com.pearson.deployment.validation.*
 
 import java.util.regex.*
 
@@ -11,7 +12,11 @@ import groovy.text.GStringTemplateEngine
 
 class Dockerfile implements Serializable {
   String filename
+
+  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"application" has invalid value')
   Application application
+
+  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"DOCKER_REGISTRY" has invalid value')
   String dockerRegistry
 
   private writer
@@ -65,19 +70,19 @@ class Dockerfile implements Serializable {
         ret.add DebianPackageInstaller.installCmd(pkg)
       }
     }
-    ret.add "rm -rf /var/cache/apt/*"     
+    ret.add "rm -rf /var/cache/apt/*"
     ret.join(" && \\\n     ")
   }
 
   private String gemDependencies(def deps) {
     def ret = []
     deps?.each { pkg ->
-      if (pkg.type == "gem-package") {    
+      if (pkg.type == "gem-package") {
         ret.add GemPackageInstaller.installCmd(pkg)
       }
     }
     ret.join(" && \\\n  ")
-  } 
+  }
 
   private String commandToEntrypoint(String cmd) {
     String regex = "\"([^\"]*)\"|(\\S+)"
