@@ -7,7 +7,7 @@ import com.pearson.deployment.config.bitesize.*
 import com.pearson.deployment.helpers.*
 
 abstract class AbstractKubeManager {
-  AbstractKubeManager() {        
+  AbstractKubeManager() {
   }
 
   abstract boolean manage()
@@ -30,12 +30,12 @@ abstract class AbstractKubeManager {
             retval += serviceHandlers(client, s)
           }
           if (!svc.isThirdParty()) {
-            //  We need 
+            //  We need
             handler = getHandler(client, svc, KubeIngressWrapper)
             handler && retval << handler
           }
       } else {
-        retval += serviceHandlers(client, svc)        
+        retval += serviceHandlers(client, svc)
       }
       retval
   }
@@ -48,7 +48,7 @@ abstract class AbstractKubeManager {
     } catch (ResourceNotFoundException e) {
       // We don't create deployments with service-manage
       // if they don't exist
-      if (klass == KubeDeploymentWrapper) {
+      if (klass == KubeDeploymentWrapper && rsc.version == null) {
         return null
       }
     }

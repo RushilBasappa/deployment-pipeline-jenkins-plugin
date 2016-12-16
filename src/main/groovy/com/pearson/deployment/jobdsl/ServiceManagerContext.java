@@ -1,6 +1,6 @@
 package com.pearson.deployment.jobdsl;
 
-import javaposse.jobdsl.dsl.Context; 
+import javaposse.jobdsl.dsl.Context;
 
 public class ServiceManagerContext implements Context {
   String filename;
@@ -8,5 +8,5 @@ public class ServiceManagerContext implements Context {
   public void filename(String value) {
     filename = value;
   }
-  
+
 }
