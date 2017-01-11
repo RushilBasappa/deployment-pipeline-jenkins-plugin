@@ -1,5 +1,5 @@
 FROM custom-registry/baseimages/nginx
-MAINTAINER Bitesize Project <bitesize-techops@pearson.com>
+MAINTAINER Deployment Pipeline <pipeline>
 RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
 RUN apt-get -q update && \
     apt-get install -q -y --force-yes static-content=1.1.2* && \

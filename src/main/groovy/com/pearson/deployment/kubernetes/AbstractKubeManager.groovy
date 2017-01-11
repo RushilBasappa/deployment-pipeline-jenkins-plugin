@@ -1,5 +1,7 @@
 package com.pearson.deployment.kubernetes
 
+import com.github.zafarkhaja.semver.Version
+
 import com.pearson.deployment.config.bitesize.DeploymentMethod
 import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.config.kubernetes.*
@@ -30,7 +32,6 @@ abstract class AbstractKubeManager {
             retval += serviceHandlers(client, s)
           }
           if (!svc.isThirdParty()) {
-            //  We need
             handler = getHandler(client, svc, KubeIngressWrapper)
             handler && retval << handler
           }
@@ -59,30 +60,35 @@ abstract class AbstractKubeManager {
     return null
   }
 
+  static AbstractKubeWrapper getThirdpartyHandler(KubeAPI client, ManagedResource rsc) {
+    def existing
+    try {
+      def e = client.get rsc.type, rsc.name
+      existing = new KubeThirdPartyInstanceWrapper(client, e)
+    } catch (ResourceNotFoundException e) {
+    }
+    def nevv = new KubeThirdPartyInstanceWrapper(client, rsc)
+    if (nevv != existing) {
+      return nevv
+    }
+    return null
+  }
+
   static List<AbstractKubeWrapper> serviceHandlers(KubeAPI client, Service svc) {
     def retval = []
     def handler
 
     if (svc.isThirdParty()) {
-      handler = getHandler(client, svc, KubeThirdPartyWrapper)
-      handler && retval << handler
-      //kubeVersion = client.getVersion()
-      // We will need to take out this when kubernetes 1.5 will mature as
-      // currently it's an ugly hack
-      /*
-      if (kubeVersion !~ /v1.2/ ) {
+      def clientVersion = client.version()
+
+      // TPR handling changed in v1.3.0
+      if (clientVersion.satisfies("<1.3.0")) {
         handler = getHandler(client, svc, KubeThirdPartyWrapper)
         handler && retval << handler
       } else {
-        switch(svc.type) {
-          case "mongo":
-              break
-          case "mysql":
-              break
-          default:
-              break
-        }
-      }*/
+        handler = getThirdpartyHandler(client, svc)
+        handler && retval << handler
+      }
     } else {
       svc.volumes.each {
         it.namespace = svc.namespace

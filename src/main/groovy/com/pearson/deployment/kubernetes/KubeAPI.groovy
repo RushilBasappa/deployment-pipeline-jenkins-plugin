@@ -1,5 +1,7 @@
 package com.pearson.deployment.kubernetes
 
+import com.github.zafarkhaja.semver.Version
+
 interface KubeAPI {
     void create(String kind, LinkedHashMap resource)
     void apply(String kind, LinkedHashMap resource)
@@ -9,5 +11,5 @@ interface KubeAPI {
 
     boolean namespaceExist(String namespace)
 
-    String getVersion()
+    Version version()
 }

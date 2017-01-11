@@ -1,5 +1,6 @@
 package com.pearson.deployment.kubernetes
 
+import com.github.zafarkhaja.semver.Version
 import org.yaml.snakeyaml.Yaml
 import groovy.json.*
 
@@ -10,15 +11,17 @@ class KubeWrapper implements KubeAPI {
   String namespace
   OutputStream log
 
-  KubeWrapper() {  
-    this.namespace = 'default'  
+  private Version kubeVersion
+
+  KubeWrapper() {
+    this.namespace = 'default'
   }
 
   KubeWrapper(String namespace, OutputStream log=System.out) {
     this.namespace = namespace
     this.log = log
   }
-  
+
   LinkedHashMap fetch(String kind, String name) {
     try {
       String result = exe("kubectl get ${kind} ${name} --namespace=${namespace} -o yaml")
@@ -71,9 +74,20 @@ class KubeWrapper implements KubeAPI {
     apply wrapper.resource
   }
 
-  String getVersion() {
-    // def res = exe("""kubectl version | tail -1 | awk -F, '{print $3}' | awk -F: '{print $NF}' | tr '"' ''""")
-    "v1.2.2"
+  Version version() {
+    if (this.kubeVersion) {
+      return this.kubeVersion
+    }
+
+    def output = exe("kubectl version")
+    def serverLine =  (output =~ /.*Server.*/)[0]
+    def matcher =  ( serverLine =~ /.*GitVersion:"v(.*?)",.*/)
+    if (matcher.matches()) {
+      this.kubeVersion = Version.valueOf(matcher[0][1])
+      return this.kubeVersion
+    } else {
+      return "0.0.0"
+    }
   }
 
   void setNamespace(String namespace) {

@@ -1,5 +1,7 @@
 package com.pearson.deployment.kubernetes
 
+import com.github.zafarkhaja.semver.Version
+
 import com.pearson.deployment.config.kubernetes.*
 
 class FakeKubeWrapper implements KubeAPI {
@@ -59,6 +61,10 @@ class FakeKubeWrapper implements KubeAPI {
     apply wrapper.resource
   }
 
+  Version version() {
+    Version.valueOf("1.4.4")
+  }
+
   void setNamespace(String namespace) {
     this.namespace = namespace
   }
@@ -76,7 +82,7 @@ class FakeKubeWrapper implements KubeAPI {
     def map = kindStore.get(name)
     if (map == null) {
       throw new ResourceNotFoundException("Cannot find ${klass.kind} ${name}")
-    }    
+    }
     klass.newInstance(map)
   }
 
