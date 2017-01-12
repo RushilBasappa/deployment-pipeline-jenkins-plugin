@@ -39,10 +39,6 @@ class KubeUtils {
     def serviceAptly = loadAptlyService(nsName)
     def jenkinsIngress = loadJenkinsIngress(nsName)
 
-    // client.extensions().deployments().inNamespace(nsName).patch(deployment)
-    // client.services().inNamespace(nsName).patch(serviceJenkins)
-    // client.services().inNamespace(nsName).patch(serviceAptly)
-    // client.extensions().ingress().inNamespace(nsName).patch(jenkinsIngress)
     client.resource(deployment).apply()
     client.resource(serviceJenkins).apply()
     client.resource(serviceAptly).apply()
@@ -136,6 +132,16 @@ class KubeUtils {
         client.namespaces().create(nsObj)
       } else {
         println "${ns.getMetadata().getName()} already exist"
+      }
+    }
+  }
+
+  def deleteNamespaces(def namespaces) {
+    namespaces.each { nsName ->
+      def ns = client.namespaces().withName(nsName).get()
+
+      if (ns != null) {
+        client.namespaces().delete(ns)
       }
     }
   }

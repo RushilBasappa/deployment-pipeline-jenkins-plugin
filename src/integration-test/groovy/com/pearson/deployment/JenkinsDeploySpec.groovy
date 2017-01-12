@@ -39,10 +39,20 @@ class JenkinsDeploySpec extends GebReportingSpec {
 
   def setup() {
     kube = new KubeUtils()
+    def e = System.getenv()
+    
+    // Do cleanup first
+    kube.deleteNamespaces(requiredNamespaces)
     kube.createNamespaces(requiredNamespaces)
     // Deploy fake git repository with sample-app bitesize files
     kube.deployGogs(requiredNamespaces.first())
     kube.deployJenkins(requiredNamespaces.first())
+
+    def adminUser = e.JENKINS_ADMIN_USER ?: 'admin'
+    def adminPassword = e.JENKINS_ADMIN_PASSWORD ?: 'pass'
+    def adminUrl = e.JENKINS_URL ?: 'http://jenkins.sample-app.io/'
+
+    jenkins = new JenkinsAPI(adminUrl, adminUser, adminPassword)
     // Deploy jenkins
   }
 
@@ -50,17 +60,10 @@ class JenkinsDeploySpec extends GebReportingSpec {
     kube.cleanup()
   }
 
-  // Check that Jenkins credentials work
+  def "check Jenkins credentials" () {
+    response = jenkins.getHomepage()
 
-  // Check that seed-job created and runs
-
-  // Check the list of generated jobs
-
-  def "some weird stuff" () {
-    when:
-      def a = 1
-    then:
-      1 == 2
+    response.status == 200
   }
 
 }

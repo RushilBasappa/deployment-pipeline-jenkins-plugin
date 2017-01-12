@@ -7,7 +7,7 @@ import groovyx.net.http.RESTClient
 import spock.lang.Shared
 import spock.lang.Stepwise
 
-import com.pearson.deployment.jenkins.JenkinsAPI
+import com.pearson.deployment.util.JenkinsAPI
 
 class JenkinsSettingsSpec extends GebReportingSpec {
   @Shared
@@ -15,7 +15,12 @@ class JenkinsSettingsSpec extends GebReportingSpec {
 
   def setup() {
     def e = System.getenv()
-    jenkins = new JenkinsAPI('http://jenkins.sample-app.io/', e.JENKINS_ADMIN_USER, e.JENKINS_ADMIN_PASSWORD)
+
+    def adminUser = e.JENKINS_ADMIN_USER ?: 'admin'
+    def adminPassword = e.JENKINS_ADMIN_PASSWORD ?: 'pass'
+    def adminUrl = e.JENKINS_URL ?: 'http://jenkins.sample-app.io/'
+
+    jenkins = new JenkinsAPI(adminUrl, adminUser, adminPassword)
     jenkins.waitForAvailable()
   }
 

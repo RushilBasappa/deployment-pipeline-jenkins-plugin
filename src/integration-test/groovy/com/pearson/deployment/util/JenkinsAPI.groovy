@@ -1,4 +1,4 @@
-package com.pearson.deployment.jenkins
+package com.pearson.deployment.util
 
 import groovyx.net.http.RESTClient
 
@@ -46,4 +46,9 @@ class JenkinsAPI {
       retries += 1
     }
   }
+
+  def getHomePage() {
+    client.get(uri: restUrl, path: "/")
+  }
+  
 }
