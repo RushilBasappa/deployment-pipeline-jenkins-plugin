@@ -26,7 +26,7 @@ class DeployEnvironment implements Serializable {
   private OutputStream log
   private String filename
 
-  // need to move this to factory 
+  // need to move this to factory
   private def cloudClientClass = KubeWrapper.class
 
   DeployEnvironment(
@@ -53,15 +53,16 @@ class DeployEnvironment implements Serializable {
 
     environment?.services.each {
       String deployTo
-      if (environment.deployment?.isBlueGreen()) {
-        String active = environment.deployment.active
+      it.setupDeploymentMethod(environment)
+
+      if (it.deployment?.isBlueGreen() ) {
+        String active = it.deployment.active
         deployTo = (active == "blue") ? "green" : "blue"
       }
       if (! it.isThirdParty() ) {
         changed = deployService(it, deployTo) ? true : changed
-      }      
+      }
     }
-
     return changed
   }
 
@@ -91,7 +92,7 @@ class DeployEnvironment implements Serializable {
       if (deployment.mustUpdate()) {
         log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.name}:${deployment.version}"
         deployment.update()
-        watchDeploy(deployment)     
+        watchDeploy(deployment)
         return true
       }
 

@@ -23,6 +23,7 @@ class JenkinsDeploySpec extends GebReportingSpec {
   def kubeClient
   def jenkinsChartFolder
   KubeUtils kube
+  JenkinsAPI jenkins
 
   private def requiredNamespaces = [
     "sample-app",
@@ -40,7 +41,7 @@ class JenkinsDeploySpec extends GebReportingSpec {
   def setup() {
     kube = new KubeUtils()
     def e = System.getenv()
-    
+
     // Do cleanup first
     kube.deleteNamespaces(requiredNamespaces)
     kube.createNamespaces(requiredNamespaces)
@@ -61,8 +62,7 @@ class JenkinsDeploySpec extends GebReportingSpec {
   }
 
   def "check Jenkins credentials" () {
-    response = jenkins.getHomepage()
-
+    def response = jenkins.getHomePage()
     response.status == 200
   }
 

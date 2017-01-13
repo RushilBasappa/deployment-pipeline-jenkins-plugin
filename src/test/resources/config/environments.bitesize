@@ -65,6 +65,14 @@ environments:
         env:
           - name: NODE_ENV
             value: staging
+      - name: custom-service
+        application: sample-app
+        external_url: custom-service-stg.pearson.com
+        replicas: 2
+        port: 80
+        deployment:
+          active: green
+          mode: auto
     tests:
       - name: Sample test
         repository: git@github.com/sample-test.git

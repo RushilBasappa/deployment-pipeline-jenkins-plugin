@@ -9,6 +9,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   int port = 80
   List<EnvVar> env = []
   List<PersistentVolume> volumes
+
   String namespace = "default"
   String project
   String image
@@ -27,6 +28,8 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   String httpsBackendString
   HealthCheck health_check
 
+  DeploymentMethod deployment
+
   String deploymentMethod = "rolling-upgrade"
 
   public Object clone() throws CloneNotSupportedException {
@@ -35,7 +38,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
 
 
   boolean equals(Object obj) {
-    if (obj == null) { 
+    if (obj == null) {
       return false
     }
 
@@ -71,7 +74,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   public void setApplication(String value) {
     this.application = value
   }
-  
+
   public String getApplication() {
     this.application ? this.application : this.name
   }
@@ -93,7 +96,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   }
 
   public String getHttpsOnlyString() {
-    String.valueOf httpsOnly   
+    String.valueOf httpsOnly
   }
 
   public void setHttpsBackendString(String val) {
@@ -116,6 +119,16 @@ class Service extends ManagedResource implements Serializable, Cloneable {
       }
     }
     this.env = vars
+  }
+
+  void setupDeploymentMethod(def environment) {
+    if (deployment == null) {
+      deployment = new DeploymentMethod()
+    }
+
+    deployment.method = deployment.method ?: environment.deployment?.method
+    deployment.active = deployment.active ?: environment.deployment?.active
+    deployment.mode   = deployment.mode ?: environment.deployment?.mode
   }
 
 }
