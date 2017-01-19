@@ -10,11 +10,11 @@ class KubeIngress extends AbstractKubeResource {
 
   String name
   String namespace
- 
+
   KubeIngress(LinkedHashMap o) {
     name = o.metadata?.name
     namespace = o.metadata?.namespace
-    labels    = o.metadata?.labels 
+    labels    = o.metadata?.labels
     rules     = o.spec.rules?.collect{ r -> new KubeIngressRule(r)}
   }
 
@@ -27,13 +27,13 @@ class KubeIngress extends AbstractKubeResource {
     if (!KubeIngress.class.isAssignableFrom(o.class)) {
       return false
     }
-    
+
     def obj = (KubeIngress)o
     (name == obj.name) &&
     (namespace == obj.namespace) &&
     (labels == obj.labels) &&
     (rules == obj.rules)
-    
+
   }
 
   LinkedHashMap asMap() {
@@ -43,7 +43,7 @@ class KubeIngress extends AbstractKubeResource {
       "metadata": [
         "name": name,
         "namespace": namespace,
-        "labels": labels   
+        "labels": labels
       ],
       "spec": [
         "rules":  rules.collect{ r -> r.asMap() }

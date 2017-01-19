@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gogs
+  namespace: sample-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gogs
+  template:
+    metadata:
+      labels:
+        name: gogs
+    spec:
+      containers:
+      - env:
+        image: gogs/gogs:0.9.113
+        imagePullPolicy: Always
+        name: test
+        ports:
+        - containerPort: 1022
+          protocol: TCP
+        - containerPort: 3000
+          protocol: TCP
+        volumeMounts:
+          - mountPath: /var/gogs/ssh
+            name: publickey
+      volumes:
+        - name: publickey
+          secret:
+            secretName: publickey

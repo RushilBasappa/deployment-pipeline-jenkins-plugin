@@ -5,14 +5,14 @@ package com.pearson.deployment.config.kubernetes
 // In 1.4 and above, we will use KubeGenericObject
 // which can set arbitrary fields and "kind"
 class KubeThirdPartyResource extends AbstractKubeResource {
+	public static final String kind = "thirdpartyresource"
 
 	String name
 	String namespace
   String description
+	String apiVersion
+	LinkedHashMap spec
   Map<String,String> labels
-	Map<String,LinkedHashMap> spec
-
-	public static final String kind = "thirdpartyresource"
 
   KubeThirdPartyResource(LinkedHashMap o) {
     name = o.metadata.name
@@ -20,7 +20,8 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 		description = o.description
     labels = o.metadata.labels
 		spec = o.spec
-	
+		apiVersion = o.apiVersion ?: "extensions/v1beta1"
+		// kind = o.kind ?: "ThirdPartyResource"
   }
 
 	@Override
@@ -38,13 +39,14 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 		(name == obj.name) &&
 		(namespace == obj.namespace) &&
 		(description == obj.description) &&
-		(labels == obj.labels)
+		(labels == obj.labels) &&
+		(spec == obj.spec)
 	}
 
   LinkedHashMap asMap() {
 		def r = [
-			"apiVersion":  "extensions/v1beta1",
-			"kind":        "ThirdPartyResource",
+			"apiVersion":  apiVersion,
+			"kind":        this.class.kind,
 			"description": description,
 			"metadata": [
 				"name": name,
@@ -52,6 +54,11 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 				"labels": labels
 			]
 		]
+
+		if (spec) {
+			r.spec = spec
+		}
+
 		r
   }
 }

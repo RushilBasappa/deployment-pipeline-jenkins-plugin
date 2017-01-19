@@ -12,7 +12,7 @@ class KubeService extends AbstractKubeResource {
   Map<String, String> labels
   List<KubeServicePort> ports = []
 
-  KubeService(LinkedHashMap map) { 
+  KubeService(LinkedHashMap map) {
     name      = map.metadata.name
     namespace = map.metadata.namespace
     ports     = map.spec.ports.collect{ p -> new KubeServicePort(p)}
@@ -37,7 +37,7 @@ class KubeService extends AbstractKubeResource {
     (ports == obj.ports)
   }
 
-  LinkedHashMap asMap() {    
+  LinkedHashMap asMap() {
     [
       "apiVersion": "v1",
       "kind":       "Service",

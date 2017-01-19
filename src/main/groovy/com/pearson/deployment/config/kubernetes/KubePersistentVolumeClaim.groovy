@@ -17,31 +17,30 @@ class KubePersistentVolumeClaim extends AbstractKubeResource {
     namespace = o.metadata.namespace
     accessModes = o.spec.accessModes
     labels = o.metadata.labels
-    matchLabels = o.spec.selector?.matchLabels      
+    matchLabels = o.spec.selector?.matchLabels
+    // kind = "PersistentVolumeClaim"
   }
 
   LinkedHashMap asMap() {
-    def json = new JsonBuilder()
-
-    json {
-      apiVersion "v1"
-      kind       "PersistentVolumeClaim"
-      metadata {
-        name     name
-        namespace namespace
-        labels   labels
-      }
-      spec {
-        accessModes accessModes
-        resources {
-          requests {
-            storage size
-          }
-        }
-        selector {
-          matchLabels matchLabels
-        }
-      }
-    }
+    [
+      apiVersion: "v1",
+      kind: "PersistentVolumeClaim",
+      metadata: [
+        name: name,
+        namespace: namespace,
+        labels: labels
+      ],
+      spec: [
+        accessModes: accessModes,
+        resources: [
+          requests: [
+            storage: size
+          ]
+        ],
+        selector: [
+          matchLabels: matchLabels
+        ]
+      ]
+    ]
   }
 }

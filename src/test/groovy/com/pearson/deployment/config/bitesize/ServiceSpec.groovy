@@ -8,7 +8,7 @@ class ServiceSpec extends Specification {
   def "Service comparison" () {
     given:
       Service original = new Service(name : "ENV")
-    
+
     expect:
       original.equals(matcher) == expected
 
@@ -40,13 +40,44 @@ class ServiceSpec extends Specification {
   def "isThirdparty method checks type" () {
     when:
       Service s = new Service( type: typeValue)
-      
+
     then:
       s.isThirdParty() == expected
-    
+
     where:
       typeValue | expected
       'custom'  | true
       null      | false
+  }
+
+  def "DeploymentMethod matches environments method" () {
+    when:
+      def e = new File("src/test/resources/config/environments.bitesize").text
+      def cfg = EnvironmentsBitesize.readConfigFromString(e)
+      def stagingEnvironment = cfg.getEnvironment('Staging')
+
+      def testAppSvc = stagingEnvironment.services[2]
+      testAppSvc.setupDeploymentMethod(stagingEnvironment)
+
+    then:
+
+      testAppSvc.deployment?.method == "bluegreen"
+      testAppSvc.deployment?.mode == "manual"
+      testAppSvc.deployment?.active == "blue"
+  }
+
+  def "DeploymentMethod overrides environments method" () {
+    when:
+      def e = new File("src/test/resources/config/environments.bitesize").text
+      def cfg = EnvironmentsBitesize.readConfigFromString(e)
+      def stagingEnvironment = cfg.getEnvironment('Staging')
+
+      def customAppSvc = stagingEnvironment.services[3]
+      customAppSvc.setupDeploymentMethod(stagingEnvironment)
+    then:
+      customAppSvc.deployment?.method == "bluegreen"
+      customAppSvc.deployment?.mode == "auto"
+      customAppSvc.deployment?.active == "green"
+
   }
 }

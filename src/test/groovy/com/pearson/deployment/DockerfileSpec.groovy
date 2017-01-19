@@ -6,7 +6,7 @@ import com.pearson.deployment.config.bitesize.ApplicationBitesize
 import com.pearson.deployment.config.bitesize.Application
 
 class DockerfileSpec extends Specification {
-  
+
   ApplicationBitesize cfg
 
   def setup() {
@@ -22,7 +22,7 @@ class DockerfileSpec extends Specification {
     when:
       Dockerfile docker = new Dockerfile(app)
       String expected = new File('src/test/resources/Dockerfile.generated').text
-      
+
     then:
       docker.contents() == expected
   }
