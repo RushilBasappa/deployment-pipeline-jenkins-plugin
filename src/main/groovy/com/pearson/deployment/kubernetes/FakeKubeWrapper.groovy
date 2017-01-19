@@ -7,6 +7,7 @@ import com.pearson.deployment.config.kubernetes.*
 class FakeKubeWrapper implements KubeAPI {
   OutputStream log
   String namespace
+  private Version version
 
   Map<String, Map> store = [
     "service" : new LinkedHashMap(),
@@ -19,10 +20,12 @@ class FakeKubeWrapper implements KubeAPI {
 
   FakeKubeWrapper() {
     this.namespace = 'default'
+    version = Version.valueOf('1.4.4')
   }
 
   FakeKubeWrapper(String namespace) {
     this.namespace = namespace
+    version = Version.valueOf('1.4.4')
   }
 
   void create(String kind, LinkedHashMap resource) {
@@ -61,8 +64,12 @@ class FakeKubeWrapper implements KubeAPI {
     apply wrapper.resource
   }
 
+  void setVersion(String v) {
+    version = Version.valueOf(v)
+  }
+
   Version version() {
-    Version.valueOf("1.4.4")
+    version
   }
 
   void setNamespace(String namespace) {
@@ -83,6 +90,12 @@ class FakeKubeWrapper implements KubeAPI {
     if (map == null) {
       throw new ResourceNotFoundException("Cannot find ${klass.kind} ${name}")
     }
+    klass.newInstance(map)
+  }
+
+  AbstractKubeResource get(String kl, String name) {
+    def map = fetch(kl, name)
+    def klass = AbstractKubeResource.classFromKind(map.kind)
     klass.newInstance(map)
   }
 

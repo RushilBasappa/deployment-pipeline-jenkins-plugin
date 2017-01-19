@@ -35,14 +35,16 @@ class KubeEnvironmentManager {
   private void setServiceProperties(Service service) {
     service.project = project
     service.namespace = environment.namespace
-    if (environment.deployment.isBlueGreen()) {
+    service.setupDeploymentMethod(environment)
+
+    if (!service.isThirdParty() && service.deployment.isBlueGreen()) {
       service.backend = "${service.name}-${environment.deployment.active}"
     }
   }
 
   private void manageService(Service svc) {
     setServiceProperties(svc)
-    resources = AbstractKubeManager.collectResources(environment.deployment, client, svc, log)
+    resources = AbstractKubeManager.collectResources(client, svc, log)
     resources.each { rsc ->
       client.apply rsc
     }

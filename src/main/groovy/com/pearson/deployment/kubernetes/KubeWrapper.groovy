@@ -42,6 +42,12 @@ class KubeWrapper implements KubeAPI {
     }
   }
 
+  AbstractKubeResource get(String kl, String name) {
+    def map = fetch(kl, name)
+    def klass = AbstractKubeResource.classFromKind(map.kind)
+    klass.newInstance(map)
+  }
+
 
   void create(String kind, LinkedHashMap resource) {
     String filename = writeSpecFile(resource)
