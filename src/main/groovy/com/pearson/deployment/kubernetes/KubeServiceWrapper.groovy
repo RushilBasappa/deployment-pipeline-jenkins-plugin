@@ -17,7 +17,8 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
         labels: [
           name: svc.name,
           project: svc.project,
-          application: app
+          application: app,
+          creator: "pipeline"
         ]
       ],
       spec: [

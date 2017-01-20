@@ -6,7 +6,7 @@ import com.pearson.deployment.helpers.*
 
 class KubeDeploymentWrapper extends AbstractKubeWrapper {
   Integer deployTimeout = 300
-  static Class resourceClass = KubeDeployment 
+  static Class resourceClass = KubeDeployment
 
   KubeDeploymentWrapper(KubeAPI client, Service svc) {
     this.client = client
@@ -94,7 +94,6 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
         availableReplicas: svc.available_replicas
       ]
     )
-
   }
 
   KubeDeploymentWrapper(KubeAPI client, KubeDeployment r) {
@@ -112,7 +111,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     }
     return 'running'
   }
-  
+
   @Override
   boolean equals(Object obj) {
     if (obj == null) {
@@ -122,7 +121,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     if (!KubeDeploymentWrapper.class.isAssignableFrom(obj.class)) {
       return false
     }
-    
+
     (this.resource == obj.resource)
   }
 

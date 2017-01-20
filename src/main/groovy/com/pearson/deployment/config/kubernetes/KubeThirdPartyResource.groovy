@@ -46,7 +46,7 @@ class KubeThirdPartyResource extends AbstractKubeResource {
   LinkedHashMap asMap() {
 		def r = [
 			"apiVersion":  apiVersion,
-			"kind":        this.class.kind,
+			"kind":        "ThirdPartyResource",
 			"description": description,
 			"metadata": [
 				"name": name,

@@ -20,7 +20,8 @@ class KubeThirdPartyWrapper extends AbstractKubeWrapper {
           version: svc.version,
           template_filename: svc.template_filename,
           parameter_filename: svc.parameter_filename,
-          stack_name: svc.stack_name
+          stack_name: svc.stack_name,
+          creator: "pipeline"
         ]
       ]
     )
@@ -85,5 +86,5 @@ class KubeThirdPartyWrapper extends AbstractKubeWrapper {
   String getParameterFilename() {
     resource.labels['parameter_filename']
   }
-    
+
 }
