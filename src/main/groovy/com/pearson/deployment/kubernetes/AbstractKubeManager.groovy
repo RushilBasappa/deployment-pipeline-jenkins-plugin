@@ -32,10 +32,10 @@ abstract class AbstractKubeManager {
             }
             retval += serviceHandlers(client, s)
           }
-          // if (!svc.isThirdParty()) {
-          //   handler = getHandler(client, svc, KubeIngressWrapper)
-          //   handler && retval << handler
-          // }
+          if (!svc.isThirdParty()) {
+            handler = getHandler(client, svc, KubeIngressWrapper)
+            handler && retval << handler
+          }
       } else {
         retval += serviceHandlers(client, svc)
       }

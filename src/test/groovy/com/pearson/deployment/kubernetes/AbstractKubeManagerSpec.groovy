@@ -42,7 +42,8 @@ class AbstractKubeManagerSpec extends Specification {
     then:
       names.findAll{ n -> n == "svc-blue" }.size == 2
       names.findAll{ n -> n == "svc-green" }.size == 2
-      rsc.size == 4
+      names.findAll{ n -> n == "svc"}.size == 1 // ingress service
+      rsc.size == 5
   }
 
   def "service collect on thirdpartyresource" () {
