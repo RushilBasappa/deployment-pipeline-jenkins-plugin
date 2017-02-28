@@ -10,9 +10,9 @@ class KubeThirdPartyInstanceWrapper extends AbstractKubeWrapper {
   KubeThirdPartyInstanceWrapper(KubeAPI client, Service svc) {
     this.client = client
 
-    this.resource = new KubeThirdPartyMongoResource(
+    this.resource = new KubeThirdPartyGenericResource(
       apiVersion: "prsn.io/v1",
-      kind: svc.type,
+      kind: svc.type.capitalize(),
       metadata: [
         name: svc.name,
         namespace: svc.namespace
@@ -24,7 +24,9 @@ class KubeThirdPartyInstanceWrapper extends AbstractKubeWrapper {
     )
   }
 
-  KubeThirdPartyInstanceWrapper(KubeAPI client, KubeThirdPartyMongoResource resource) {
+
+
+  KubeThirdPartyInstanceWrapper(KubeAPI client, KubeThirdPartyGenericResource resource) {
     this.client = client
     this.resource = resource
   }
@@ -43,6 +45,5 @@ class KubeThirdPartyInstanceWrapper extends AbstractKubeWrapper {
 
     this.resource == obj.resource
   }
-
 
 }

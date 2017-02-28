@@ -48,4 +48,8 @@ class MongoWrapper extends AbstractKubeManager {
 
     this.resource == obj.resource
   }
+
+  String namespace() {
+    resource.namespace
+  }
 }

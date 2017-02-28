@@ -33,7 +33,10 @@ class MysqlWrapper extends AbstractKubeManager {
   boolean manage() {
     true
   }
-
+  
+  String namespace() {
+    resource.namespace
+  }
   @Override
   boolean equals(Object o) {
     if (o == null) {

@@ -129,7 +129,7 @@ class DeployEnvironment implements Serializable {
 
     while (true) {
       if (deploy.watch() == 'success') {
-        printOut("Deployment for ${deploy.name} finished")
+        printOut("\nDeployment for ${deploy.name} finished")
         break
       }
       timer = tick(timer)
@@ -147,7 +147,13 @@ class DeployEnvironment implements Serializable {
 
   private void checkTimeout(KubeDeploymentWrapper deploy, int timer) {
     if (timer >= deploy.deployTimeout) {
-      throw new hudson.AbortException("Timeout reached, deployment failed")
+      throw new hudson.AbortException('''
+      ===
+      Timeout reached, deployment failed
+      ===
+      ${deploy.status()}
+      ---
+      ''')
     }
   }
 

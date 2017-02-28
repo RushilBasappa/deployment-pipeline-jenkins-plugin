@@ -8,7 +8,7 @@ class KubeIngressWrapper extends AbstractKubeWrapper {
 
     KubeIngressWrapper(KubeAPI client, Service svc) {
         this.client = client
-        this.resource = new KubeIngress(            
+        this.resource = new KubeIngress(
           metadata: [
             name: svc.name,
             namespace: svc.namespace,

@@ -32,6 +32,8 @@ class Service extends ManagedResource implements Serializable, Cloneable {
 
   String deploymentMethod = "rolling-upgrade"
 
+  Map<String, String> options
+
   public Object clone() throws CloneNotSupportedException {
     return super.clone()
   }

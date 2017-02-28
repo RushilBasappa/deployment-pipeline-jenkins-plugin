@@ -44,10 +44,9 @@ class KubeWrapper implements KubeAPI {
 
   AbstractKubeResource get(String kl, String name) {
     def map = fetch(kl, name)
-    def klass = AbstractKubeResource.classFromKind(map.kind)
-    klass.newInstance(map)
-  }
+    return AbstractKubeResource.build(map)
 
+  }
 
   void create(String kind, LinkedHashMap resource) {
     String filename = writeSpecFile(resource)
@@ -64,15 +63,23 @@ class KubeWrapper implements KubeAPI {
   }
 
   void apply(AbstractKubeResource resource) {
-    File f = File.createTempFile(resource.class.kind, '.json', null)
+    File f = File.createTempFile(resource.kind, '.json', null)
     def compact = Helper.denull(resource.asMap())
     def output = JsonOutput.toJson(compact)
+    def ns = resource.namespace
+
+    def applystr = "-f ${f.path} --validate=false"
+    if (ns) {
+      applystr = "${applystr} --namespace ${ns}"
+    }
+    def cmd = "kubectl apply ${applystr}"
+
     f.write output
     try {
-      exe("kubectl apply -f ${f.path} --validate=false")
+      exe(cmd)
       f.delete()
     } catch (all) {
-      println "Exception occured applying output: ${output}"
+      println "Exception occured applying '${cmd}', output: ${output}"
     }
   }
 

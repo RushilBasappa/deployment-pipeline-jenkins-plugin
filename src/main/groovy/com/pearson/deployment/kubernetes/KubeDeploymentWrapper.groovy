@@ -112,6 +112,11 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     return 'running'
   }
 
+  String status() {
+    def deployment = client.get KubeDeployment, resource.name
+    "Updated: ${deployment.updatedReplicas}, Available: ${deployment.availableReplicas}"
+  }
+
   @Override
   boolean equals(Object obj) {
     if (obj == null) {
