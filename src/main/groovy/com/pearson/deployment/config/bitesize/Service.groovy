@@ -13,6 +13,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   String namespace = "default"
   String project
   String image
+  String selector
   int replicas = 1
   int available_replicas
   int updated_replicas
@@ -66,7 +67,8 @@ class Service extends ManagedResource implements Serializable, Cloneable {
     (stack_name == other.stack_name) &&
     (ssl == other.ssl) &&
     (httpsOnly == other.httpsOnly) &&
-    (httpsBackend == other.httpsBackend)
+    (httpsBackend == other.httpsBackend) &&
+    (selector == other.selector)
   }
 
   public boolean isThirdParty() {

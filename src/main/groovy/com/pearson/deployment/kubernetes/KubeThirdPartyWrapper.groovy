@@ -8,10 +8,12 @@ class KubeThirdPartyWrapper extends AbstractKubeWrapper {
 
   KubeThirdPartyWrapper(KubeAPI client, Service svc) {
     this.client = client
+    def nameStr = "${svc.type}-${svc.name}.${svc.namespace}.prsn.io"
+    
     this.resource = new KubeThirdPartyResource(
       description: "Resource for ${svc.type}",
 			metadata: [
-				name: svc.name,
+				name: nameStr,
 				namespace: svc.namespace,
 				labels: [
           project: svc.project,

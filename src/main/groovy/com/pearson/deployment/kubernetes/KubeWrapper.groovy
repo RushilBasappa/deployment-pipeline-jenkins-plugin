@@ -7,6 +7,8 @@ import groovy.json.*
 import com.pearson.deployment.config.kubernetes.*
 import com.pearson.deployment.helpers.*
 
+import groovyx.net.http.HTTPBuilder
+
 class KubeWrapper implements KubeAPI {
   String namespace
   OutputStream log
@@ -72,14 +74,43 @@ class KubeWrapper implements KubeAPI {
     if (ns) {
       applystr = "${applystr} --namespace ${ns}"
     }
-    def cmd = "kubectl apply ${applystr}"
 
+    println "Kind: ${resource.kind}"
+
+    def cmd = "kubectl apply ${applystr}"
     f.write output
+    if (resource.kind == "thirdpartyresource") {
+      def token = new File("/var/run/secrets/kubernetes.io/serviceaccount/token").text
+      def masterHost = System.env.KUBERNETES_SERVICE_HOST
+
+      def url = "https://${masterHost}/apis/extensions/v1beta1/namespaces/${ns}/thirdpartyresources"
+      def headers = """-H "Authorization: Bearer ${token}" -H "Accept: application/json" -H "Content-Type: application/json" """
+      cmd = "curl -k ${headers} -d @${f.absolutePath} ${url}"
+
+      // def http = new HTTPBuilder("https://${masterHost}")
+      // http.ignoreSSLIssues()
+      //
+      // http.setHeaders([
+      //   "Authorization": "Bearer ${token}",
+      //   "Accept": "application/json",
+      //   "Content-Type": "application/json"
+      // ])
+      //
+      // http.post(
+      //   path: "/apis/extensions/v1beta1/namespaces/${ns}/thirdpartyresources",
+      //   body: output
+      // ) { resp ->
+      //   println "POST Success: ${resp.statusLine}"
+    }
+
+    // } else
     try {
       exe(cmd)
       f.delete()
     } catch (all) {
       println "Exception occured applying '${cmd}', output: ${output}"
+
+    // }
     }
   }
 
@@ -88,7 +119,7 @@ class KubeWrapper implements KubeAPI {
   }
 
   Version version() {
-    if (this.kubeVersion) {  
+    if (this.kubeVersion) {
       return this.kubeVersion
     }
 

@@ -46,7 +46,7 @@ class AbstractKubeManagerSpec extends Specification {
       rsc.size == 5
   }
 
-  def "service collect on thirdpartyresource" () {
+  def "service collect on thirdpartyresource 1.2.2" () {
     given:
       def e = new Environment( [ deployment: [method: 'bluegreen']])
       def svc = new Service( name: "svc", type: "mysql")
@@ -56,7 +56,21 @@ class AbstractKubeManagerSpec extends Specification {
       def rsc = AbstractKubeManager.collectResources(client, svc, log)
 
     then:
-      rsc.first().name == "svc"
+      rsc.first().name == "mysql-svc.default.prsn.io"
       rsc.size == 1
   }
+
+  // def "service collect on thirdpartyresource 1.3.0" () {
+  //   given:
+  //     def e = new Environment( [ deployment: [method: 'bluegreen']])
+  //     def svc = new Service( name: "svc", type: "mysql")
+  //     svc.setupDeploymentMethod(e)
+  //
+  //   when:
+  //     def rsc = AbstractKubeManager.collectResources(client, svc, log)
+  //
+  //   then:
+  //     rsc.first().name == "svc"
+  //     rsc.size == 1
+  // }
 }

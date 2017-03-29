@@ -18,6 +18,7 @@ class KubePersistentVolumeClaim extends AbstractKubeResource {
     accessModes = o.spec.accessModes
     labels = o.metadata.labels
     matchLabels = o.spec.selector?.matchLabels
+    size = o.spec.resources?.requests?.storage
     // kind = "PersistentVolumeClaim"
   }
 

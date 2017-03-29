@@ -19,7 +19,7 @@ apply plugin: 'jacoco'
 apply plugin: 'codenarc'
 
 group = "org.jenkins-ci.plugins"
-version = "3.4.36-SNAPSHOT"    // Or whatever your version is.
+version = "3.4.37-SNAPSHOT"    // Or whatever your version is.
 description = "Pearson Deployment pipeline plugin"
 
 // sourceCompatibility = 1.6
@@ -84,6 +84,7 @@ dependencies {
   compile 'org.hibernate:hibernate-validator:5.2.4.Final'
   compile 'org.hibernate:hibernate-validator-cdi:5.2.4.Final'
   compile 'com.github.zafarkhaja:java-semver:0.9.0'
+  compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.2'
 
   compile 'org.jenkins-ci.plugins:copyartifact:1.38@jar'
   optionalJenkinsPlugins 'org.jenkins-ci.plugins:job-dsl:1.48@jar'

@@ -9,6 +9,7 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
   KubeServiceWrapper(KubeAPI client, Service svc) {
     this.client = client
 
+    def selector = svc.selector ?: svc.name
     def app = svc.application ?: svc.name
     this.resource = new KubeService(
       metadata: [
@@ -23,7 +24,7 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
       ],
       spec: [
         selector: [
-          name: svc.name,
+          name: selector,
           project: svc.project,
           application: app
         ],
