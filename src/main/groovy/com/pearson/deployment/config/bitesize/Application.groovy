@@ -25,6 +25,7 @@ class Application extends Validator implements Serializable {
   @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "runtime" has invalid value')
   String project
   List<ApplicationDependency> dependencies
+  Map<String,String> notifications
 
   def getDockerImage() {
     "${Helper.dockerRegistry()}/${project}/${name}"
@@ -50,4 +51,4 @@ class Application extends Validator implements Serializable {
     validateField('runtime', value)
     this.runtime = value
   }
-} 
+}

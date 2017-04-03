@@ -75,7 +75,7 @@ class KubeWrapper implements KubeAPI {
       applystr = "${applystr} --namespace ${ns}"
     }
 
-    println "Kind: ${resource.kind}"
+    // println "Kind: ${resource.kind}"
 
     def cmd = "kubectl apply ${applystr}"
     f.write output

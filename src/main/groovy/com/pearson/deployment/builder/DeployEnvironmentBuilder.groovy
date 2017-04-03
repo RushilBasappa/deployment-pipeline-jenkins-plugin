@@ -76,7 +76,10 @@ class DeployEnvironmentBuilder extends Builder {
 
     environment?.services.each {
       String deployTo
-      if (environment.deployment?.isBlueGreen()) {
+
+      it.setupDeploymentMethod(environment)
+
+      if (it.deployment?.isBlueGreen()) {
         String active = environment.deployment.active
         deployTo = (active == "blue") ? "green" : "blue"
       }

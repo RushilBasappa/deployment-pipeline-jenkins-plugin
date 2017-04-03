@@ -8,7 +8,8 @@ class BuildComponent implements Serializable {
   String runtime
   List<BuildDependency> dependencies
   BuildRepository repository
+  Map<String,String> notifications
   List<EnvVar> env = []
   List<? extends Map<String,String>> build
   List<? extends Map<String,String>> artifacts
-} 
+}

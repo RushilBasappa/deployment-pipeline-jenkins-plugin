@@ -66,6 +66,22 @@ class ServiceSpec extends Specification {
       testAppSvc.deployment?.active == "blue"
   }
 
+  def "DeploymentMethod matches service method" () {
+    when:
+      def e = new File("src/test/resources/config/environments.bitesize").text
+      def cfg = EnvironmentsBitesize.readConfigFromString(e)
+      def devEnvironment = cfg.getEnvironment('Development')
+
+      def testAppSvc = devEnvironment.services[1]
+      testAppSvc.setupDeploymentMethod(devEnvironment)
+
+    then:
+
+      testAppSvc.deployment?.method == "bluegreen"
+      testAppSvc.deployment?.mode == "manual"
+      testAppSvc.deployment?.active == "green"
+  }
+
   def "DeploymentMethod overrides environments method" () {
     when:
       def e = new File("src/test/resources/config/environments.bitesize").text

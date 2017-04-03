@@ -68,7 +68,7 @@ class DeployEnvironment implements Serializable {
 
   private boolean deployService(Service svc, String deployTo=null) {
     String version = getServiceVersion(svc.name)
-    log.println "Got service version ${version}\n"
+    log.println "Got deploy to: ${deployTo}\n"
 
     if (version == null) {
       return
@@ -90,7 +90,7 @@ class DeployEnvironment implements Serializable {
 
     try {
       if (deployment.mustUpdate()) {
-        log.println "MUST UPDATE DEPLOYMENT FOR ${deployment.name}:${deployment.version}"
+        log.println "MUST UPDATE DEPLOYMENT '${svc.name}' FOR ${deployment.name}:${deployment.version}"
         deployment.update()
         watchDeploy(deployment)
         return true

@@ -82,7 +82,7 @@ abstract class AbstractKubeManager {
     if (svc.isThirdParty()) {
       def clientVersion = client.version()
       def s = clientVersion.satisfies("<1.3.0")
-      println "Got client version: ${clientVersion}, satisfies: ${s}"
+      // println "Got client version: ${clientVersion}, satisfies: ${s}"
 
       // TPR handling changed in v1.3.0
       if (clientVersion.satisfies("<1.3.0")) {

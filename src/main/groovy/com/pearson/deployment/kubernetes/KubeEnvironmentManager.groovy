@@ -22,7 +22,7 @@ class KubeEnvironmentManager {
   }
 
   void manage() {
-    if (!environment.deployment.isValid()) {
+    if (environment.deployment != null && !environment.deployment.isValid()) {
       log.println "Skipping ${environment.name}: deployment misconfigured"
       return
     }

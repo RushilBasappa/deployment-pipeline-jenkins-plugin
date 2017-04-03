@@ -28,6 +28,10 @@ environments:
             value: nononono
       - name: second-service
         application: sample-app
+        deployment:
+          method: bluegreen
+          active: green
+          mode: manual
         external_url: test-service2-dev.pearson.com
         port: 80
       - name: awesomedb

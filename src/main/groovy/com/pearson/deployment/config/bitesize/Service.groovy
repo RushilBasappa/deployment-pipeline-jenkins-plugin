@@ -127,12 +127,13 @@ class Service extends ManagedResource implements Serializable, Cloneable {
 
   void setupDeploymentMethod(def environment) {
     if (deployment == null) {
-      deployment = new DeploymentMethod()
+      println "Deployment method for deployment itself is null: ${environment.name}:${name}"
+      this.deployment = new DeploymentMethod()
     }
 
-    deployment.method = deployment.method ?: environment.deployment?.method
-    deployment.active = deployment.active ?: environment.deployment?.active
-    deployment.mode   = deployment.mode ?: environment.deployment?.mode
+    this.deployment.method = this.deployment.method ?: environment.deployment?.method
+    this.deployment.active = this.deployment.active ?: environment.deployment?.active
+    this.deployment.mode   = this.deployment.mode ?: environment.deployment?.mode
   }
 
 }
