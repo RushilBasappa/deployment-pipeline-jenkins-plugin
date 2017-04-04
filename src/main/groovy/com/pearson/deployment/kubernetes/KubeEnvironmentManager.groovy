@@ -38,7 +38,7 @@ class KubeEnvironmentManager {
     service.setupDeploymentMethod(environment)
 
     if (!service.isThirdParty() && service.deployment.isBlueGreen()) {
-      service.backend = "${service.name}-${environment.deployment.active}"
+      service.backend = "${service.name}-${service.deployment?.active}"
     }
   }
 
