@@ -80,7 +80,7 @@ class DeployEnvironmentBuilder extends Builder {
       it.setupDeploymentMethod(environment)
 
       if (it.deployment?.isBlueGreen()) {
-        String active = environment.deployment.active
+        String active = it.deployment.active
         deployTo = (active == "blue") ? "green" : "blue"
       }
       if (! it.isThirdParty() ) {
