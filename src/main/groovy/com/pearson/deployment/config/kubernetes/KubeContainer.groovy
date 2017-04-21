@@ -19,6 +19,7 @@ class KubeContainer {
       new KubePort(containerPort: p.containerPort)
     }
 
+
     volumeMounts = o.volumeMounts.collect{ mount ->
       new KubeVolumeMount(name: mount.name, mountPath: mount.mountPath)
     }
@@ -44,8 +45,13 @@ class KubeContainer {
     (this.image == obj.image) &&
     (this.ports == obj.ports) &&
     (this.volumeMounts == obj.volumeMounts) &&
-    (this.livenessProbe == o.livenessProbe)
+    (this.livenessProbe == o.livenessProbe) &&
     (this.env == obj.env)
+  }
+
+  @Override
+  String toString() {
+    return "KubeContainer[name: ${name}, image: ${image}, ports: ${ports}, mounts: ${volumeMounts}, env: ${env}]"
   }
 
   LinkedHashMap asMap() {

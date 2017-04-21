@@ -1,22 +1,80 @@
-package com.pearson.deployment.bitesize.config.kubernetes
+package  com.pearson.deployment.config.kubernetes
 
 import spock.lang.*
 
 class KubeContainerSpec extends Specification {
-    def "Comparison" () {
+    def "Compare ports not equal" () {
+
+      when:
+      def orig = new KubeContainer( ports: [
+
+        [containerPort: 80],
+        [containerPort: 81]
+      ])
+
+      def other = new KubeContainer(ports: [
+        [containerPort: 80],
+        [containerPort: 82],
+      ])
+
+      then:
+
+      orig != other
+    }
+
+    def "Compare ports equal" () {
+      when:
+      def orig = new KubeContainer( ports: [
+
+        [containerPort: 80],
+        [containerPort: 81]
+      ])
 
 
-    // given:
-    // def orig = new KubeContainer(containerPort: origPort)
-    //   def mod  = new KubeContainer(containerPort: otherPort)
-      
-    // expect:
-    //  orig.compareTo(mod) == expectation
+      def other = new KubeContainer( ports: [
 
-    // where:
-    //   origPort | otherPort | expectation
-    //   80       | 81        | false
-    //   81       | 81        | false
-    //   null     | 80        | false
+        [containerPort: 80],
+        [containerPort: 81]
+      ])
+
+      then:
+      orig == other
+    }
+
+
+    def "Compare environment not equal" () {
+      when:
+
+      def orig = new KubeContainer( env: [
+        [name: "one", value: "a"],
+        [name: "two", value: "b"],
+      ])
+
+      def other = new KubeContainer( env: [
+        [name: "one", value: "a"],
+        [name: "two", value: "a"],
+      ])
+
+      then:
+      orig != other
+    }
+
+
+    def "Compare environment equal" () {
+      when:
+
+      def orig = new KubeContainer( env: [
+        [name: "one", value: "a"],
+        [name: "two", value: "b"],
+        ])
+
+        def other = new KubeContainer( env: [
+          [name: "one", value: "a"],
+          [name: "two", value: "b"],
+          ])
+
+          then:
+
+          orig == other
     }
 }

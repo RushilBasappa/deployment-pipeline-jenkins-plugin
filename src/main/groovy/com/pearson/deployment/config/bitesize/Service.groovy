@@ -6,7 +6,7 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   String type = null
   String version = null
   String external_url
-  int port = 80
+  String port = "80"
   List<EnvVar> env = []
   List<PersistentVolume> volumes
 
@@ -109,6 +109,15 @@ class Service extends ManagedResource implements Serializable, Cloneable {
 
   public String getHttpsBackendString() {
     String.valueOf httpsBackend
+  }
+
+  def getPorts() {
+    def prts = port.split(",")
+    prts.collect{ p -> p.toInteger() }
+  }
+
+  def setPorts(Integer[] ports) {
+    port = ports.join(",")
   }
 
   // public String getVersion() {

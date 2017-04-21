@@ -31,7 +31,7 @@ class KubeIngressWrapper extends AbstractKubeWrapper {
                       path: "/",
                       backend: [
                         serviceName: svc.backend,
-                        servicePort: svc.port
+                        servicePort: svc.ports[0]
                       ]
                     ]
                   ]

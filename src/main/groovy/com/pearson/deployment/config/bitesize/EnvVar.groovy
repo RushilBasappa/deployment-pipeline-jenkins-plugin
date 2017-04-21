@@ -22,6 +22,10 @@ class EnvVar implements Serializable {
     return false
   }
 
+  String toString() {
+    return "EnvVar[name: ${name}, value: ${value}, secret: ${secret}]"
+  }
+
   LinkedHashMap asMap() {
     if ( secret != null ) {
       [ name: secret, valueFrom: [secretKeyRef: [name: value, key: value]]]

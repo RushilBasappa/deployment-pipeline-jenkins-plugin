@@ -61,7 +61,7 @@ environments:
         application: sample-app
         external_url: test-service-stg.pearson.com
         replicas: 2
-        port: 80
+        port: 80,81,82
         health_check:
           command:
             - /bin/cat

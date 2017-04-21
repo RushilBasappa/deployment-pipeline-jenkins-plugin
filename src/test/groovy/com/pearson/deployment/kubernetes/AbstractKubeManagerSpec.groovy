@@ -46,6 +46,18 @@ class AbstractKubeManagerSpec extends Specification {
       rsc.size == 5
   }
 
+  def "service collect resources without external_url" () {
+    given:
+      def svc = new Service( name: "svc")
+    when:
+      def rsc = AbstractKubeManager.collectResources(client, svc, log)
+
+    then:
+      rsc.size == 1
+      rsc.first().class == KubeServiceWrapper
+
+  }
+
   def "service collect on thirdpartyresource 1.2.2" () {
     given:
       def e = new Environment( [ deployment: [method: 'bluegreen']])
