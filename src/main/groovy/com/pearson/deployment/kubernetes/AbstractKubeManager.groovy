@@ -19,7 +19,7 @@ abstract class AbstractKubeManager {
       def handler
 
 
-      if (!svc.isThirdParty() && svc.deployment.isBlueGreen()) {
+      if (!svc.isThirdParty() && svc.deployment && svc.deployment.isBlueGreen()) {
           ["blue", "green"].each { color ->
             def s = svc.clone()
             s.application = s.application ?: s.name
@@ -32,7 +32,7 @@ abstract class AbstractKubeManager {
             }
             retval += serviceHandlers(client, s)
           }
-          if (!svc.isThirdParty()) {
+          if (!svc.isThirdParty() && svc.external_url && svc.external_url != "" ) {
             handler = getHandler(client, svc, KubeIngressWrapper)
             handler && retval << handler
           }
@@ -55,7 +55,19 @@ abstract class AbstractKubeManager {
       }
     }
     def nevv = klass.newInstance(client, rsc)
+    if (klass == KubeServiceWrapper) {
+      println "NEVV PORTS: ${nevv.ports}"
+      if (existing) {
+        println "OLD PORTS: ${existing.ports}"
+      }
+    }
     if (nevv != existing) {
+      if (klass == KubeThirdPartyWrapper) {
+        println "NEVV: ${nevv.resource}"
+        println "OLD: ${existing.resource}"
+      }
+      // XXX: WE NEED TO CHECK THIRDPARTYRESOURCES RETURN, ALSO
+      // WE NEED TO CHECK WHY WE RETURN STUFF FOR EXISTING THIRDPARTYRESOURCES
       return nevv
     }
     return null
@@ -99,7 +111,8 @@ abstract class AbstractKubeManager {
         handler && retval << handler
       }
       def wrappers = [ KubeDeploymentWrapper, KubeServiceWrapper]
-      if (svc.external_url) {
+      if (svc.external_url && svc.external_url != "") {
+        println "${svc.name} External URL: ${svc.external_url}"
         wrappers << KubeIngressWrapper
       }
       wrappers.each {
