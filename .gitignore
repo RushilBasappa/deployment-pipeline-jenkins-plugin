@@ -3,3 +3,4 @@ gradle/
 work/
 .gradle
 .DS_Store
+/bin/

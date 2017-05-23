@@ -2,6 +2,7 @@ package com.pearson.deployment.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
 import com.pearson.deployment.config.kubernetes.KubeService
+import com.pearson.deployment.config.kubernetes.KubeServicePort
 
 class KubeServiceWrapper extends AbstractKubeWrapper {
   static Class resourceClass = KubeService
@@ -11,6 +12,15 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
 
     def selector = svc.selector ?: svc.name
     def app = svc.application ?: svc.name
+
+    def ports = svc.ports.collect{ v ->
+      [
+        name: "tcp-port-${v}",
+        protocol: "TCP",
+        port: v,
+        targetPort: v
+      ]
+    }
     this.resource = new KubeService(
       metadata: [
         name: svc.name,
@@ -28,14 +38,7 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
           project: svc.project,
           application: app
         ],
-        ports: [
-          [
-            port: svc.port,
-            protocol: "TCP",
-            name: "tcp-port",
-            targetPort: svc.port
-          ]
-        ]
+        ports: ports
       ]
     )
   }
@@ -57,15 +60,24 @@ class KubeServiceWrapper extends AbstractKubeWrapper {
 
     def obj = (KubeServiceWrapper)o
 
+    (o.ports == obj.ports) &&
     (resource == obj.resource)
   }
 
-  void setPort(Integer value) {
-    resource.ports[0].port = value
+  void setPorts(ArrayList<Integer> values) {
+    def v = values.collect {p ->
+      new KubeServicePort(
+        port: p,
+        protocol: "TCP",
+        name: "tcp-port-${p}",
+        targetPort: p
+      )
+    }
+    resource.ports = v
   }
 
-  Integer getPort() {
-    resource.ports[0].port
+  ArrayList<KubeServicePort> getPorts() {
+    resource.ports
   }
 
   void setName(String value) {
