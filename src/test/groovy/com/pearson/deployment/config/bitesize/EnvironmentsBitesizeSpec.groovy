@@ -25,9 +25,9 @@ class EnvironmentsBitesizeSpec extends Specification {
       then:
         cfg.project == "example"
         cfg.environments.size() == 2
-        cfg.environments[0].services[0].port == 80
+        cfg.environments[0].services[0].port == "80"
         cfg.environments[0].services[0].application == 'sample-app'
-        cfg.environments[0].services[0].ssl == true        
+        cfg.environments[0].services[0].ssl == true
         cfg.environments[1] == stagingEnvironment
         cfg.environments[1].services[2].health_check.command[0] == "/bin/cat"
     }
@@ -50,7 +50,7 @@ class EnvironmentsBitesizeSpec extends Specification {
         cfg.environments[1] == staging
 
       when:
-        def z = cfg.getEnvironment('Zoro')        
+        def z = cfg.getEnvironment('Zoro')
       then:
         EnvironmentNotFoundException ex = thrown()
         ex.message == 'Environment Zoro not found'
