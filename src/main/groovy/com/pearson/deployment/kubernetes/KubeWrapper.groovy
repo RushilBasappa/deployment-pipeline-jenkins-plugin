@@ -36,7 +36,11 @@ class KubeWrapper implements KubeAPI {
 
   AbstractKubeResource get(Class klass, String name) {
     try {
+      // println "Getting ${klass.kind}:${namespace}/${name}"
       String result = exe("kubectl get ${klass.kind} ${name} --namespace=${namespace} -o yaml")
+      // println "---"
+      // println result
+      // println "---"
       Yaml yaml = new Yaml()
       return klass.newInstance(yaml.load(result))
     } catch (all) {

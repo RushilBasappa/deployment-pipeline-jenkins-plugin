@@ -36,10 +36,13 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 
 		def obj = (KubeThirdPartyResource)o
 
+		def olabels = obj.labels.findAll{ it.value && it.value != "" }
+		def mlabels = labels.findAll{ it.value && it.value != "" }
+
 		(name == obj.name) &&
 		(namespace == obj.namespace) &&
 		(description == obj.description) &&
-		(labels == obj.labels) &&
+		(olabels == mlabels) &&
 		(spec == obj.spec)
 	}
 
@@ -61,4 +64,8 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 
 		r
   }
+
+	String toString() {
+		asMap().toMapString()
+	}
 }

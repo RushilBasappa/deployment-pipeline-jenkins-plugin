@@ -1,5 +1,8 @@
 package com.pearson.deployment.kubernetes
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 public class ResourceNotFoundException extends Exception {
   public ResourceNotFoundException() {
   }

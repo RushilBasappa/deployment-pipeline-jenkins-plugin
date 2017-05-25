@@ -18,7 +18,6 @@ abstract class AbstractKubeManager {
       List<AbstractKubeWrapper> retval = []
       def handler
 
-
       if (!svc.isThirdParty() && svc.deployment && svc.deployment.isBlueGreen()) {
           ["blue", "green"].each { color ->
             def s = svc.clone()
@@ -45,7 +44,12 @@ abstract class AbstractKubeManager {
   static AbstractKubeWrapper getHandler(KubeAPI client, ManagedResource rsc, Class klass) {
     def existing
     try {
-      def e = client.get klass.resourceClass, rsc.name
+      def name = rsc.name
+      // This is ugly, but hopefully temporarily
+      if (klass == KubeThirdPartyWrapper) {
+        name = "${rsc.type}-${rsc.name}.${rsc.namespace}.prsn.io"
+      }
+      def e = client.get klass.resourceClass, name
       existing = klass.newInstance(client, e)
     } catch (ResourceNotFoundException e) {
       // We don't create deployments with service-manage
@@ -55,19 +59,8 @@ abstract class AbstractKubeManager {
       }
     }
     def nevv = klass.newInstance(client, rsc)
-    if (klass == KubeServiceWrapper) {
-      println "NEVV PORTS: ${nevv.ports}"
-      if (existing) {
-        println "OLD PORTS: ${existing.ports}"
-      }
-    }
+
     if (nevv != existing) {
-      if (klass == KubeThirdPartyWrapper) {
-        println "NEVV: ${nevv.resource}"
-        println "OLD: ${existing.resource}"
-      }
-      // XXX: WE NEED TO CHECK THIRDPARTYRESOURCES RETURN, ALSO
-      // WE NEED TO CHECK WHY WE RETURN STUFF FOR EXISTING THIRDPARTYRESOURCES
       return nevv
     }
     return null
@@ -94,10 +87,10 @@ abstract class AbstractKubeManager {
     if (svc.isThirdParty()) {
       def clientVersion = client.version()
       def s = clientVersion.satisfies("<1.3.0")
-      // println "Got client version: ${clientVersion}, satisfies: ${s}"
 
       // TPR handling changed in v1.3.0
       if (clientVersion.satisfies("<1.3.0")) {
+
         handler = getHandler(client, svc, KubeThirdPartyWrapper)
         handler && retval << handler
       } else {
@@ -112,7 +105,7 @@ abstract class AbstractKubeManager {
       }
       def wrappers = [ KubeDeploymentWrapper, KubeServiceWrapper]
       if (svc.external_url && svc.external_url != "") {
-        println "${svc.name} External URL: ${svc.external_url}"
+        // println "External url for ${svc.name}: ${svc.external_url}"
         wrappers << KubeIngressWrapper
       }
       wrappers.each {

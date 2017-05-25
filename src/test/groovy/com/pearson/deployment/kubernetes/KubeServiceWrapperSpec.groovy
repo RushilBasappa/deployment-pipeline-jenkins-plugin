@@ -11,7 +11,7 @@ class KubeServiceWrapperSpec extends Specification {
 
   def setup() {
     client = new FakeKubeWrapper('sample-app-dev')
-    
+
     Yaml yaml = new Yaml()
     String config = new File("src/test/resources/kubernetes/test-service.yaml").text
     LinkedHashMap map = yaml.load(config)
@@ -34,15 +34,15 @@ class KubeServiceWrapperSpec extends Specification {
   def "Update service attribute" () {
     given:
       handler.create()
-    
+
     when:
-      handler.port = 90
+      handler.ports = [90]
       handler.update()
       def service = client.get KubeService, 'test'
       def updated = new KubeServiceWrapper(client, service)
 
     then:
-      updated.port == 90
+      updated.ports[0].port == 90
   }
 
   def "Update without changes does nothing" () {
@@ -62,7 +62,7 @@ class KubeServiceWrapperSpec extends Specification {
   def "Fetching non-existent service throws ResourceNotFoundException" () {
     when:
       client.get KubeService, 'nonexistent'
-    
+
     then:
       ResourceNotFoundException ex = thrown()
       ex.message == 'Cannot find service nonexistent'

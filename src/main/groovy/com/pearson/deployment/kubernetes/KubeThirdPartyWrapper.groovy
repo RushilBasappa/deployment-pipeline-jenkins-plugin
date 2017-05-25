@@ -5,15 +5,16 @@ import com.pearson.deployment.config.bitesize.*
 
 class KubeThirdPartyWrapper extends AbstractKubeWrapper {
   static Class resourceClass = KubeThirdPartyResource
+  private String resourceName
 
   KubeThirdPartyWrapper(KubeAPI client, Service svc) {
     this.client = client
-    def nameStr = "${svc.type}-${svc.name}.${svc.namespace}.prsn.io"
-    
+    resourceName = "${svc.type}-${svc.name}.${svc.namespace}.prsn.io"
+
     this.resource = new KubeThirdPartyResource(
       description: "Resource for ${svc.type}",
 			metadata: [
-				name: nameStr,
+				name: resourceName,
 				namespace: svc.namespace,
 				labels: [
           project: svc.project,
@@ -47,6 +48,10 @@ class KubeThirdPartyWrapper extends AbstractKubeWrapper {
     def obj = (KubeThirdPartyWrapper)o
 
     this.resource == obj.resource
+  }
+
+  String getFullName() {
+    resourceName
   }
 
   void setVersion(String value) {

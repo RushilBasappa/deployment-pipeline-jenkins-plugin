@@ -14,6 +14,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
     def probe = []
     def volumeMounts = []
     def volumeClaims = []
+    def ports = []
 
     if (svc.health_check) {
       probe = [
@@ -39,6 +40,8 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
         ]
       }
     }
+
+    ports = svc.ports.collect { p -> [ containerPort: p ] }
 
     this.resource = new KubeDeployment(
       metadata: [
@@ -79,9 +82,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
                 name: svc.name,
                 image: image(svc),
                 volumeMounts: volumeMounts,
-                ports: [
-                  [ containerPort: svc.port ]
-                ],
+                ports: ports,
                 env: svc.env,
                 livenessProbe: probe
               ]

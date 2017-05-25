@@ -5,7 +5,7 @@ import groovy.json.*
 class KubeHttpPath {
   String  path
   String  backendName
-  String backendPort
+  Integer backendPort
 
   KubeHttpPath(LinkedHashMap o) {
     path = o.path

@@ -24,8 +24,6 @@ class KubeThirdPartyInstanceWrapper extends AbstractKubeWrapper {
     )
   }
 
-
-
   KubeThirdPartyInstanceWrapper(KubeAPI client, KubeThirdPartyGenericResource resource) {
     this.client = client
     this.resource = resource

@@ -32,6 +32,10 @@ class KubeServicePort {
     (targetPort == obj.targetPort)
   }
 
+  String toString() {
+    return "[name: ${name}, port: ${port}, targetPort: ${targetPort}, protocol: ${protocol}]"
+  }
+
   LinkedHashMap asMap() {
     [
       "port": port,
