@@ -1,5 +1,6 @@
 package com.pearson.deployment.config.kubernetes
 
+import com.pearson.deployment.helpers.Helper
 
 // This thirdpartyresource represents <1.4 kubernetes object.
 // In 1.4 and above, we will use KubeGenericObject
@@ -39,7 +40,7 @@ class KubeThirdPartyResource extends AbstractKubeResource {
 		(name == obj.name) &&
 		(namespace == obj.namespace) &&
 		(description == obj.description) &&
-		(labels == obj.labels) &&
+		Helper.equalMaps(obj.labels, labels) &&
 		(spec == obj.spec)
 	}
 

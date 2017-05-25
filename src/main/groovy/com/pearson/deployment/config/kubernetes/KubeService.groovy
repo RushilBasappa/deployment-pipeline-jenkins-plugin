@@ -1,6 +1,7 @@
 package com.pearson.deployment.config.kubernetes
 
 import com.pearson.deployment.config.bitesize.Service
+import com.pearson.deployment.helpers.Helper
 
 import groovy.json.*
 
@@ -33,7 +34,7 @@ class KubeService extends AbstractKubeResource {
     (name == obj.name ) &&
     (namespace == obj.namespace) &&
     (selector == obj.selector) &&
-    (labels == obj.labels) &&
+    Helper.equalMaps(obj.labels, labels) &&
     (ports == obj.ports)
   }
 

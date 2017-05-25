@@ -16,6 +16,12 @@ class Helper implements Serializable {
     splitted.join(".")
   }
 
+  public static boolean equalMaps(HashMap a, HashMap b) {
+    def a1 = a.findAll{ it.value && it.value != "" }
+    def b1 = b.findAll{ it.value && it.value != ""}
+    a1 == b1
+  }
+
   public static def denull(obj) {
     if(obj instanceof Map) {
       obj.collectEntries{ k, v ->

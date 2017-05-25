@@ -1,6 +1,7 @@
 package com.pearson.deployment.config.kubernetes
 
 import groovy.json.*
+import com.pearson.deployment.helpers.Helper
 
 class KubeIngress extends AbstractKubeResource {
   public static final String kind = "ingress"
@@ -31,7 +32,7 @@ class KubeIngress extends AbstractKubeResource {
     def obj = (KubeIngress)o
     (name == obj.name) &&
     (namespace == obj.namespace) &&
-    (labels == obj.labels) &&
+    Helper.equalMaps(obj.labels, labels) &&
     (rules == obj.rules)
 
   }
