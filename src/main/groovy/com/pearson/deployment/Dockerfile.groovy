@@ -35,7 +35,7 @@ class Dockerfile implements Serializable {
                    | <% if (deb_packages != "") out.print apt_get_install %>
                    | <% if (gem_packages != "") out.print gem_install %>
                    |
-                   | ENTRYPOINT [${entrypoint}]
+                   | <% if (entrypoint != "" ) out.print "ENTRYPOINT [${entrypoint}]" %>
     '''.stripMargin().stripIndent()
 
     def installDeb = """ RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
@@ -85,6 +85,9 @@ class Dockerfile implements Serializable {
   }
 
   private String commandToEntrypoint(String cmd) {
+    if (!cmd || cmd == "" ) {
+		  return cmd 
+    }
     String regex = "\"([^\"]*)\"|(\\S+)"
     Matcher m = Pattern.compile(regex).matcher(cmd);
     def commands = []
