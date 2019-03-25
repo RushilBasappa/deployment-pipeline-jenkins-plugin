@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-      classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.21.0'
+      classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.23.0'
       classpath 'org.jenkins-ci.plugins:copyartifact:1.38'
       classpath 'org.jenkins-ci.plugins:job-dsl:1.48'
       classpath 'org.jenkins-ci.plugins:job-dsl-core:1.48'
