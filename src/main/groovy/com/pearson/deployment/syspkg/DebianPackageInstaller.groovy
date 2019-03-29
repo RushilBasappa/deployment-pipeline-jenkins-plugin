@@ -12,6 +12,7 @@ import com.pearson.deployment.config.bitesize.BuildDependency
 import com.pearson.deployment.config.bitesize.SystemPackage
 
 class DebianPackageInstaller extends AbstractPackageInstaller {
+
   DebianPackageInstaller(AbstractBuild build, Launcher launcher, BuildListener listener, BuildDependency dependency) {
     super(build, launcher, listener, dependency)
     pkg = new Package()

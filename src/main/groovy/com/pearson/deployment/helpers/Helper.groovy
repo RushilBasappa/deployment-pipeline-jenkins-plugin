@@ -6,6 +6,11 @@ class Helper implements Serializable {
     env.get('DOCKER_REGISTRY') ?: "custom-registry"
   }
 
+  public static String aptlyRepo() {
+    Map<String, String> env = System.getenv()
+    env.get('APTLY_REPO') ?: "http://apt/"
+  }
+
   public static String normalizeName(String name) {
     name.replaceAll("-","_")
   }

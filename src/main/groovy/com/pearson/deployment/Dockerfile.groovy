@@ -19,11 +19,15 @@ class Dockerfile implements Serializable {
   @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"DOCKER_REGISTRY" has invalid value')
   String dockerRegistry
 
+  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"APLTY REPO" has invalid value')
+  String aptlyRepo
+
   private writer
 
   Dockerfile(Application app) {
     this.application = app
     this.dockerRegistry = Helper.dockerRegistry()
+    this.aptlyRepo = Helper.aptlyRepo()
   }
 
   def contents() {
@@ -38,7 +42,7 @@ class Dockerfile implements Serializable {
                    | ENTRYPOINT [${entrypoint}]
     '''.stripMargin().stripIndent()
 
-    def installDeb = """ RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
+    def installDeb = """ RUN echo 'deb ${this.aptlyRepo} bitesize main' > /etc/apt/sources.list.d/bitesize.list
                          | RUN ${debianInstallString}
     """.stripMargin().stripIndent()
 

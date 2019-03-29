@@ -4,3 +4,4 @@ work/
 .gradle
 .DS_Store
 .idea/
+out/
