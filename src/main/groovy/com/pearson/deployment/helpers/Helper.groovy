@@ -5,6 +5,10 @@ class Helper implements Serializable {
     Map<String, String> env = System.getenv()
     env.get('DOCKER_REGISTRY') ?: "custom-registry"
   }
+  public static String dockerRegistryECR() {
+    Map<String, String> env = System.getenv()
+    env.get('DOCKER_REGISTRY_ECR') ?: "custom-registry"
+  }
 
   public static String aptlyRepo() {
     Map<String, String> env = System.getenv()

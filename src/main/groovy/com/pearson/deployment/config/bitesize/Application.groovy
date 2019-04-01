@@ -28,7 +28,7 @@ class Application extends Validator implements Serializable {
   Map<String,String> notifications
 
   def getDockerImage() {
-    "${Helper.dockerRegistry()}/${project}/${name}"
+    "${Helper.dockerRegistryECR()}/${project}/${name}"
   }
 
   def getVersion() {
