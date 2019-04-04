@@ -1,9 +1,9 @@
 package com.pearson.deployment.helpers
 
 class Helper implements Serializable {
-  public static String dockerRegistry() {
+  public static String dockerRegistryBaseImages() {
     Map<String, String> env = System.getenv()
-    env.get('DOCKER_REGISTRY') ?: "custom-registry"
+    env.get('DOCKER_REGISTRY_BASE') ?: "custom-registry"
   }
   public static String dockerRegistryECR() {
     Map<String, String> env = System.getenv()

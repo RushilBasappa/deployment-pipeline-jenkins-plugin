@@ -1,4 +1,4 @@
-FROM custom-registry/baseimages/nginx
+FROM custom-registry/picoded/ubuntu-openjdk-8-jdk
 MAINTAINER Deployment Pipeline <pipeline>
 RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
 RUN apt-get -q update && \

@@ -26,7 +26,7 @@ class ApplicationBitesizeSpec extends Specification {
         cfg.applications.size() == 2
         
         def firstApp = cfg.applications.first()
-        firstApp.runtime == "nginx"
+        firstApp.runtime == "picoded/ubuntu-openjdk-8-jdk"
         firstApp.dependencies.size() == 3
         firstApp.command == 'nginx -g "daemon off;"'
     }

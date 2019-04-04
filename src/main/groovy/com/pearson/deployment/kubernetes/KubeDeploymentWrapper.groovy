@@ -132,7 +132,7 @@ class KubeDeploymentWrapper extends AbstractKubeWrapper {
   }
 
   String image(Service svc) {
-    "${Helper.dockerRegistry()}/${svc.project}/${svc.application}:${version(svc)}"
+    "${Helper.dockerRegistryBaseImages()}/${svc.project}/${svc.application}:${version(svc)}"
   }
 
   boolean mustUpdate() {

@@ -1,7 +1,7 @@
 project: example
 applications:
   - name: sample-app
-    runtime: nginx
+    runtime: picoded/ubuntu-openjdk-8-jdk
     dependencies:
       - name: static-content
         type: debian-package

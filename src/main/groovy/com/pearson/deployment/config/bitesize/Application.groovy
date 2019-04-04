@@ -14,15 +14,15 @@ import com.pearson.deployment.helpers.*
 import com.pearson.deployment.validation.*
 
 class Application extends Validator implements Serializable {
-  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "runtime" has invalid value')
+  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "name" has invalid value')
   String name
 
-  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "runtime" has invalid value')
+  @ValidString(regexp='[a-z:\\.\\d\\-\\/]*', message='field "runtime" has invalid value')
   String runtime
 
   String command
   String version = null
-  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "runtime" has invalid value')
+  @ValidString(regexp='[a-z:\\.\\d\\-]*', message='field "project" has invalid value')
   String project
   List<ApplicationDependency> dependencies
   Map<String,String> notifications

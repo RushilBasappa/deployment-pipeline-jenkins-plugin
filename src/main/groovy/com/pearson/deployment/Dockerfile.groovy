@@ -17,7 +17,7 @@ class Dockerfile implements Serializable {
   Application application
 
   @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"DOCKER_REGISTRY" has invalid value')
-  String dockerRegistry
+  String dockerRegistryBaseImages
 
   @ValidString(regexp='[a-z:\\.\\d\\-]*', message='"APLTY REPO" has invalid value')
   String aptlyRepo
@@ -26,7 +26,7 @@ class Dockerfile implements Serializable {
 
   Dockerfile(Application app) {
     this.application = app
-    this.dockerRegistry = Helper.dockerRegistry()
+    this.dockerRegistryBaseImages = Helper.dockerRegistryBaseImages()
     this.aptlyRepo = Helper.aptlyRepo()
   }
 
@@ -34,7 +34,7 @@ class Dockerfile implements Serializable {
     String debianInstallString = debianDependencies(application.dependencies)
     String gemInstallString = gemDependencies(application.dependencies)
 
-    def tmpl = ''' FROM ${registry}/baseimages/${runtime}
+    def tmpl = ''' FROM ${registry}/${runtime}
                    | MAINTAINER Deployment Pipeline <pipeline>
                    | <% if (deb_packages != "") out.print apt_get_install %>
                    | <% if (gem_packages != "") out.print gem_install %>
@@ -51,7 +51,7 @@ class Dockerfile implements Serializable {
     def template = new GStringTemplateEngine().createTemplate(tmpl)
 
     def binding = [
-      registry:        this.dockerRegistry,
+      registry:        this.dockerRegistryBaseImages,
       runtime:         application.runtime,
       deb_packages:    debianInstallString,
       apt_get_install: installDeb,
