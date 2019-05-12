@@ -1,5 +1,6 @@
 package com.pearson.deployment.config.bitesize
 
+import com.pearson.deployment.helpers.Helper
 import org.yaml.snakeyaml.Yaml
 import hudson.FilePath
 
@@ -45,6 +46,10 @@ class ApplicationBitesize implements Serializable {
       it.project = project
     }
     applications = apps
+  }
+
+  public static String getEOToken(String projectName) {
+    "${Helper.eoToken(projectName)}"
   }
 
 } 

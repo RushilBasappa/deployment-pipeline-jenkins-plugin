@@ -42,4 +42,10 @@ class Helper implements Serializable {
       obj
     }
   }
+
+  public static String eoToken(String name) {
+    Map<String, String> env = System.getenv()
+    def tokenName = name+"-token"
+    env.get(tokenName) ?: "TOKEN NOT SET"
+  }
 }
