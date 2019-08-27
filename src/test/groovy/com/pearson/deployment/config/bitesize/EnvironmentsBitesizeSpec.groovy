@@ -31,7 +31,14 @@ class EnvironmentsBitesizeSpec extends Specification {
         cfg.environments[1] == stagingEnvironment
         cfg.environments[1].services[2].health_check.command[0] == "/bin/cat"
         cfg.environments[1].services[2].ports == [80,81,82]
-    }
+
+        if (cfg.environments[1].services[2].isBVTEnabled()) {
+            cfg.environments[1].services[2].bvt_commands.commands[0] == "curl http://localhost:8080"
+        }
+        if (cfg.environments[1].services[2].isTableauEnabled()) {
+            cfg.environments[1].services[2].tableau_commands.commands[1]  == "curl http://localhost:8080"
+        }
+     }
 
     def "invalid config" () {
       when:

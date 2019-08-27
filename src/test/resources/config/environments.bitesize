@@ -69,6 +69,7 @@ environments:
         env:
           - name: NODE_ENV
             value: staging
+
       - name: custom-service
         application: sample-app
         external_url: custom-service-stg.pearson.com

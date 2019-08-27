@@ -29,6 +29,10 @@ class Service extends ManagedResource implements Serializable, Cloneable {
   String httpsBackendString
   HealthCheck health_check
 
+  Tableau tableau_commands
+
+  BVT bvt_commands
+
   DeploymentMethod deployment
 
   String deploymentMethod = "rolling-upgrade"
@@ -69,6 +73,20 @@ class Service extends ManagedResource implements Serializable, Cloneable {
     (httpsOnly == other.httpsOnly) &&
     (httpsBackend == other.httpsBackend) &&
     (selector == other.selector)
+  }
+
+  public boolean isTableauEnabled() {
+    if(this.tableau_commands != null && this.tableau_commands.commands.size() > 0) {
+      return true
+    }
+    else false
+  }
+
+  public boolean isBVTEnabled() {
+    if (this.bvt_commands != null && this.bvt_commands.commands.size() > 0) {
+      return true
+    }
+    else false
   }
 
   public boolean isThirdParty() {
