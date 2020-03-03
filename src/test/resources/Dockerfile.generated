@@ -1,6 +1,6 @@
 FROM custom-registry/picoded/ubuntu-openjdk-8-jdk
 MAINTAINER Deployment Pipeline <pipeline>
-RUN echo 'deb http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
+RUN echo 'deb [trusted=yes] http://apt/ bitesize main' > /etc/apt/sources.list.d/bitesize.list
 RUN apt-get -q update && \
     apt-get install -q -y --force-yes static-content=1.1.2* && \
     apt-get install -q -y --force-yes different-dir=1.1.1* && \

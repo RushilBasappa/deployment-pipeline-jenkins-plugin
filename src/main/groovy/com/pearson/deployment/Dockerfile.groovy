@@ -42,7 +42,7 @@ class Dockerfile implements Serializable {
                    | ENTRYPOINT [${entrypoint}]
     '''.stripMargin().stripIndent()
 
-    def installDeb = """ RUN echo 'deb ${this.aptlyRepo} bitesize main' > /etc/apt/sources.list.d/bitesize.list
+    def installDeb = """ RUN echo 'deb [trusted=yes] ${this.aptlyRepo} bitesize main' > /etc/apt/sources.list.d/bitesize.list
                          | RUN ${debianInstallString}
     """.stripMargin().stripIndent()
 
